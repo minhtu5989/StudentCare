@@ -6,8 +6,7 @@ import {
 import { Box, Text } from 'react-native-design-utility'
 import { theme } from '@constants/theme';
 // import { NavigationService } from '@api/NavigationService';
-import { EvilIcons } from '@expo/vector-icons';
-import Modal from 'react-native-modalbox';
+// import Modal from 'react-native-modalbox';
 import {Calendar} from 'react-native-calendars';
 
 import { Detector } from "../components/Detector";
@@ -48,9 +47,9 @@ export class ExampleScreen extends Component {
             <Box f={1} w={'100%'} h={'100%'} bg={theme.blueLight} center>
                 
                 
-                <MyButton onPress={() => this.refs.modal1.open()} style={[styles.btn]} type='success'>
+                {/* <MyButton onPress={() => this.refs.modal1.open()} style={[styles.btn]} type='success'>
                         <Text> Modal </Text>
-                </MyButton>
+                </MyButton> */}
                 
                 <Box bg='lightblue'>
                     <Detector imagePickerOptions={imagePickerOptions} />
@@ -59,7 +58,7 @@ export class ExampleScreen extends Component {
 
 
 
-                <Modal 
+                {/* <Modal 
                     ref={"modal1"}
                     backdropOpacity={0.4}
                     backdropColor="black"
@@ -83,7 +82,7 @@ export class ExampleScreen extends Component {
                             <Picker.Item label="Machine learning" value="machine" />
                         </Picker>
                     </Box>
-                </Modal>
+                </Modal> */}
             </Box>
         );
     }

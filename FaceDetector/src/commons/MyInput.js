@@ -1,4 +1,4 @@
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+// import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Fumi, Sae } from 'react-native-textinput-effects';
 import { Dimensions } from 'react-native';
 
