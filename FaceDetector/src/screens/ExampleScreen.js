@@ -9,7 +9,7 @@ import { theme } from '@constants/theme';
 // import Modal from 'react-native-modalbox';
 import {Calendar} from 'react-native-calendars';
 
-import { Detector } from "../components/Detector";
+// import { Detector } from "../components/Detector";
 import { MyButton } from '@commons/MyButton';
 
 const imagePickerOptions = {
@@ -52,7 +52,7 @@ export class ExampleScreen extends Component {
                 </MyButton> */}
                 
                 <Box bg='lightblue'>
-                    <Detector imagePickerOptions={imagePickerOptions} />
+                    {/* <Detector imagePickerOptions={imagePickerOptions} /> */}
                 </Box>
 
 

@@ -6,10 +6,10 @@ import { NavigationService } from '@utils/NavigationService';
 
 // import { images } from '@constants/images';
 // import { cacheImages } from '@utils/cacheImages'
-import { theme } from '@constants/theme'
+import { theme } from './src/constants/theme'
 // import { store } from './src/stores';
 
-import { Main } from "@screens/index";
+import { AppNav } from "./src/screens/index";
 
 export default class App extends Component{
   // state = {
@@ -41,7 +41,7 @@ export default class App extends Component{
           <SafeAreaView style={{flex:1, backgroundColor: theme.color.myAppColor}}>
             <Box center f={1}>
               <StatusBar barStyle='dark-content'/>
-              <Main ref={ r => NavigationService.setTopLevelNavigator(r) }/>
+              <AppNav ref={ r => NavigationService.setTopLevelNavigator(r) }/>
             </Box>
           </SafeAreaView>
         </UtilityThemeProvider>
