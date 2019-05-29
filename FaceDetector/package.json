@@ -1,13 +1,15 @@
 {
-  "name": "FaceDetector",
+  "name": "StudentCare",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "rndebugger-open"
   },
   "dependencies": {
     "lodash": "^4.17.11",
+    "moment": "^2.24.0",
     "react": "16.8.3",
     "react-native": "^0.59.6",
     "react-native-calendars": "^1.141.0",
@@ -27,6 +29,7 @@
     "babel-jest": "^24.7.1",
     "jest": "^24.7.1",
     "metro-react-native-babel-preset": "^0.53.1",
+    "react-native-debugger-open": "^0.3.19",
     "react-test-renderer": "16.8.3"
   },
   "jest": {
