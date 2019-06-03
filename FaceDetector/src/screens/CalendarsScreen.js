@@ -5,7 +5,6 @@ import {
   ScrollView,
   View
 } from 'react-native';
-import { CalendarsComponent } from "../components/Calendars";
 import { AgendaComponent } from "../components/Agenda";
 
 export  class CalendarsScreen extends Component {
@@ -17,7 +16,6 @@ export  class CalendarsScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <CalendarsComponent/> */}
         <AgendaComponent/>
       </View>
     );

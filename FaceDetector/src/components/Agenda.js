@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
 import moment from "moment";
@@ -20,8 +21,11 @@ export class AgendaComponent extends Component {
     activity = [ 
       {ActivityStartDate: '2019-06-01', Subject: {courseName: 'Tourism Sites Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1'}},
       {ActivityStartDate: '2019-06-02', Subject: {courseName: 'English Reading 1', startingSession: '4 -> 7', room: 'B.06.09', class: '16DNCQA1'}},
-      {ActivityStartDate: '2019-06-03', Subject: {courseName: 'Practice: Advanced Programming Techniques', startingSession: '7 -> 12', room: 'B.06.09', class: '16DNCQA1'}},
-      {ActivityStartDate: '2019-06-04', Subject: {courseName: 'Practice: Graph Theory', startingSession: '12 -> 15', room: 'B.06.09', class: '17DNCQA2'}}
+      {ActivityStartDate: '2019-06-03', Subject: {courseName: 'Programming Techniques', startingSession: '7 -> 12', room: 'B.06.09', class: '16DNCQA1'}},
+      {ActivityStartDate: '2019-06-04', Subject: {courseName: 'Practice: Graph Theory', startingSession: '12 -> 15', room: 'B.06.09', class: '17DNCQA2'}},
+      {ActivityStartDate: '2019-06-05', Subject: {courseName: 'Toán', startingSession: '12 -> 15', room: 'B.06.09', class: '17DNCQA2'}},
+      {ActivityStartDate: '2019-06-07', Subject: {courseName: 'Lý', startingSession: '12 -> 15', room: 'B.06.09', class: '17DNCQA2'}},
+      {ActivityStartDate: '2019-06-09', Subject: {courseName: 'Hoá', startingSession: '12 -> 15', room: 'B.06.09', class: '17DNCQA2'}}
     ]
   }
 
@@ -35,29 +39,17 @@ export class AgendaComponent extends Component {
   render() {
     return (
       <Agenda
-        loadItemsForMonth={this.loadItemsForMonth(this.state.date)}
+        // loadItemsForMonth={this.loadItemsForMonth(this.state.date)}
+        loadItemsForMonth={this.loadItems.bind(this)}
         selected={this.state.date}
-        // items={this.state.items}
         items={this.state.items}
-        minDate={'2016-01-01'}
-        maxDate={'2022-01-01'}
+        minDate={'2018-01-01'}
+        maxDate={'2020-01-01'}
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
         onDayChange={(day)=>{console.log('day changed')}}
         onDayPress={(date) => { this.getMonthYear(date.month,date.year); }}
-        // renderEmptyData = {() => {return (<View />);}}    
-        // markingType={'period'}
-        // markedDates={{
-        //    '2017-05-08': {textColor: '#666'},
-        //    '2017-05-09': {textColor: '#666'},
-        //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-        //    '2017-05-21': {startingDay: true, color: 'blue'},
-        //    '2017-05-22': {endingDay: true, color: 'gray'},
-        //    '2017-05-24': {startingDay: true, color: 'gray'},
-        //    '2017-05-25': {color: 'gray'},
-        //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-        //  monthFormat={'yyyy'}
         theme={{
             agendaKnobColor: 'green',
             backgroundColor: '#ffffff',
@@ -96,57 +88,43 @@ export class AgendaComponent extends Component {
             flex: 1, 
             borderWidth: 1,
             paddingTop: 5,
-            borderColor: theme.color.black,
+            borderRadius: 16,
+            borderColor: theme.color.greyLight,
             // height: 350,
             width: theme.width*0.9
           }}
       />
     );
   }
-   
-  loadItemsForMonth(day) {
+
+  loadItems(day) {
     setTimeout(() => {
-      // for (let i = -15; i < 85; i++) {
-      //   // const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-      //   const strTime = this.timeToString(day);
-      //   if (!this.state.items[strTime]) {
-      //     this.state.items[strTime] = [];
-      //     for (let j = 0; j < activity.length; j++) {
-      //       this.state.items[strTime].push({
-      //         name: 'Item for ' + strTime,
-      //       });
-      //     }
-      //   }
-      // }
-      // //console.log(this.state.items);
-      // const newItems = {};
-      // Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
-      // this.setState({
-      //   items: newItems
-      // });
-
-
-
-      for (let i = 0; i < activity.length; i++) {
-        const strTime = this.timeToString(activity[i].ActivityStartDate);
+      for (let j = 0; j < activity.length ; j++) {
+        const strTime = this.timeToString(activity[j].ActivityStartDate);
         if (!this.state.items[strTime]){
-          this.state.items[strTime] = [];              
+          this.state.items[strTime] = []; 
+
+          this.state.items[strTime].push({ obj: activity[j].Subject });
         }
-         this.state.items[strTime].push({
-          name: activity[i].Subject.courseName               
-        });
       }
 
-      console.log(this.state.items);
+      for (let i = -90; i < 120; i++) {
+        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+        const strTime = this.timeToString(time);
+        if (!this.state.items[strTime]) {
+          this.state.items[strTime] = [];
+        }
+      }
       const newItems = {};
       Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
       this.setState({
         items: newItems
       });
+      console.log(this.state.items);
     }, 1000);
     console.log(`Load Items for ${day.year}-${day.month}`);
   }
-
+   
   getMonthYear(M,Y) {
     const month = M - 1;
     const monthNames = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
@@ -155,7 +133,12 @@ export class AgendaComponent extends Component {
 
   renderItem(item) {
     return (
-      <View style={[styles.item, {height: 100}]}><Text>{item.name}</Text></View>
+      <TouchableOpacity style={styles.item} >
+        <Text>Môn học:   {item.obj.courseName}</Text>
+        <Text>Tiết bắt đầu:   {item.obj.startingSession}</Text>
+        <Text>Phòng:   {item.obj.room}</Text>
+        <Text>Lớp:   {item.obj.class}</Text>
+      </TouchableOpacity>
     );
   }
 
@@ -177,14 +160,16 @@ export class AgendaComponent extends Component {
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: 'white',
+    justifyContent: 'center',
+    backgroundColor: '#e6f7ff',
     flex: 1,
     borderRadius: 5,
     padding: 10,
     marginRight: 10,
     marginTop: 17,
     borderWidth: 1,
-    borderColor: theme.color.greyLight
+    borderColor: theme.color.greyLight,
+    height: 100
   },
   calendar: {
     borderWidth: 1,
