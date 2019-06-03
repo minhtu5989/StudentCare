@@ -6,7 +6,10 @@ import {
   TouchableOpacity
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
+
 import moment from "moment";
+import { NavigationService } from '@utils/NavigationService';
+
 
 import { theme } from "../constants/theme";
 
@@ -19,19 +22,20 @@ export class AgendaComponent extends Component {
       selectedMonth:''
     };
     activity = [ 
-      {ActivityStartDate: '2019-06-01', Subject: {courseName: 'Tourism Sites Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1'}},
+      {ActivityStartDate: '2019-06-01', Subject: {courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1'}},
       {ActivityStartDate: '2019-06-02', Subject: {courseName: 'English Reading 1', startingSession: '4 -> 7', room: 'B.06.09', class: '16DNCQA1'}},
-      {ActivityStartDate: '2019-06-03', Subject: {courseName: 'Programming Techniques', startingSession: '7 -> 12', room: 'B.06.09', class: '16DNCQA1'}},
-      {ActivityStartDate: '2019-06-04', Subject: {courseName: 'Practice: Graph Theory', startingSession: '12 -> 15', room: 'B.06.09', class: '17DNCQA2'}},
-      {ActivityStartDate: '2019-06-05', Subject: {courseName: 'Toán', startingSession: '12 -> 15', room: 'B.06.09', class: '17DNCQA2'}},
-      {ActivityStartDate: '2019-06-07', Subject: {courseName: 'Lý', startingSession: '12 -> 15', room: 'B.06.09', class: '17DNCQA2'}},
-      {ActivityStartDate: '2019-06-09', Subject: {courseName: 'Hoá', startingSession: '12 -> 15', room: 'B.06.09', class: '17DNCQA2'}}
+      {ActivityStartDate: '2019-06-03', Subject: {courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1'}},
+      {ActivityStartDate: '2019-06-03', Subject: {courseName: 'Programming Techniques', startingSession: '3 -> 6', room: 'B.06.10', class: '15DNCQA3'}},
+      {ActivityStartDate: '2019-06-04', Subject: {courseName: 'Practice: Graph Theory', startingSession: '7 -> 9', room: 'A.08.11', class: '17DNCQA2'}},
+      {ActivityStartDate: '2019-06-05', Subject: {courseName: 'Tourism Management', startingSession: '12 -> 15', room: 'B.06.10', class: '17DNCQA2'}},
+      {ActivityStartDate: '2019-06-07', Subject: {courseName: 'English Reading 1', startingSession: '1 -> 3', room: 'E.06.09', class: '17DNCQA2'}},
+      {ActivityStartDate: '2019-06-09', Subject: {courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2'} }
     ]
   }
 
   componentWillMount() {
     const currentDate = moment(this.state.date, 'YYYY/MM/DD');
-    const month = currentDate.format('M');
+    const month = currentDate.format('MM');
     const year = currentDate.format('YYYY');
     this.getMonthYear(month,year);
   }
@@ -103,12 +107,17 @@ export class AgendaComponent extends Component {
         const strTime = this.timeToString(activity[j].ActivityStartDate);
         if (!this.state.items[strTime]){
           this.state.items[strTime] = []; 
-
           this.state.items[strTime].push({ obj: activity[j].Subject });
+// alert(JSON.stringify(this.state.items[strTime]))
+          for (let j = 0; j < activity.length ; j++) {
+            if(this.state.items[strTime] == activity[j].ActivityStartDate){
+              this.state.items[strTime].push({ obj: activity[j].Subject });
+            }
+          }
         }
       }
 
-      for (let i = -90; i < 120; i++) {
+      for (let i = -30; i < 30; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
@@ -133,7 +142,7 @@ export class AgendaComponent extends Component {
 
   renderItem(item) {
     return (
-      <TouchableOpacity style={styles.item} >
+      <TouchableOpacity style={styles.item} onPress={ () => NavigationService.navigate('ClassScreen', {obj: item.obj}) } >
         <Text>Môn học:   {item.obj.courseName}</Text>
         <Text>Tiết bắt đầu:   {item.obj.startingSession}</Text>
         <Text>Phòng:   {item.obj.room}</Text>

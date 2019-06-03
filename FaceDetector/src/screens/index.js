@@ -3,6 +3,8 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { ExampleScreen } from "./ExampleScreen";
 import { CalendarsScreen } from "./CalendarsScreen";
 import { DetectorScreen } from "./DetectorScreen";
+import { ClassScreen } from "./ClassScreen";
+
 
 const AppNavigator = createSwitchNavigator(
     {
@@ -14,6 +16,9 @@ const AppNavigator = createSwitchNavigator(
         },
         DetectorScreen: {
             screen : DetectorScreen
+        },
+        ClassScreen: {
+            screen : ClassScreen
         },
     },{
         initialRouteName: 'CalendarsScreen'

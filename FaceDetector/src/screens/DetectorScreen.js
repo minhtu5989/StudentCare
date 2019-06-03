@@ -10,12 +10,13 @@ import {
 } from 'react-native';
  
 import ImagePicker from "react-native-image-picker";
-import { Button } from "../components/Button";
+// import { Button } from "../components/Button";
 import RNFetchBlob from 'react-native-fetch-blob';
 import Permissions from 'react-native-permissions'
+import { Button } from "react-native-elements";
 import _ from 'lodash';
 
-
+import { api } from "../api/ApiConfig";
 
 export class DetectorScreen extends Component {
   constructor(props) {
@@ -71,13 +72,13 @@ export class DetectorScreen extends Component {
       '',
       [
         {
-          text: 'No way',
+          text: 'Không',
           onPress: () => console.log('Permission denied'),
           style: 'cancel',
         },
         this.state.photoPermission == 'undetermined'
-          ? { text: 'OK', onPress: this._checkCameraAndPhotos }
-          : { text: 'Open Settings', onPress: Permissions.openSettings },
+          ? { text: 'Chấp nhận', onPress: this._checkCameraAndPhotos }
+          : { text: 'Cài đặt', onPress: Permissions.openSettings },
       ],
     )
   }
@@ -96,10 +97,9 @@ export class DetectorScreen extends Component {
         </View>
         <View style={{flexDirection: 'row', marginTop: 100}}>
           <Button
-              text="Chọn"
-              onpress={this._pickImage}
-              button_styles={styles.button}
-              button_text_styles={styles.button_text} 
+            title='Chọn ảnh'
+            onPress={this._pickImage}
+            buttonStyle={styles.button}
           />
           { this._renderDetectFacesButton.call(this) }
         </View>
@@ -118,7 +118,6 @@ export class DetectorScreen extends Component {
     ImagePicker.showImagePicker(imagePickerOptions, (response) => {
          
       if(response.error){
-        // alert('Không tìm thấy ảnh. Vui lòng thử lại');
         this._alertForPhotosPermission()
       }else{
          
@@ -144,19 +143,20 @@ export class DetectorScreen extends Component {
     if(this.state.has_photo){
         return  (
             <Button
-                text="Nhận diện"
-                onpress={this._detectFaces.bind(this)}
-                button_styles={styles.button}
-                button_text_styles={styles.button_text} />
+              title='Nhận diện'
+              onPress={this._detectFaces.bind(this)}
+              buttonStyle={styles.button}
+            />
         );
     }
   }
  
   _detectFaces = () => {
-    RNFetchBlob.fetch('POST', 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender', {
-      "Accept": "application/json",
+    console.log(`api: ${api.Detect}, key : ${api.keyApi}`);
+    
+    RNFetchBlob.fetch('POST', api.Detect, {
       "Content-Type": "application/octet-stream",
-      "Ocp-Apim-Subscription-Key": "4f12445ce8f84307897b1673854ed6b1"
+      "Ocp-Apim-Subscription-Key": api.keyApi
     }, this.state.photo_data)
     .then((res) => {
         return res.json();      
@@ -167,14 +167,14 @@ export class DetectorScreen extends Component {
                 face_data: json
             });
         }else{
-            alert("Sorry, I can't see any faces in there.");
+            alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
         }
          
         return json;
     })
     .catch (function (error) {
         console.log(error);
-        alert('Sorry, the request failed. Please try again.' + JSON.stringify(error));
+        alert('Xin lỗi ! Phát hiện lỗi đường truyền !');
     });
  
   }
@@ -222,9 +222,11 @@ export class DetectorScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#ccc'
+    backgroundColor: '#e6f2ff'
   },
   button: {
     margin: 10,

@@ -10,7 +10,7 @@ import { Box, Text } from 'react-native-design-utility'
 
 import { theme } from '@constants/theme';
 // import { MyButton } from '@commons/MyButton';
-// import { NavigationService } from '@api/NavigationService';
+// import { NavigationService } from '@utils/NavigationService';
 // import { EvilIcons } from '@expo/vector-icons';
 
 
