@@ -192,29 +192,29 @@ export class DetectorScreen extends Component {
   _detectFaces = () => {
     console.log(`api: ${api.Detect}, key : ${api.keyApi}`);
     
-    RNFetchBlob.fetch('POST', api.Detect, {
-      "Content-Type": "application/octet-stream",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    }, this.state.photo_data)
-    .then((res) => {
-        return res.json();      
-    })
-    .then((json) => {
-        if(json.length){
-            this.setState({
-                face_data: json
-            });
-        }else{
-            alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
-        }
+    // RNFetchBlob.fetch('POST', api.Detect, {
+    //   "Content-Type": "application/octet-stream",
+    //   "Ocp-Apim-Subscription-Key": api.keyApi
+    // }, this.state.photo_data)
+    // .then((res) => {
+    //     return res.json();      
+    // })
+    // .then((json) => {
+    //     if(json.length){
+    //         this.setState({
+    //             face_data: json
+    //         });
+    //     }else{
+    //         alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
+    //     }
          
-        return this.setState({ids: json});
-    })
-    .catch (function (error) {
-        console.log(error);
-        alert('Xin lỗi ! Phát hiện lỗi đường truyền !');
-    });
-
+    //     return json;
+    // })
+    // .catch (function (error) {
+    //     console.log(error);
+    //     alert('Xin lỗi ! Phát hiện lỗi đường truyền !');
+    // });
+ 
   }
  
   _renderFaceBoxes = () => {
