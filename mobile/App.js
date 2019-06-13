@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import { UtilityThemeProvider, Box, Text } from 'react-native-design-utility';
 import { ActivityIndicator, SafeAreaView, StatusBar } from 'react-native';
-import { NavigationService } from '@utils/NavigationService';
+import { NavigationService } from './src/utils/NavigationService';
 // import { Provider, } from 'mobx-react/native';
 
 // import { images } from '@constants/images';
-// import { cacheImages } from '@utils/cacheImages'
+// import { cacheImages } from './src/utils/cacheImages'
 import { theme } from './src/constants/theme'
 // import { store } from './src/stores';
 

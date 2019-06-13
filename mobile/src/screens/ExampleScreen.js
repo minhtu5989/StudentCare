@@ -10,7 +10,6 @@ import { theme } from '@constants/theme';
 import {Calendar} from 'react-native-calendars';
 
 // import { Detector } from "../components/Detector";
-import { MyButton } from '@commons/MyButton';
 
 const imagePickerOptions = {
     title: 'Chọn ảnh', 

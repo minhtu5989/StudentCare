@@ -1,6 +1,6 @@
 import wretch from 'wretch';
 import { BASE_URL } from "@constants/index";
-const keyApi = 'fad2c0f7b0634885afef3b22da5c2843'   //  02/05/2019
+const keyApi = 'e0496daba30a41a38dc55e1874cd60c3'   //  13/06/2019
 
 
 const StatusTranning = `${BASE_URL}/largepersongroups`;

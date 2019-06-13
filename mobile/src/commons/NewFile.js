@@ -9,9 +9,6 @@ import {
 import { Box, Text } from 'react-native-design-utility'
 
 import { theme } from '@constants/theme';
-// import { MyButton } from '@commons/MyButton';
-// import { NavigationService } from '@utils/NavigationService';
-// import { EvilIcons } from '@expo/vector-icons';
 
 
 export class NewFile extends Component {
@@ -20,15 +17,10 @@ export class NewFile extends Component {
         this.state = {  };
     }
 
-    static navigationOptions = ({ navigation }) => ({
-        title: 'NewFile',
-    });
-
     render() {
         return (
             <Box f={1} bg={theme.blueLight}>
                 <Text>this is NewFile</Text>
-                {/* <EvilIcons name="user" color={theme.color.myAppColor} size={35} /> */}
             </Box>
         );
     }
