@@ -102,7 +102,7 @@ export class DetectorScreen extends Component {
           />
           <Button
             title='điểm danh'
-            onPress={this.diendanh}
+            onPress={this.presence}
             buttonStyle={styles.button}
           />
           { this._renderDetectFacesButton.call(this) }
@@ -112,39 +112,49 @@ export class DetectorScreen extends Component {
     );
   }
  
-  diendanh = () => {
-    xxx = this.state.ids.map( el => el.faceId )
-    alert(xxx)
-    RNFetchBlob.fetch('POST', api.Identify, {
-      "Content-Type": "application/octet-stream",
+  presence = async() => {
+    let ids = this.state.face_data.map( el => el.faceId )
+    console.log('log',ids);
+    const resCandidates = await api.Identify
+    .headers({
+      "Content-Type": "application/json",
       "Ocp-Apim-Subscription-Key": api.keyApi
-    }, 
+    })
+    .post(
       {
-        "largePersonGroupId": "hutechcare",
-        "faceIds": xxx,
-        "maxNumOfCandidatesReturned": 10,
-        "confidenceThreshold": 0.5
+        "largePersonGroupId": "tuluong1",
+        "faceIds": ids,
+        "maxNumOfCandidatesReturned": 50,
+        "confidenceThreshold": 0.7
       }
     )
-    .then((res) => {
-        return res.json();      
-    })
-    .then((json) => {
-        if(json.length){
-            this.setState({
-                face_data: json
-            });
-        }else{
-            alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
-        }
-        
-        return json;
-    })
-    .catch (function (error) {
-        console.log(error);
-        alert('Xin lỗi ! Phát hiện lỗi đường truyền !');
-    });
+    .json()
 
+    if(!resCandidates.length){
+      alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
+    }
+
+    this.setState({
+      identifies: resCandidates 
+    });
+    console.log('identifies', this.state.identifies);
+
+    // List faces in group 
+    const resList = await api.List 
+    .headers({
+      "Content-Type": "application/json",
+      "Ocp-Apim-Subscription-Key": api.keyApi
+    })
+    .get()
+    .json()
+
+    if(resList.length){
+      this.setState({
+        list: resList 
+      });
+      return console.log('List', this.state.identifies);
+    }
+    return console.log('No list response !');
   }
  
   _pickImage = () => {
@@ -192,65 +202,65 @@ export class DetectorScreen extends Component {
   _detectFaces = () => {
     console.log(`api: ${api.Detect}, key : ${api.keyApi}`);
     
-    // RNFetchBlob.fetch('POST', api.Detect, {
-    //   "Content-Type": "application/octet-stream",
-    //   "Ocp-Apim-Subscription-Key": api.keyApi
-    // }, this.state.photo_data)
-    // .then((res) => {
-    //     return res.json();      
-    // })
-    // .then((json) => {
-    //     if(json.length){
-    //         this.setState({
-    //             face_data: json
-    //         });
-    //     }else{
-    //         alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
-    //     }
+    RNFetchBlob.fetch('POST', api.Detect, {
+      "Content-Type": "application/octet-stream",
+      "Ocp-Apim-Subscription-Key": api.keyApi
+    }, this.state.photo_data)
+    .then((res) => {
+        return res.json();      
+    })
+    .then((json) => {
+        if(json.length){
+            this.setState({
+                face_data: json
+            });
+        }else{
+            alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
+        }
          
-    //     return json;
-    // })
-    // .catch (function (error) {
-    //     console.log(error);
-    //     alert('Xin lỗi ! Phát hiện lỗi đường truyền !');
-    // });
+        return json;
+    })
+    .catch (function (error) {
+        console.log(error);
+        alert('Xin lỗi ! Phát hiện lỗi đường truyền !');
+    });
  
   }
  
   _renderFaceBoxes = () => {
- 
+  
     if(this.state.face_data){
- 
-        let views = _.map(this.state.face_data, (x) => {
-             
-            let box = {
-                position: 'absolute',
-                top: x.faceRectangle.top,
-                left: x.faceRectangle.left
-            };
- 
-            let style = { 
-                width: x.faceRectangle.width,
-                height: x.faceRectangle.height,
-                borderWidth: 2,
-                borderColor: 'yellow',
-            };
-             
-            let attr = {
-                color: 'yellow',
-            };
- 
-            return (
-              <View key={x.faceId} style={box}>
-                    <Text style={attr}>{x.candidates > 0.5 ? 'Có mặt' : 'Không xác định'}</Text>
-                    <View style={style}></View>
-                    <Text style={attr}>Giới tính: {(x.faceAttributes.gender==='male')?'Nam':'Nữ'}</Text>
-                    <Text style={attr}>Tuổi: {x.faceAttributes.age}</Text>
-                </View>
-            );
-        });
- 
-        return <View>{views}</View>
+    
+      let views = _.map(this.state.face_data, (x) => {
+          
+          let box = {
+              position: 'absolute',
+              top: x.faceRectangle.top,
+              left: x.faceRectangle.left
+          };
+
+          let style = { 
+              width: x.faceRectangle.width,
+              height: x.faceRectangle.height,
+              borderWidth: 1.5,
+              borderColor: 'yellow',
+          };
+          
+          let attr = {
+              color: 'yellow',
+          };
+
+          return (
+            <View key={x.faceId} style={box}>
+                  <Text style={attr}>{x.candidates > 0.7 ? 'Có mặt' : 'Không xác định'}</Text>
+                  <View style={style}></View>
+                  <Text style={attr}>Giới tính: {(x.faceAttributes.gender==='male')?'Nam':'Nữ'}</Text>
+                  <Text style={attr}>Tuổi: {x.faceAttributes.age}</Text>
+              </View>
+          );
+      });
+
+      return <View>{views}</View>
     }
  
   }
