@@ -3,7 +3,7 @@ import { Box, Text } from 'react-native-design-utility'
 import { Button, Avatar } from "react-native-elements";
 
 import { theme } from '@constants/theme';
-import { NavigationService } from '../utils/NavigationService';
+import { NavigationService } from '../constants/NavigationService';
 
 export class ClassScreen extends Component {
     constructor(props) {

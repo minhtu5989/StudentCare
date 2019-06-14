@@ -21,7 +21,7 @@ const AppNavigator = createSwitchNavigator(
             screen : ClassScreen
         },
     },{
-        initialRouteName: 'CalendarsScreen'
+        initialRouteName: 'DetectorScreen'
     }
 )
 

@@ -8,7 +8,7 @@ import {
 import {Agenda} from 'react-native-calendars';
 
 import moment from "moment";
-import { NavigationService } from '../utils/NavigationService';
+import { NavigationService } from '../constants/NavigationService';
  
 
 import { theme } from "../constants/theme";

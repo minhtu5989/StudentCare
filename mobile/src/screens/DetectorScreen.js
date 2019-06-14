@@ -6,7 +6,9 @@ import {
   View,
   Image,
   ImageBackground,
-  Alert
+  Alert,
+  Picker,
+  FlatList
 } from 'react-native';
  
 import ImagePicker from "react-native-image-picker";
@@ -14,6 +16,10 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import Permissions from 'react-native-permissions'
 import { Button } from "react-native-elements";
 import _ from 'lodash';
+import { NavigationService } from '../constants/NavigationService';
+import Modal from 'react-native-modalbox';
+import {theme} from '../constants/theme'
+import { Box } from 'react-native-design-utility'
 
 import { api } from "../api/ApiConfig";
 
@@ -21,13 +27,14 @@ export class DetectorScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        photo_style: {
-            position: 'absolute',
-            width: '80%%',
-            height: '80%'
-        },
-        photo: null,
-        face_data: null
+      isOpen: false,
+      photo_style: {
+          position: 'absolute',
+          width: '80%%',
+          height: '80%'
+      },
+      photo: null,
+      face_data: null
     };
     imagePickerOptions = {
       title: 'Chọn ảnh', 
@@ -42,8 +49,57 @@ export class DetectorScreen extends Component {
     };
   }
 
-  
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={{flex:1}}>
+          <ImageBackground
+              style={this.state.photo_style}
+              source={this.state.photo}
+              resizeMode={"contain"}
+          >
+              { this._renderFaceBoxes .call(this) }
+          </ImageBackground>
+        </View>
+        <View style={{flexDirection: 'row', marginTop: 100}}>
+          <Button
+            title='Chọn ảnh'
+            onPress={this._pickImage}
+            buttonStyle={styles.button}
+          />
+          { this._renderDetectFacesButton() }
+        </View>
+        <View style={{ marginTop: 10}}>
+          {this._renderBtnList()}
+        </View>
+ 
+        <Modal 
+          ref={"modal1"}
+          backdropOpacity={0.4}
+          backdropColor="black"
+          isOpen={this.state.isOpen} 
+          onClosed={() => this.setState({isOpen: false})} 
+          style={styles.modal} 
+          position={"bottom"} 
+          // backdropContent={<Text>dsa</Text>}
+          animationDuration={500}
+          backButtonClose
+        >
+            <Box f={1} style={{borderTopLeftRadius: 20, borderTopRightRadius: 20, height: `100%`, width: `100%`}}  >
+                <Box center h={40} bg={theme.color.blueLighter} style={{borderTopLeftRadius: 20, borderTopRightRadius: 20 }} >
+                  <Text style={{textDecorationLine:'underline'}}>Danh sách sinh viên vắng học :</Text>
+                </Box>
+                <Box f={1} center>
+                  {this._renderNoExist()}
+                </Box>
+                
+            </Box>
+        </Modal>
 
+      </View>
+    );
+  }
+  
   componentDidMount() {
     this._checkCameraAndPhotos()
   }
@@ -81,34 +137,6 @@ export class DetectorScreen extends Component {
     )
   }
  
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={{flex:1}}>
-          <ImageBackground
-              style={this.state.photo_style}
-              source={this.state.photo}
-              resizeMode={"contain"}
-          >
-              { this._renderFaceBoxes .call(this) }
-          </ImageBackground>
-        </View>
-        <View style={{flexDirection: 'row', marginTop: 100}}>
-          <Button
-            title='Chọn ảnh'
-            onPress={this._pickImage}
-            buttonStyle={styles.button}
-          />
-
-          { this._renderDetectFacesButton() }
-        </View>
- 
-      </View>
-    );
-  }
- 
-  
- 
   _pickImage = () => {
      
     this.setState({
@@ -135,6 +163,18 @@ export class DetectorScreen extends Component {
       }
     });
  
+  }
+
+  _renderBtnList = () => {
+  if(this.state.renderList === 1){
+    return  (
+        <Button
+          title='Xem danh sách'
+          onPress={() => this.refs.modal1.open()}
+          buttonStyle={styles.button}
+        />
+    );
+  }
   }
  
   _renderDetectFacesButton = () => {
@@ -181,20 +221,10 @@ export class DetectorScreen extends Component {
         }
       }
     }
-    
-    let exist = []
-    let noExist = []
 
-    for ( let i = 0; i < facesDetect.length; i++ ) {
-      if(facesDetect[i].candidates[0].confidence > 0.8){
-        exist.push(facesDetect[i])
-      }
-      else
-        noExist.push(facesDetect[i])
-    }
+    console.log('faces', facesDetect);
 
-    console.log(`ex: ${JSON.stringify(exist)}, noEx: ${JSON.stringify(noExist)}`);
-    
+
     // List faces in group 
     const resList = await api.List 
     .headers({
@@ -208,18 +238,18 @@ export class DetectorScreen extends Component {
       return console.log('No list response !') 
     }
 
-    for ( let i = 0; i < exist.length; i++ ) {
+    for ( let i = 0; i < facesDetect.length; i++ ) {
       for ( let j = 0; j < resList.length; j++ ) {
-        if ( exist[i].candidates[0].personId == resList[j].personId ){
+        console.log('1',facesDetect[i].candidates.personId);
+        
+        if ( facesDetect[i].candidates.personId == resList[j].personId ){
           let name = resList[j].name;
-          exist[i].name = name
-          console.log('name', resList[j].name);
-          
+          facesDetect[i].name = name
         }
       }
     }
-    console.log('exist 2', exist);
-    return 
+    
+    return this.setState({ facesDetect, renderList: 1 })
   }
  
   //Detect faces
@@ -240,7 +270,7 @@ export class DetectorScreen extends Component {
             alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
         }
         this._presence()
-        return json;
+        return this.setState({});
     })
     .catch (function (error) {
         console.log(error);
@@ -250,9 +280,9 @@ export class DetectorScreen extends Component {
  
   _renderFaceBoxes = () => {
   
-    if(this.state.face_data){
+    if(this.state.facesDetect){
     
-      let views = _.map(this.state.face_data, (x) => {
+      let views = this.state.facesDetect.map((x) => {
           
           let box = {
               position: 'absolute',
@@ -273,10 +303,9 @@ export class DetectorScreen extends Component {
 
           return (
             <View key={x.faceId} style={box}>
-                {console.log('faceAttributes',x)}
+                <Text style={attr}>Tên: {x.name} </Text>
                 <View style={style}></View>
                 {/* <Text style={attr}>Giới tính: {(x.faceAttributes.gender==='male')?'Nam':'Nữ'}</Text> */}
-                {/* <Text style={attr}>Tuổi: {x.faceAttributes.age}</Text> */}
             </View>
           );
       });
@@ -286,6 +315,31 @@ export class DetectorScreen extends Component {
  
   }
    
+  onClose() {
+    console.log('Modal just closed');
+  }
+
+  onOpen() {
+    console.log('Modal just opened');
+  }
+
+  _renderNoExist = () => {
+    {
+      // if(this.state.noExist !== []){
+      //   return <Text>Đi học đầy đủ</Text>
+      // }
+      return <FlatList
+        data={this.state.noExist}
+        // extraData={this.state}
+        keyExtractor={(item) => item.faceId}
+        renderItem={item => 
+          <Box m='sm'>
+            <Text>{item.name}</Text>
+          </Box>
+        }
+      />
+    }
+  }
 }
  
 const styles = StyleSheet.create({
@@ -305,7 +359,15 @@ const styles = StyleSheet.create({
   button_text: {
     color: '#FFF',
     fontSize: 20
-  }
+  },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    height: theme.height*0.8
+  },
+
 });
  
 
