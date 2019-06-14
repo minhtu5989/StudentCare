@@ -29,7 +29,9 @@ export class AgendaComponent extends Component {
       {ActivityStartDate: '2019-06-04', Subject: {courseName: 'Practice: Graph Theory', startingSession: '7 -> 9', room: 'A.08.11', class: '17DNCQA2'}},
       {ActivityStartDate: '2019-06-05', Subject: {courseName: 'Tourism Management', startingSession: '12 -> 15', room: 'B.06.10', class: '17DNCQA2'}},
       {ActivityStartDate: '2019-06-07', Subject: {courseName: 'English Reading 1', startingSession: '1 -> 3', room: 'E.06.09', class: '17DNCQA2'}},
-      {ActivityStartDate: '2019-06-09', Subject: {courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2'} }
+      {ActivityStartDate: '2019-06-09', Subject: {courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2'} },
+      {ActivityStartDate: '2019-06-14', Subject: {courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2'} }
+
     ]
   }
 

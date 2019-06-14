@@ -26,7 +26,6 @@ export class DetectorScreen extends Component {
             width: '80%%',
             height: '80%'
         },
-        has_photo: false,
         photo: null,
         face_data: null
     };
@@ -100,21 +99,59 @@ export class DetectorScreen extends Component {
             onPress={this._pickImage}
             buttonStyle={styles.button}
           />
-          <Button
-            title='điểm danh'
-            onPress={this.presence}
-            buttonStyle={styles.button}
-          />
-          { this._renderDetectFacesButton.call(this) }
+
+          { this._renderDetectFacesButton() }
         </View>
  
       </View>
     );
   }
  
-  presence = async() => {
+  
+ 
+  _pickImage = () => {
+     
+    this.setState({
+        face_data: null,
+    });
+ 
+    ImagePicker.showImagePicker(imagePickerOptions, (response) => {
+         
+      if(response.error){
+        this._alertForPhotosPermission()
+      }else{
+         
+        let source = {uri: response.uri};
+ 
+        this.setState({
+          photo_style: {
+            position: 'relative',
+            width: response.width,
+            height: response.height
+          },
+          photo: source,
+          photo_data: response.data
+        });
+      }
+    });
+ 
+  }
+ 
+  _renderDetectFacesButton = () => {
+    if(this.state.photo_data){
+        return  (
+            <Button
+              title='Nhận diện'
+              onPress={this._detectFaces}
+              buttonStyle={styles.button}
+            />
+        );
+    }
+  }
+
+  //Identify faces
+  _presence = async() => {
     let ids = this.state.face_data.map( el => el.faceId )
-    console.log('log',ids);
     const resCandidates = await api.Identify
     .headers({
       "Content-Type": "application/json",
@@ -133,12 +170,31 @@ export class DetectorScreen extends Component {
     if(!resCandidates.length){
       alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
     }
+   
+    let facesDetect = this.state.face_data    
+    
+    for ( let i = 0; i < facesDetect.length; i++ ) {
+      for ( let j = 0; j < resCandidates.length; j++ ) {
+        if ( facesDetect[i].faceId == resCandidates[j].faceId ){
+          let candidates = resCandidates[j].candidates;
+          facesDetect[i].candidates = candidates
+        }
+      }
+    }
+    
+    let exist = []
+    let noExist = []
 
-    this.setState({
-      identifies: resCandidates 
-    });
-    console.log('identifies', this.state.identifies);
+    for ( let i = 0; i < facesDetect.length; i++ ) {
+      if(facesDetect[i].candidates[0].confidence > 0.8){
+        exist.push(facesDetect[i])
+      }
+      else
+        noExist.push(facesDetect[i])
+    }
 
+    console.log(`ex: ${JSON.stringify(exist)}, noEx: ${JSON.stringify(noExist)}`);
+    
     // List faces in group 
     const resList = await api.List 
     .headers({
@@ -148,61 +204,27 @@ export class DetectorScreen extends Component {
     .get()
     .json()
 
-    if(resList.length){
-      this.setState({
-        list: resList 
-      });
-      return console.log('List', this.state.identifies);
+    if(!resList.length){
+      return console.log('No list response !') 
     }
-    return console.log('No list response !');
-  }
- 
-  _pickImage = () => {
-     
-    this.setState({
-        face_data: null
-    });
- 
-    ImagePicker.showImagePicker(imagePickerOptions, (response) => {
-         
-      if(response.error){
-        this._alertForPhotosPermission()
-      }else{
-         
-        let source = {uri: response.uri};
- 
-        this.setState({
-          photo_style: {
-            position: 'relative',
-            width: response.width,
-            height: response.height
-          },
-          has_photo: true,
-          photo: source,
-          photo_data: response.data
-        });
-        // alert(JSON.stringify(response.data))
+
+    for ( let i = 0; i < exist.length; i++ ) {
+      for ( let j = 0; j < resList.length; j++ ) {
+        if ( exist[i].candidates[0].personId == resList[j].personId ){
+          let name = resList[j].name;
+          exist[i].name = name
+          console.log('name', resList[j].name);
+          
+        }
       }
-    });
- 
-  }
- 
-  _renderDetectFacesButton = () => {
-    if(this.state.has_photo){
-        return  (
-            <Button
-              title='Nhận diện'
-              onPress={this._detectFaces.bind(this)}
-              buttonStyle={styles.button}
-            />
-        );
     }
+    console.log('exist 2', exist);
+    return 
   }
  
-  _detectFaces = () => {
-    console.log(`api: ${api.Detect}, key : ${api.keyApi}`);
-    
-    RNFetchBlob.fetch('POST', api.Detect, {
+  //Detect faces
+  _detectFaces = async() => {
+    await RNFetchBlob.fetch('POST', api.Detect, {
       "Content-Type": "application/octet-stream",
       "Ocp-Apim-Subscription-Key": api.keyApi
     }, this.state.photo_data)
@@ -217,14 +239,13 @@ export class DetectorScreen extends Component {
         }else{
             alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
         }
-         
+        this._presence()
         return json;
     })
     .catch (function (error) {
         console.log(error);
         alert('Xin lỗi ! Phát hiện lỗi đường truyền !');
     });
- 
   }
  
   _renderFaceBoxes = () => {
@@ -252,11 +273,11 @@ export class DetectorScreen extends Component {
 
           return (
             <View key={x.faceId} style={box}>
-                  <Text style={attr}>{x.candidates > 0.7 ? 'Có mặt' : 'Không xác định'}</Text>
-                  <View style={style}></View>
-                  <Text style={attr}>Giới tính: {(x.faceAttributes.gender==='male')?'Nam':'Nữ'}</Text>
-                  <Text style={attr}>Tuổi: {x.faceAttributes.age}</Text>
-              </View>
+                {console.log('faceAttributes',x)}
+                <View style={style}></View>
+                {/* <Text style={attr}>Giới tính: {(x.faceAttributes.gender==='male')?'Nam':'Nữ'}</Text> */}
+                {/* <Text style={attr}>Tuổi: {x.faceAttributes.age}</Text> */}
+            </View>
           );
       });
 
@@ -288,3 +309,4 @@ const styles = StyleSheet.create({
 });
  
 
+ 
