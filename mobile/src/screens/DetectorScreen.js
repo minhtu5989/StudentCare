@@ -28,6 +28,7 @@ export class DetectorScreen extends Component {
     super(props);
     this.state = {
       isOpen: false,
+      facesDetect: null,
       photo_style: {
           position: 'absolute',
           width: '80%%',
@@ -87,7 +88,7 @@ export class DetectorScreen extends Component {
         >
             <Box f={1} style={{borderTopLeftRadius: 20, borderTopRightRadius: 20, height: `100%`, width: `100%`}}  >
                 <Box center h={40} bg={theme.color.blueLighter} style={{borderTopLeftRadius: 20, borderTopRightRadius: 20 }} >
-                  <Text style={{textDecorationLine:'underline'}}>Danh sách sinh viên vắng học :</Text>
+                  <Text style={{textDecorationLine:'underline'}}>Danh sách sinh viên đi học :</Text>
                 </Box>
                 <Box f={1} center>
                   {this._renderNoExist()}
@@ -158,7 +159,8 @@ export class DetectorScreen extends Component {
             height: response.height
           },
           photo: source,
-          photo_data: response.data
+          photo_data: response.data,
+          facesDetect: null
         });
       }
     });
@@ -234,6 +236,8 @@ export class DetectorScreen extends Component {
     if(!resList.length){
       return console.log('No list response !') 
     }
+
+    this.setState({ listFaces: resList })
 
     for ( let i = 0; i < facesDetect.length; i++ ) {
       for ( let j = 0; j < resList.length; j++ ) {
@@ -330,16 +334,32 @@ export class DetectorScreen extends Component {
 
   _renderNoExist = () => {
     {
+      // const noExist = []
+      // for ( let i = 0; i < faces.length; i++ ) {
+      //   for ( let j = 0; j < list.length; j++ ) {
+      //     console.log('1',list[i].name);
+      //     if(list[i].candidates[0] !== undefined)
+      //     {
+      //       if ( faces[i].candidates[0].personId !== list[j].personId ){
+      //         noExist.push(resList[j].name)
+      //       }
+      //     }
+      //   }
+      // }
+
+      // return console.log('no', noExist);
+      
+
       // if(this.state.noExist !== []){
       //   return <Text>Đi học đầy đủ</Text>
       // }
       return <FlatList
-        data={this.state.noExist}
+        data={this.state.facesDetect}
         // extraData={this.state}
         keyExtractor={(item) => item.faceId}
         renderItem={item => 
           <Box m='sm'>
-            <Text>{item.name}</Text>
+            <Text>{(item.name)}</Text>
           </Box>
         }
       />
