@@ -22,12 +22,12 @@ export class AgendaComponent extends Component {
       selectedMonth:''
     };
     activity = [ 
-      {ActivityStartDate: '2019-06-01', Subject: {courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1'}},
-      {ActivityStartDate: '2019-06-02', Subject: {courseName: 'English Reading 1', startingSession: '4 -> 7', room: 'B.06.09', class: '16DNCQA1'}},
-      {ActivityStartDate: '2019-06-03', Subject: {courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1'}},
-      {ActivityStartDate: '2019-06-03', Subject: {courseName: 'Programming Techniques', startingSession: '3 -> 6', room: 'B.06.10', class: '15DNCQA3'}},
-      {ActivityStartDate: '2019-06-04', Subject: {courseName: 'Practice: Graph Theory', startingSession: '7 -> 9', room: 'A.08.11', class: '17DNCQA2'}},
-      {ActivityStartDate: '2019-06-05', Subject: {courseName: 'Tourism Management', startingSession: '12 -> 15', room: 'B.06.10', class: '17DNCQA2'}},
+      {ActivityStartDate: '2019-06-15', Subject: {courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1'}},
+      {ActivityStartDate: '2019-06-17', Subject: {courseName: 'English Reading 1', startingSession: '4 -> 7', room: 'B.06.09', class: '16DNCQA1'}},
+      {ActivityStartDate: '2019-06-18', Subject: {courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1'}},
+      {ActivityStartDate: '2019-06-12', Subject: {courseName: 'Programming Techniques', startingSession: '3 -> 6', room: 'B.06.10', class: '15DNCQA3'}},
+      {ActivityStartDate: '2019-06-11', Subject: {courseName: 'Practice: Graph Theory', startingSession: '7 -> 9', room: 'A.08.11', class: '17DNCQA2'}},
+      {ActivityStartDate: '2019-06-08', Subject: {courseName: 'Tourism Management', startingSession: '12 -> 15', room: 'B.06.10', class: '17DNCQA2'}},
       {ActivityStartDate: '2019-06-07', Subject: {courseName: 'English Reading 1', startingSession: '1 -> 3', room: 'E.06.09', class: '17DNCQA2'}},
       {ActivityStartDate: '2019-06-09', Subject: {courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2'} },
       {ActivityStartDate: '2019-06-14', Subject: {courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2'} }

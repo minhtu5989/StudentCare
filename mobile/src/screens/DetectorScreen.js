@@ -222,9 +222,6 @@ export class DetectorScreen extends Component {
       }
     }
 
-    console.log('faces', facesDetect);
-
-
     // List faces in group 
     const resList = await api.List 
     .headers({
@@ -240,14 +237,20 @@ export class DetectorScreen extends Component {
 
     for ( let i = 0; i < facesDetect.length; i++ ) {
       for ( let j = 0; j < resList.length; j++ ) {
-        console.log('1',facesDetect[i].candidates.personId);
-        
-        if ( facesDetect[i].candidates.personId == resList[j].personId ){
-          let name = resList[j].name;
-          facesDetect[i].name = name
+        console.log('1',facesDetect[i].candidates[0]);
+        if(facesDetect[i].candidates[0] !== undefined)
+        {
+          if ( facesDetect[i].candidates[0].personId == resList[j].personId ){
+            let name = resList[j].name;
+            facesDetect[i].name = name
+          }
         }
       }
     }
+
+    console.log('====================================');
+    console.log('data name', facesDetect);
+    console.log('====================================');
     
     return this.setState({ facesDetect, renderList: 1 })
   }
@@ -282,17 +285,17 @@ export class DetectorScreen extends Component {
   
     if(this.state.facesDetect){
     
-      let views = this.state.facesDetect.map((x) => {
+      let views = this.state.facesDetect.map((f) => {
           
           let box = {
               position: 'absolute',
-              top: x.faceRectangle.top,
-              left: x.faceRectangle.left
+              top: f.faceRectangle.top,
+              left: f.faceRectangle.left
           };
 
           let style = { 
-              width: x.faceRectangle.width,
-              height: x.faceRectangle.height,
+              width: f.faceRectangle.width,
+              height: f.faceRectangle.height,
               borderWidth: 1.5,
               borderColor: 'yellow',
           };
@@ -302,9 +305,11 @@ export class DetectorScreen extends Component {
           };
 
           return (
-            <View key={x.faceId} style={box}>
-                <Text style={attr}>Tên: {x.name} </Text>
+            <View key={f.faceId} style={box}>
                 <View style={style}></View>
+                <View style={{alignItems:'center'}}>
+                  <Text style={attr}>{(f.name)?` Tên: ${f.name}`:'X'}</Text>
+                </View>
                 {/* <Text style={attr}>Giới tính: {(x.faceAttributes.gender==='male')?'Nam':'Nữ'}</Text> */}
             </View>
           );
