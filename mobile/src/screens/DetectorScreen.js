@@ -28,11 +28,9 @@ export class DetectorScreen extends Component {
     super(props);
     this.state = {
       isOpen: false,
-      facesDetect: null,
+      faceDetected: null,
       photo_style: {
-          position: 'absolute',
-          width: '80%%',
-          height: '80%'
+          position: 'absolute'
       },
       photo: null,
       face_data: null
@@ -43,7 +41,7 @@ export class DetectorScreen extends Component {
       chooseFromLibraryButtonTitle: 'Chọn từ thư viện',
       cameraType: 'front', 
       mediaType: 'photo',
-      maxWidth: 480,
+      maxWidth: theme.width,
       quality: 1, 
       noData: false, 
       path: 'images'
@@ -53,7 +51,7 @@ export class DetectorScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{flex:1}}>
+        <View style={{flex:1, height: theme.height*0.8}}>
           <ImageBackground
               style={this.state.photo_style}
               source={this.state.photo}
@@ -91,7 +89,7 @@ export class DetectorScreen extends Component {
                   <Text style={{textDecorationLine:'underline'}}>Danh sách sinh viên đi học :</Text>
                 </Box>
                 <Box f={1} center>
-                  {this._renderNoExist()}
+                  {this._renderNoPresence()}
                 </Box>
                 
             </Box>
@@ -160,7 +158,7 @@ export class DetectorScreen extends Component {
           },
           photo: source,
           photo_data: response.data,
-          facesDetect: null
+          faceDetected: null
         });
       }
     });
@@ -168,7 +166,7 @@ export class DetectorScreen extends Component {
   }
 
   _renderBtnList = () => {
-  if(this.state.renderList === 1){
+  if(this.state.faceDetected){
     return  (
         <Button
           title='Xem danh sách'
@@ -213,13 +211,13 @@ export class DetectorScreen extends Component {
       alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
     }
    
-    let facesDetect = this.state.face_data    
+    let faceDetected = this.state.face_data    
     
-    for ( let i = 0; i < facesDetect.length; i++ ) {
+    for ( let i = 0; i < faceDetected.length; i++ ) {
       for ( let j = 0; j < resCandidates.length; j++ ) {
-        if ( facesDetect[i].faceId == resCandidates[j].faceId ){
+        if ( faceDetected[i].faceId == resCandidates[j].faceId ){
           let candidates = resCandidates[j].candidates;
-          facesDetect[i].candidates = candidates
+          faceDetected[i].candidates = candidates
         }
       }
     }
@@ -239,24 +237,23 @@ export class DetectorScreen extends Component {
 
     this.setState({ listFaces: resList })
 
-    for ( let i = 0; i < facesDetect.length; i++ ) {
+    for ( let i = 0; i < faceDetected.length; i++ ) {
       for ( let j = 0; j < resList.length; j++ ) {
-        console.log('1',facesDetect[i].candidates[0]);
-        if(facesDetect[i].candidates[0] !== undefined)
+        if(faceDetected[i].candidates[0] !== undefined)
         {
-          if ( facesDetect[i].candidates[0].personId == resList[j].personId ){
+          if ( faceDetected[i].candidates[0].personId == resList[j].personId ){
             let name = resList[j].name;
-            facesDetect[i].name = name
+            faceDetected[i].name = name
           }
         }
       }
     }
 
     console.log('====================================');
-    console.log('data name', facesDetect);
+    console.log('data name', faceDetected);
     console.log('====================================');
     
-    return this.setState({ facesDetect, renderList: 1 })
+    return this.setState({ faceDetected })
   }
  
   //Detect faces
@@ -274,22 +271,23 @@ export class DetectorScreen extends Component {
                 face_data: json
             });
         }else{
-            alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
+          console.log(`No face detected`);
+          return alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
         }
         this._presence()
         return this.setState({});
     })
     .catch (function (error) {
         console.log(error);
-        alert('Xin lỗi ! Phát hiện lỗi đường truyền !');
+        alert('Phát hiện lỗi không kết nối internet.');
     });
   }
  
   _renderFaceBoxes = () => {
   
-    if(this.state.facesDetect){
+    if(this.state.faceDetected){
     
-      let views = this.state.facesDetect.map((f) => {
+      let views = this.state.faceDetected.map((f) => {
           
           let box = {
               position: 'absolute',
@@ -314,7 +312,7 @@ export class DetectorScreen extends Component {
                 <View style={{alignItems:'center'}}>
                   <Text style={attr}>{(f.name)?` Tên: ${f.name}`:'X'}</Text>
                 </View>
-                {/* <Text style={attr}>Giới tính: {(x.faceAttributes.gender==='male')?'Nam':'Nữ'}</Text> */}
+                {/* <Text style={attr}>Giới tính: {(f.faceAttributes.gender==='male')?'Nam':'Nữ'}</Text> */}
             </View>
           );
       });
@@ -332,37 +330,50 @@ export class DetectorScreen extends Component {
     console.log('Modal just opened');
   }
 
-  _renderNoExist = () => {
-    {
-      // const noExist = []
-      // for ( let i = 0; i < faces.length; i++ ) {
-      //   for ( let j = 0; j < list.length; j++ ) {
-      //     console.log('1',list[i].name);
-      //     if(list[i].candidates[0] !== undefined)
-      //     {
-      //       if ( faces[i].candidates[0].personId !== list[j].personId ){
-      //         noExist.push(resList[j].name)
-      //       }
-      //     }
-      //   }
-      // }
-
-      // return console.log('no', noExist);
+  _renderNoPresence = () => {
+    if(!this.state.faceDetected){
+      return console.log('have not Face');
+    }
+    else{
+      let noPresence = []
+      let faces = this.state.faceDetected
+      let list = this.state.listFaces
+      console.log(`faces ${faces}, list ${list}`);
       
 
-      // if(this.state.noExist !== []){
-      //   return <Text>Đi học đầy đủ</Text>
-      // }
-      return <FlatList
-        data={this.state.facesDetect}
-        // extraData={this.state}
-        keyExtractor={(item) => item.faceId}
-        renderItem={item => 
-          <Box m='sm'>
-            <Text>{(item.name)}</Text>
-          </Box>
+      for ( let i = 0; i < faces.length; i++ ) {
+        for ( let j = 0; j < list.length; j++ ) {
+          if(faces[i].candidates[0] !== undefined)
+          {
+            if ( faces[i].candidates[0].personId !== list[j].personId ){
+              noPresence.push(list[j])
+            }
+          }
         }
-      />
+      }
+
+      if(noPresence == []){
+        return (
+          <Box center f={1}>
+            <Text>Đi học đầy đủ</Text>
+          </Box>
+        )
+      }
+      else{
+        console.log('noPresence', noPresence);
+        return (
+          <FlatList
+            data={noPresence}
+            extraData={this.state.faceDetected}
+            keyExtractor={(item) => item.name}
+            renderItem={item => 
+              <Box m='sm' center f={1}>
+                <Text>{(item.name)}</Text>
+              </Box>
+            }
+          />
+        )
+      }
     }
   }
 }
