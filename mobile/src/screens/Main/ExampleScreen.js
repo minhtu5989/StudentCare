@@ -4,7 +4,7 @@ import {
     Picker
 } from 'react-native';
 import { Box, Text } from 'react-native-design-utility'
-import { theme } from '@constants/theme';
+import { theme } from '../../constants/theme';
 // import { NavigationService } from '@api/NavigationService';
 // import Modal from 'react-native-modalbox';
 import {Calendar} from 'react-native-calendars';

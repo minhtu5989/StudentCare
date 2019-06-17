@@ -16,12 +16,12 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import Permissions from 'react-native-permissions'
 import { Button } from "react-native-elements";
 import _ from 'lodash';
-import { NavigationService } from '../constants/NavigationService';
+import { NavigationService } from '../../../constants/NavigationService';
 import Modal from 'react-native-modalbox';
-import {theme} from '../constants/theme'
+import {theme} from '../../../constants/theme'
 import { Box } from 'react-native-design-utility'
 
-import { api } from "../api/ApiConfig";
+import { api } from "../../../api/ApiConfig";
 
 export class DetectorScreen extends Component {
   constructor(props) {

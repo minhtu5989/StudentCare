@@ -5,7 +5,7 @@ import {
   ScrollView,
   View
 } from 'react-native';
-import { AgendaComponent } from "../components/Agenda";
+import { AgendaComponent } from "../../../components/Agenda";
 import moment from 'moment';
 
 

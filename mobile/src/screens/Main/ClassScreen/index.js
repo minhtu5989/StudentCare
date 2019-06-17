@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Box, Text } from 'react-native-design-utility'
 import { Button, Avatar } from "react-native-elements";
 
-import { theme } from '@constants/theme';
-import { NavigationService } from '../constants/NavigationService';
+import { theme } from '../../../constants/theme';
+import { NavigationService } from '../../../constants/NavigationService';
 
 export class ClassScreen extends Component {
     constructor(props) {

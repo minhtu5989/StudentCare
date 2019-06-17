@@ -9,7 +9,7 @@ import { NavigationService } from './src/constants/NavigationService';
 import { theme } from './src/constants/theme'
 // import { store } from './src/stores';
 
-import { AppNav } from "./src/screens/index";
+import { AppNav } from "./src/navigations/AppNav";
 
 export default class App extends Component{
   // state = {
@@ -39,7 +39,7 @@ export default class App extends Component{
       // <Provider {...store}>
         <UtilityThemeProvider theme={theme}>
           <SafeAreaView style={{flex:1, backgroundColor: theme.color.white}}>
-            <Box center f={1}>
+            <Box f={1} >
               <StatusBar barStyle='dark-content'/>
               <AppNav ref={ r => NavigationService.setTopLevelNavigator(r) }/>
             </Box>

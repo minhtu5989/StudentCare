@@ -1,5 +1,5 @@
 import wretch from 'wretch';
-import { BASE_URL } from "@constants/index";
+import { BASE_URL } from "../constants/index";
 const keyApi = 'e0496daba30a41a38dc55e1874cd60c3'   //  13/06/2019
 
 
