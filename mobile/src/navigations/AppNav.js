@@ -12,7 +12,7 @@ const AppNavigator = createSwitchNavigator(
         Auth: AuthStack,
         Tab: TabNav,
     },{
-        initialRouteName: 'AuthLoading'
+        initialRouteName: 'Main'
     }
 )
 

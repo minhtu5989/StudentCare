@@ -37,3 +37,11 @@ export default class Storage extends Component {
 }
 
 
+
+// await Storage.getData(Common.TOKEN_KEY).then(encryptedToken => {
+//   customerToken = Crypto.decrypt(encryptedToken);
+// })
+
+// let customerToken = response.data.response.customerToken;
+// let encryptedToken = Crypto.encrypt(customerToken);
+// Storage.setData(Common.TOKEN_KEY, encryptedToken);
