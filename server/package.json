@@ -6,6 +6,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-preset-env": "^1.7.0",
+    "convert-excel-to-json": "^1.6.1",
     "express": "^4.16.4",
     "http": "^0.0.0",
     "jsonwebtoken": "^8.3.0",

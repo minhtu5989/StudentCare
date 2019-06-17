@@ -2,15 +2,22 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+import excelToJson from 'convert-excel-to-json';
 import middlewaresConfig from './config/middlewares';
 import { CustomerRoutes, AddressRoutes } from './modules';
 import './config/db'
+import { dataExcel } from "./modules/dataExcel/index";
 
 middlewaresConfig(app);
 
 app.get('/test', (req, res) => {
   res.send('Welcome');
 });
+
+app.get('/tkbHutech', (req, res) => {
+  res.status(201).json({ dataExcel })
+});
+
 
 app.use('/api/v1/customers', CustomerRoutes);
 app.use('/api/v1/addresses', AddressRoutes);
