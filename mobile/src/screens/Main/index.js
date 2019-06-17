@@ -1,9 +1,9 @@
 import { createSwitchNavigator, createAppContainer, createStackNavigator } from 'react-navigation'
 
-import { ExampleScreen } from "../screens/Main/ExampleScreen";
-import { CalendarsScreen } from "../screens/Main/CalendarScreen/index";
-import { DetectorScreen } from "../screens/Main/DetectorScreen/index";
-import { ClassScreen } from "../screens/Main/ClassScreen/index";
+import { ExampleScreen } from "./ExampleScreen";
+import { CalendarsScreen } from "./CalendarScreen/index";
+import { DetectorScreen } from "./DetectorScreen/index";
+import { ClassScreen } from "./ClassScreen/index";
 
 
 const MainNavigator = createStackNavigator(
@@ -26,4 +26,4 @@ const MainNavigator = createStackNavigator(
     }
 )
 
-export const MainNav = createAppContainer(MainNavigator)
+export default MainNav = createAppContainer(MainNavigator)

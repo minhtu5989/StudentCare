@@ -1,17 +1,18 @@
 import { createSwitchNavigator, createAppContainer, createStackNavigator } from 'react-navigation'
 
-import { MainNav } from './MainNav'
+import MainNav from '../screens/Main'
+import AuthLoading from '../screens/AuthLoading'
+import AuthStack from '../screens/Authentification'
+import TabNav from '../screens/Tab'
 
 const AppNavigator = createSwitchNavigator(
     {
-        Main: {
-            screen : MainNav
-        },
-        // CalendarsScreen: {
-        //     screen : CalendarsScreen
-        // },
+        AuthLoading: AuthLoading,
+        Main:  MainNav,
+        Auth: AuthStack,
+        Tab: TabNav,
     },{
-        initialRouteName: 'Main'
+        initialRouteName: 'AuthLoading'
     }
 )
 
