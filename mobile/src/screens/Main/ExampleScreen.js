@@ -52,7 +52,7 @@ export class ExampleScreen extends Component {
                 
                 <Box bg='lightblue'>
                     {/* <Detector imagePickerOptions={imagePickerOptions} /> */}
-                </Box>
+                </Box>   
 
 
 
