@@ -1,5 +1,5 @@
 import excelToJson from 'convert-excel-to-json';
 
 export const dataExcel =  excelToJson({
-    sourceFile: '/Applications/WorkSpace/DOAN/StudentCare/server/src/modules/dataExcel/TKB.xlsx'
+    sourceFile: '/Users/lminhtu1/Desktop/workspace/StudentCare/server/src/modules/dataExcel/TKB.xlsx'
 });
