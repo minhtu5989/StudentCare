@@ -3,21 +3,24 @@ import { createSwitchNavigator, createAppContainer, createStackNavigator } from 
 import { CalendarsScreen } from "./CalendarScreen/index";
 import { DetectorScreen } from "./DetectorScreen/index";
 import { ClassScreen } from "./ClassScreen/index";
-
+import { AddFaceScreen } from "./AddFaceScreen/index";
 
 const MainNavigator = createStackNavigator(
     {
-        DetectorScreen: {
-            screen : DetectorScreen
-        },
-        CalendarsScreen: {
+        Calendars: {
             screen : CalendarsScreen
         },
-        ClassScreen: {
+        Detector: {
+            screen : DetectorScreen
+        },
+        Class: {
             screen : ClassScreen
         },
+        AddFace: {
+            screen : AddFaceScreen
+        },
     },{
-        initialRouteName: 'DetectorScreen',
+        initialRouteName: 'Calendars',
         headerMode: 'none'
     }
 )

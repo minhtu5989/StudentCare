@@ -59,3 +59,9 @@ export const NavigationService = {
 };
 
 window.NavigationService = NavigationService;
+
+
+
+
+// NavigationService.navigate('EditAddress', { address })
+// cosnst address={this.props.navigation.getParam('address')}

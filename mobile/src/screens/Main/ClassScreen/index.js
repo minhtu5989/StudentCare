@@ -18,7 +18,7 @@ export class ClassScreen extends Component {
 
     render() {
         return (
-            <Box f={1} bg={theme.blueLight}>
+            <Box f={1} m='lg' >
                 <Box center justify='around'>
                     <Avatar 
                         size="large"
@@ -38,7 +38,7 @@ export class ClassScreen extends Component {
                 <Box>
                     <Button
                         title="Điểm danh"
-                        onPress={ () => NavigationService.navigate('DetectorScreen') }
+                        onPress={ () => NavigationService.navigate('Detector', {obj}) }
                         buttonStyle={{margin: 20, backgroundColor: '#25c73a'}}
                     />
                 </Box>

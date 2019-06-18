@@ -22,15 +22,15 @@ export class AgendaComponent extends Component {
       selectedMonth:''
     };
     activity = [ 
-      {ActivityStartDate: '2019-06-15', Subject: {courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1'}},
-      {ActivityStartDate: '2019-06-17', Subject: {courseName: 'English Reading 1', startingSession: '4 -> 7', room: 'B.06.09', class: '16DNCQA1'}},
-      {ActivityStartDate: '2019-06-18', Subject: {courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1'}},
-      {ActivityStartDate: '2019-06-12', Subject: {courseName: 'Programming Techniques', startingSession: '3 -> 6', room: 'B.06.10', class: '15DNCQA3'}},
-      {ActivityStartDate: '2019-06-11', Subject: {courseName: 'Practice: Graph Theory', startingSession: '7 -> 9', room: 'A.08.11', class: '17DNCQA2'}},
-      {ActivityStartDate: '2019-06-08', Subject: {courseName: 'Tourism Management', startingSession: '12 -> 15', room: 'B.06.10', class: '17DNCQA2'}},
-      {ActivityStartDate: '2019-06-07', Subject: {courseName: 'English Reading 1', startingSession: '1 -> 3', room: 'E.06.09', class: '17DNCQA2'}},
-      {ActivityStartDate: '2019-06-09', Subject: {courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2'} },
-      {ActivityStartDate: '2019-06-14', Subject: {courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2'} }
+      {ActivityStartDate: '2019-06-15', Subject: {lecture: 'Võ Thị Cẩm Nhung', courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NVTC161059',courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-06-17', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'English Reading 1', startingSession: '4 -> 7', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'LLV0020683', courseCode: 'MAR105'}},
+      {ActivityStartDate: '2019-06-18', Subject: {lecture: 'Lê Văn Luyện', courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'LNPT191083', courseCode: 'MAT106'}},
+      {ActivityStartDate: '2019-06-12', Subject: {lecture: 'Nguyễn Phụ Thượng Lưu', courseName: 'Programming Techniques', startingSession: '3 -> 6', room: 'B.06.10', class: '15DNCQA3', lectureCode: 'NNTM130785', courseCode: 'MAN127'}},
+      {ActivityStartDate: '2019-06-11', Subject: {lecture: 'Nguyễn Tiến Thành', courseName: 'Practice: Graph Theory', startingSession: '7 -> 9', room: 'A.08.11', class: '17DNCQA2', lectureCode: 'VNA0101083', courseCode: 'MAN128'}},
+      {ActivityStartDate: '2019-06-08', Subject: {lecture: 'Ngô Trần Minh Nhật', courseName: 'Tourism Management', startingSession: '12 -> 15', room: 'B.06.10', class: '17DNCQA2', lectureCode: 'TLĐ0090188', courseCode: 'MAN725'}},
+      {ActivityStartDate: '2019-06-07', Subject: {lecture: 'Nguyễn Anh Vinh', courseName: 'English Reading 1', startingSession: '1 -> 3', room: 'E.06.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-06-09', Subject: {lecture: 'Lê Đình Tùng', courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'LLV0020683', courseCode: 'MAN425'} },
+      {ActivityStartDate: '2019-06-14', Subject: {lecture: 'Lê Thị Ánh Tuyết', courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NVTC161059', courseCode: 'MAN155'} }
 
     ]
   }
@@ -144,7 +144,7 @@ export class AgendaComponent extends Component {
 
   renderItem(item) {
     return (
-      <TouchableOpacity style={styles.item} onPress={ () => NavigationService.navigate('ClassScreen', {obj: item.obj}) } >
+      <TouchableOpacity style={styles.item} onPress={ () => NavigationService.navigate('Class', {obj: item.obj}) } >
         <Text>Môn học:   {item.obj.courseName}</Text>
         <Text>Tiết bắt đầu:   {item.obj.startingSession}</Text>
         <Text>Phòng:   {item.obj.room}</Text>

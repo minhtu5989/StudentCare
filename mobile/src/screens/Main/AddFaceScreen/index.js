@@ -9,8 +9,10 @@ import {
   Alert,
   Picker,
   FlatList,
-  ScrollView,
-  TouchableOpacity
+  TextInput,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
  
 import ImagePicker from "react-native-image-picker";
@@ -25,7 +27,7 @@ import { Box } from 'react-native-design-utility'
 
 import { api } from "../../../api/ApiConfig";
 
-export class DetectorScreen extends Component {
+export class AddFaceScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,7 +37,8 @@ export class DetectorScreen extends Component {
           position: 'absolute'
       },
       photo: null,
-      face_data: null
+      face_data: null,
+      tenSV: ''
     };
     imagePickerOptions = {
       title: 'Chọn ảnh', 
@@ -48,69 +51,71 @@ export class DetectorScreen extends Component {
       noData: false, 
       path: 'images'
     };
-
-    classObj = this.props.navigation.getParam('obj')
-    nameClass = classObj.lectureCode + classObj.courseCode
-    nameClass = nameClass.toLowerCase()
-    nameClass = 'tul2uong1'
+    nameClass = this.props.navigation.getParam('nameClass')
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={{flex:1, height: theme.height*0.8}}>
-          <ImageBackground
-              style={this.state.photo_style}
-              source={this.state.photo}
-              resizeMode={"contain"}
-          >
-              { this._renderFaceBoxes() }
-          </ImageBackground>
-        </View>
-        <View style={{flexDirection: 'row', marginTop: 100}}>
-          <Button
-            title='Thêm SV'
-            onPress={ () =>  NavigationService.navigate('AddFace', {nameClass}) }
-            buttonStyle={styles.button}
-          />
-          <Button
-            title='Chọn ảnh'
-            onPress={this._pickImage}
-            buttonStyle={styles.button}
-          />
-          { this._renderDetectFacesButton() }
-        </View>
-        <View style={{ marginTop: 10}}>
-          {this._renderBtnList()}
-        </View>
- 
-        <Modal 
-          ref={"modal1"}
-          backdropOpacity={0.4}
-          backdropColor="black"
-          isOpen={this.state.isOpen} 
-          onClosed={() => this.setState({isOpen: false})} 
-          style={styles.modal} 
-          position={"bottom"} 
-          // backdropContent={<Text>dsa</Text>}
-          animationDuration={500}
-          swipeArea={100}
-        > 
-            <Box f={1} style={{marginTop:10, width: `100%`}}  >
-                <Box align='center' h={30} bg={theme.color.blueLighter} >
-                  <Text style={{textDecorationLine:'underline'}}>Danh sách sinh viên đi học :</Text>
-                </Box>
-                <Box f={1} center bg={theme.color.white}>
-                  {this._renderNoPresence()}
-                </Box>
-                
+      <KeyboardAvoidingView behavior="position" style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <View style={{flex:1, height: theme.height*0.8}}>
+              <ImageBackground
+                  style={this.state.photo_style}
+                  source={this.state.photo}
+                  resizeMode={"contain"}
+              >
+                  { this._renderFaceBoxes() }
+              </ImageBackground>
+            </View>
+            <Box mt={80}>
+              <Text style={{textDecorationLine:'underline'}}>Tên sinh viên:</Text>
             </Box>
-        </Modal>
+            <Box center dir='row' mt='xs'>
+              <TextInput 
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  width: 250,
+                  height: 40,
+                  paddingHorizontal: 5,        
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  color: theme.color.black, 
+                  backgroundColor: theme.color.white,
+                }}            
+                placeholder={'Họ tên SV'} 
+                keyboardType='default'                   
+                value={this.state.tenSV}
+                onChangeText={(text) => this.setState({tenSV:text})}
+                returnKeyType='done'
+                // placeholderTextColor = {theme.color.black}
+              />
+              <Button
+                title='Thêm'
+                onPress={this._createId}
+                // titleStyle={{fontSize:15}}
+                buttonStyle={[styles.button, {width: 70, height:40, backgroundColor: theme.color.success,}]}
+              />
+            </Box>
+            <View style={{flexDirection: 'row'}}>
+              <Button
+                title='Chụp ảnh'
+                onPress={this._takePic}
+                buttonStyle={styles.button}
+              />
+              { this._renderAddFacesButton() }
+            </View>
+            {/* <View style={{ marginTop: 10}}>
+              {this._renderBtnList()}
+            </View> */}
 
-      </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     );
   }
-  
+
   componentDidMount() {
     this._checkCameraAndPhotos()
   }
@@ -141,30 +146,26 @@ export class DetectorScreen extends Component {
           onPress: () => console.log('Permission denied'),
           style: 'cancel',
         },
-        this.state.photoPermission == 'undetermined'
+        this.state.photoPermission == 'undetermined'    
           ? { text: 'Chấp nhận', onPress: this._checkCameraAndPhotos }
           : { text: 'Cài đặt', onPress: Permissions.openSettings },
       ],
     )
   }
-
-  //===============================================================Take Picture --> Create Class --> Turn On Training
-  _pickImage = () => {
-    this._putClass()
-    this._training()
-
+  
+  _takePic = () => {
     this.setState({
-        face_data: null,
+      face_data: null,
     });
 
     ImagePicker.showImagePicker(imagePickerOptions, (response) => {
-          
+         
       if(response.error){
         this._alertForPhotosPermission()
       }else{
-          
+         
         let source = {uri: response.uri};
-
+ 
         this.setState({
           photo_style: {
             position: 'relative',
@@ -191,139 +192,22 @@ export class DetectorScreen extends Component {
   }
   }
  
-  _renderDetectFacesButton = () => {
+  _renderAddFacesButton = () => {
     if(this.state.photo_data){
         return  (
             <Button
-              title='Nhận diện'
-              onPress={this._detectFaces}
+              title='Add Face'
+              onPress={this._addFace}
               buttonStyle={styles.button}
             />
         );
     }
   }
 
-  //===============================================================Identify & List
-  _presence = async() => {
-    let ids = this.state.face_data.map( el => el.faceId )
-    const resCandidates = await api.Identify
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .post(
-      {
-        "largePersonGroupId": "tuluong1",
-        "faceIds": ids,
-        "maxNumOfCandidatesReturned": 50,
-        "confidenceThreshold": 0.7
-      }
-    )
-    .json()
-
-    if(!resCandidates.length){
-      alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
-    }
-   
-    let faceDetected = this.state.face_data    
+  //===============================================================Identify faces
+  _addFace = async() => {
     
-    for ( let i = 0; i < faceDetected.length; i++ ) {
-      for ( let j = 0; j < resCandidates.length; j++ ) {
-        if ( faceDetected[i].faceId == resCandidates[j].faceId ){
-          let candidates = resCandidates[j].candidates;
-          faceDetected[i].candidates = candidates
-        }
-      }
-    }
-
-    //=============================================================== List faces in group 
-    const resList = await api.List 
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .url(`/${nameClass}/persons`)
-    .get()
-    .json()
-
-    if(!resList.length){
-      return console.log('No list response !') 
-    }
-
-    this.setState({ listFaces: resList })
-
-    for ( let i = 0; i < faceDetected.length; i++ ) {
-      for ( let j = 0; j < resList.length; j++ ) {
-        if(faceDetected[i].candidates[0] !== undefined)
-        {
-          if ( faceDetected[i].candidates[0].personId == resList[j].personId ){
-            let name = resList[j].name;
-            faceDetected[i].name = name
-          }
-        }
-      }
-    }
-
-    console.log('====================================');
-    console.log('data name', faceDetected);
-    console.log('====================================');
-    
-    return this.setState({ faceDetected })
-  }
-
-  //===============================================================PUT class
-  _putClass = async() => {
-
-    console.log('nameClass', nameClass);
-
-    resClass = await api.PutClass 
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .url(`/${nameClass}`)
-    .put({
-      "name": classObj.lecture,
-      "userData": classObj.lectureCode,
-      "recognitionModel": "recognition_02"
-    })
-    .res(res => {
-      console.log('response:', res);
-    })
-
-    console.log('resClass', resClass );
-    
-  }
-
-  //===============================================================Turn on Training
-  _training = async() => {
-    const resTrain = await api.Training 
-    .url(`/${nameClass}/train`)
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .post()
-    .json()
-    console.log('train', resTrain);
-
-    const resStatusTrainning = await api.StatusTranning 
-    .url(`/${nameClass}/training`)
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .get()
-    .json()
-
-    console.log('train status', resStatusTrainning);
-    
-  }
- 
-  //===============================================================Detect
-  _detectFaces = async() => {
-
-    await RNFetchBlob.fetch('POST', api.Detect, {
+    await RNFetchBlob.fetch('POST', `${api.AddFace}/${nameClass}/persons/${this.state.svID}/persistedFaces?detectionModel=detection_02`, {
       "Content-Type": "application/octet-stream",
       "Ocp-Apim-Subscription-Key": api.keyApi
     }, this.state.photo_data)
@@ -331,20 +215,61 @@ export class DetectorScreen extends Component {
         return res.json();      
     })
     .then((json) => {
-        if(json.length){
-            this.setState({
-                face_data: json
-            });
-        }else{
-          console.log(`No face detected`);
-          return alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
+        if(json.persistedFaceId){
+          console.log(`persistedFaceId`, json.persistedFaceId);
+          return alert("Thêm thành công !");
         }
-        return this._presence()
+        if(json.error.message === 'There is more than 1 face in the image.'){
+            return alert(`Có nhiều hơn 1 khuôm mặt trong khung ảnh !`)
+        }
+        if(json.error.message === 'No face detected in the image.'){
+          return alert(`Không nhận ra khuôn mặt nào !`)
+        }
+
+        console.log('json', json);
+        throw new Error
     })
     .catch (function (error) {
         console.log(error);
-        alert('Phát hiện lỗi không kết nối internet.');
+        return alert('Phát hiện lỗi không kết nối internet.');
     });
+  }
+
+ 
+  //===============================================================Detect faces
+  _createId = async() => {
+    try {
+      const resId = await api.CreatePersonId 
+      .headers({
+          "Content-Type": "application/json",
+          "Ocp-Apim-Subscription-Key": api.keyApi
+      })
+      .url(`/${nameClass}/persons`)
+      .post({
+          "name": this.state.tenSV,
+          "userData": classObj.lectureCode,
+          "recognitionModel": "recognition_02"
+      })
+      .json()
+
+      if(resId.personId){
+        console.log(`resId`, resId.personId);
+        alert("Thêm thành công !")
+        svID = resId.personId
+        return this.setState({ svID })
+      }
+
+      if(!resId){
+        throw new Error
+      }
+
+      throw new Error
+
+    } catch (error) {
+      console.log('error: ',error);
+      alert('Phát hiện lỗi không kết nối internet.')
+    }
+    
   }
  
   _renderFaceBoxes = () => {
@@ -479,7 +404,6 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 10,
-    padding: 10,
     backgroundColor: '#529ecc'
   },
   button_text: {
