@@ -8,7 +8,8 @@ import {
   ImageBackground,
   Alert,
   Picker,
-  FlatList
+  FlatList,
+  ScrollView
 } from 'react-native';
  
 import ImagePicker from "react-native-image-picker";
@@ -82,13 +83,13 @@ export class DetectorScreen extends Component {
           position={"bottom"} 
           // backdropContent={<Text>dsa</Text>}
           animationDuration={500}
-          backButtonClose
+          swipeArea={100}
         > 
-            <Box f={1} style={{borderTopLeftRadius: 20, borderTopRightRadius: 20, height: `100%`, width: `100%`}}  >
-                <Box center h={40} bg={theme.color.blueLighter} style={{borderTopLeftRadius: 20, borderTopRightRadius: 20 }} >
+            <Box f={1} style={{marginTop:10, width: `100%`}}  >
+                <Box align='center' h={30} bg={theme.color.blueLighter} >
                   <Text style={{textDecorationLine:'underline'}}>Danh sách sinh viên đi học :</Text>
                 </Box>
-                <Box f={1} center>
+                <Box f={1} center bg={theme.color.white}>
                   {this._renderNoPresence()}
                 </Box>
                 
@@ -379,7 +380,7 @@ export class DetectorScreen extends Component {
         }
       }
 
-      if(noPresence == []){
+      if(noPresence.length == 0){
         return (
           <Box center f={1}>
             <Text>Đi học đầy đủ</Text>
@@ -426,9 +427,10 @@ const styles = StyleSheet.create({
   modal: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    height: theme.height*0.8
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    height: theme.height*0.4,
+    backgroundColor: theme.color.blueLighter
   },
 
 });
