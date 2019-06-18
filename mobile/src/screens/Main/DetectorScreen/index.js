@@ -83,7 +83,7 @@ export class DetectorScreen extends Component {
           // backdropContent={<Text>dsa</Text>}
           animationDuration={500}
           backButtonClose
-        >
+        > 
             <Box f={1} style={{borderTopLeftRadius: 20, borderTopRightRadius: 20, height: `100%`, width: `100%`}}  >
                 <Box center h={40} bg={theme.color.blueLighter} style={{borderTopLeftRadius: 20, borderTopRightRadius: 20 }} >
                   <Text style={{textDecorationLine:'underline'}}>Danh sách sinh viên đi học :</Text>
@@ -296,21 +296,48 @@ export class DetectorScreen extends Component {
           };
 
           let style = { 
-              width: f.faceRectangle.width,
-              height: f.faceRectangle.height,
+              width: f.faceRectangle.width ,
+              height: f.faceRectangle.height ,
               borderWidth: 1.5,
-              borderColor: 'yellow',
+              borderColor: theme.color.warning,
+              marginBottom: 5
           };
           
           let attr = {
-              color: 'yellow',
+              color: theme.color.warning,
           };
 
           return (
             <View key={f.faceId} style={box}>
                 <View style={style}></View>
-                <View style={{alignItems:'center'}}>
-                  <Text style={attr}>{(f.name)?` Tên: ${f.name}`:'X'}</Text>
+                <View style={{alignItems:'center',flex:1}}>
+                  {/* <Text style={attr}>
+                    {
+                      (f.faceAttributes.gender==='male')
+                      ?
+                      <Image
+                        style={{height:20, resizeMode:'contain'}}
+                        source={require('../../../../assets/img/MaleStudent.png')}
+                      />
+                      :
+                      <Image
+                        style={{height:20, resizeMode:'contain'}}
+                        source={require('../../../../assets/img/FemaleStudent.png')}
+                      />
+                    }
+                  </Text> */}
+                  <Text style={attr}>
+                    {
+                      (f.name)
+                      ?
+                      `${f.name}`
+                      :
+                      <Image
+                        style={{height:20, resizeMode:'contain'}}
+                        source={require('../../../../assets/img/XCircle.png')}
+                      />
+                    }
+                  </Text>
                 </View>
                 {/* <Text style={attr}>Giới tính: {(f.faceAttributes.gender==='male')?'Nam':'Nữ'}</Text> */}
             </View>
@@ -364,11 +391,11 @@ export class DetectorScreen extends Component {
         return (
           <FlatList
             data={noPresence}
-            extraData={this.state.faceDetected}
+            // extraData={this.state}
             keyExtractor={(item) => item.name}
-            renderItem={item => 
-              <Box m='sm' center f={1}>
-                <Text>{(item.name)}</Text>
+            renderItem={ ({item}) => 
+              <Box mt='sm' center f={1} w={theme.width*0.9} h={40} bg={theme.color.greyLight}>
+                <Text> {(item.name)} </Text>
               </Box>
             }
           />
