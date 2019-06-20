@@ -85,7 +85,7 @@ export default class Register extends Component {
       isLoading={isRegistering}
       customStyle={styles.container}
      >
-       <Text style={styles.title}>Become a Buddhist</Text>
+       <Text style={styles.title}>Welcome Hutech Student</Text>
 
        <BuddhismIcon
           name={'buddhism'}

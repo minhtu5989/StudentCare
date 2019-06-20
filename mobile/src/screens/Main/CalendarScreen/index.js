@@ -3,16 +3,72 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  View
+  View,
 } from 'react-native';
+import * as Keychain from 'react-native-keychain';
+
+import { Button } from 'react-native-elements';
 import { Agenda } from "../../../components";
 import moment from 'moment';
+import { theme } from '../../../constants/theme';
+import { NavigationService } from '../../../constants/NavigationService';
 
 
 export  class CalendarsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = { };
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Agenda/>
+        {
+          this.getDates('01-01-2019','01-03-2019')
+        }
+        <Button
+          title='Log Out'
+          onPress={this._logOut}
+          buttonStyle={{margin: 10, padding: 5, backgroundColor: theme.color.danger}}
+        />
+      </View>
+    );
+  }
+
+  componentDidMount = async() => {
+
+    // SET token from storage
+    try {
+      const credentials = await Keychain.setGenericPassword(
+        'token',
+        'TuLuong283',
+        { accessControl: this.state.accessControl }
+      );
+      if(credentials){
+        this.setState({ status: 'Credentials saved!' });
+        console.log('Status: ', this.state.status);
+      }
+    } catch (err) {
+      this.setState({ status: 'Could not save credentials, ' + err });
+      console.log("Status: ", this.state.status);
+
+    }
+  }
+
+  _logOut = async() => {
+    try {
+      const response = await Keychain.resetGenericPassword();
+      if(response){
+        this.setState({status: 'Credentials Reset!'});
+        console.log("Status: ", this.state.status);
+      }
+
+      NavigationService.navigate('CheckAuth')
+    } catch (err) {
+      this.setState({ status: 'Could not reset credentials, ' + err });
+      console.log("Status: ", this.state.status);
+    }
   }
 
   getDates = (startDate, stopDate) => {
@@ -31,17 +87,8 @@ export  class CalendarsScreen extends Component {
     }
     return console.log('array: ', dateRange);
   }
+  
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Agenda/>
-        {
-          this.getDates('01-01-2019','01-03-2019')
-        }
-      </View>
-    );
-  }
 }
 
 const styles = StyleSheet.create({

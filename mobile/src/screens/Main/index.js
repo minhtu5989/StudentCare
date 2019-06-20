@@ -21,7 +21,8 @@ const MainNavigator = createStackNavigator(
         },
     },{
         initialRouteName: 'Calendars',
-        headerMode: 'none'
+        headerMode: 'none',
+        mode: 'modal',
     }
 )
 

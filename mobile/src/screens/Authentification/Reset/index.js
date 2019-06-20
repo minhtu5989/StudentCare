@@ -4,9 +4,9 @@ import { View, Text } from 'react-native'
 export default class Reset extends Component {
   render() {
     return (
-      <View>
+      <View style ={{justifyContent: 'center', alignItems:'center'}}>
         <Text>
-          Reset
+          Reset have not been design
         </Text>
       </View>
     )

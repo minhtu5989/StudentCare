@@ -13,7 +13,8 @@ import {
     Reset: ResetScreen,
   }, {
     initialRouteName: 'Login',
-    headerMode: 'none'
+    headerMode: 'none',
+    mode: 'modal',
   })
   
   export default createAppContainer(AuthNavigation)
