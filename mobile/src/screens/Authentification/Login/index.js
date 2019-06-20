@@ -9,10 +9,8 @@ import {
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-import { colors, storageKey } from '../../../utils';
-import { Input, Button, Modal } from '../../../components';
-
-const auth = firebase.auth()
+import { Input, Button, Wrapper } from '../../../components';
+import { theme } from "../../../constants/theme";
 
 
 export default class Login extends Component {
@@ -20,6 +18,7 @@ export default class Login extends Component {
     super(props)
   
     this.state = {
+       isLoading: false,
        email: null,
        password: null,
        loginError: null,
@@ -49,24 +48,33 @@ export default class Login extends Component {
   
 
   _loginWithEmailPassword = async () => {
-    const { email, password } = this.state
-    try {
-      const user = await auth.signInWithEmailAndPassword(email, password)
-      if (user) {
-        const token = await auth.currentUser.getIdToken()
+    // const { email, password } = this.state
+    // try {
+    //   const user = await auth.signInWithEmailAndPassword(email, password)
+    //   if (user) {
+    //     const token = await auth.currentUser.getIdToken()
         
-        if (token) {
-          await AsyncStorage.setItem(storageKey.token, JSON.stringify(token))
-          await AsyncStorage.setItem(storageKey.userInfo, JSON.stringify(user))
-          this.props.navigation.navigate('Main')
-        }
-      }
-    } catch (error) {
-      console.log('LOGIN ERROR', error.code)
-      this.setState({ loginError: error })
-      this._onRenderErrMess()
-      this._toggleModal()
-    }
+    //     if (token) {
+    //       await AsyncStorage.setItem(storageKey.token, JSON.stringify(token))
+    //       await AsyncStorage.setItem(storageKey.userInfo, JSON.stringify(user))
+    //       this.props.navigation.navigate('Main')
+    //     }
+    //   }
+    //   this.props.navigation.navigate('Main')
+
+    // } catch (error) {
+    //   console.log('LOGIN ERROR', error)
+    //   this.setState({ loginError: error })
+    //   this._onRenderErrMess()
+    //   this._toggleModal()
+    // }
+    this.setState({isLoading: true})
+    
+    setTimeout(() => {
+      this.setState({isLoading: true})
+      this.props.navigation.navigate('Main')
+    }, 3000);
+
   }
   
   // This is Input field
@@ -74,12 +82,16 @@ export default class Login extends Component {
     return (
       <View style={styles.inputWrapper}>
         <Input
+          ref={input => { this.emailRef = input }}
           placeholder='Email'
           onChange={email => this.setState({ email })}
+          returnKeyType='next'
         />
 
         <Input
+          ref='passwordRef'
           placeholder='Password'
+          clearTextOnFocus
           onChange={password => this.setState({ password })}
           customStyle={{ marginTop: 50, marginBottom: 40 }}
           secureTextEntry
@@ -118,71 +130,41 @@ export default class Login extends Component {
     )
   } 
 
-  // Return error Message 
-
-  _onRenderErrMess = () => {
-    const { loginError } = this.state
-    if (loginError !== null) {
-      if (loginError.code === 'auth/invalid-email') {
-        return 'Email should follow format example@example.com. Please try again'
-      } else if (loginError.code === 'auth/user-not-found') {
-        return `Oop! User doesn't exist! Poor you!`
-      } else if (loginError.code === 'auth/wrong-password') {
-        return 'Oop! Password you entered is not correct. Please try again'
-      }
-    }
-  }
-
-  // Toggle Modal
-  _toggleModal = () => {
-    this.setState({ isShowModal: !this.state.isShowModal })
-  }
-
-  // Render Modal
-  _onRenderModal = () => {
-    const { isShowModal } = this.state
-    console.log('HEY IS SHOW MODAL', isShowModal)
-    if (isShowModal) {
-      return (
-        <Modal
-          isVisible={isShowModal}
-          message={this._onRenderErrMess()}
-          onPress={() => this._toggleModal()}
-        />
-      )
-    }
-  }
-
   render() {
-    const { isShowRegister, isShowModal } = this.state
+    const { isShowRegister, isLoading } = this.state
     return (
-      <ImageBackground
-        source={require('../../../assets/images/zenstone.jpg')}
-        style={styles.backgroundImg}
+      <Wrapper
+        isLoading={isLoading}
+        customStyle={{flex:1}}
       >
-      <View style={styles.loginContainer}>
-        
-      <KeyboardAwareScrollView
-        style={{ width: '100%' }}
-        enableOnAndroid
-        extraHeight={100}
-        innerRef={ref => this.scroll = ref}
-      >
-          {/* App Name */}
-        <View style={styles.loginWrapper}>
-          <Text style={styles.appName}>Zen Stone</Text>
-          {/* Input Field */}
-         {this._onRenderInputField()}
-        {this._onRenderForgetPassword()}
-        </View>
-      </KeyboardAwareScrollView>
-       
+        <ImageBackground
+          source={require('../../../assets/images/background/street.jpeg')}
+          style={styles.backgroundImg}
+        >
+          
+            <View style={styles.loginContainer}>
+              
+              <KeyboardAwareScrollView
+                style={{ width: '100%' }}
+                enableOnAndroid
+                extraHeight={100}
+                innerRef={ref => this.scroll = ref}
+              >
+                  {/* App Name */}
+                <View style={styles.loginWrapper}>
+                  <Text style={styles.appName}>Hutech Care</Text>
+                  {/* Input Field */}
+                {this._onRenderInputField()}
+                {this._onRenderForgetPassword()}
+                </View>
+              </KeyboardAwareScrollView>
+              
 
-        {/* Need Register? */}
-        {isShowRegister ? this._onRenderSuggestRegister() : null}
-      </View>
-        {this._onRenderModal()}
-      </ImageBackground>
+                {/* Need Register? */}
+                {isShowRegister ? this._onRenderSuggestRegister() : null}
+            </View>
+        </ImageBackground>
+      </Wrapper>
     )
   }
 }
@@ -190,23 +172,25 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
   backgroundImg: {
     flex: 1,
+    width:'100%',
+    height:'100%'
   },
   loginContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
     paddingTop: 80,
     alignItems: 'center',
   },
   loginWrapper: {
+    marginTop: 40,
     width: '100%',
     alignItems: 'center',
   },
   appName: {
-    color: colors.blueSecondary,
+    color: theme.color.redDarkest,
     textTransform: 'uppercase',
-    fontSize: 40,
+    fontSize: 35,
     fontWeight: '500',
-    letterSpacing: 8,
+    letterSpacing: 6,
   },
   inputWrapper: {
     width: '85%',
@@ -217,7 +201,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   forgetTxt: {
-    color: colors.whitePrimary,
+    color: theme.color.white,
     textAlign: 'right',
     fontSize: 15,
   },
@@ -229,7 +213,7 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   registerTxt: {
-    color: colors.whitePrimary,
+    color: theme.color.white,
     marginRight: 10
   }
 })

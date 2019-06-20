@@ -8,12 +8,10 @@ import {
 import {Agenda} from 'react-native-calendars';
 
 import moment from "moment";
-import { NavigationService } from '../constants/NavigationService';
- 
+import { NavigationService } from '@src/constants/NavigationService';
+import { theme } from "@src/constants/theme";
 
-import { theme } from "../constants/theme";
-
-export class AgendaComponent extends Component {
+class AgendaComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,10 +25,10 @@ export class AgendaComponent extends Component {
       {ActivityStartDate: '2019-06-18', Subject: {lecture: 'Lê Văn Luyện', courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'LNPT191083', courseCode: 'MAT106'}},
       {ActivityStartDate: '2019-06-12', Subject: {lecture: 'Nguyễn Phụ Thượng Lưu', courseName: 'Programming Techniques', startingSession: '3 -> 6', room: 'B.06.10', class: '15DNCQA3', lectureCode: 'NNTM130785', courseCode: 'MAN127'}},
       {ActivityStartDate: '2019-06-11', Subject: {lecture: 'Nguyễn Tiến Thành', courseName: 'Practice: Graph Theory', startingSession: '7 -> 9', room: 'A.08.11', class: '17DNCQA2', lectureCode: 'VNA0101083', courseCode: 'MAN128'}},
-      {ActivityStartDate: '2019-06-08', Subject: {lecture: 'Ngô Trần Minh Nhật', courseName: 'Tourism Management', startingSession: '12 -> 15', room: 'B.06.10', class: '17DNCQA2', lectureCode: 'TLĐ0090188', courseCode: 'MAN725'}},
-      {ActivityStartDate: '2019-06-07', Subject: {lecture: 'Nguyễn Anh Vinh', courseName: 'English Reading 1', startingSession: '1 -> 3', room: 'E.06.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-06-09', Subject: {lecture: 'Lê Đình Tùng', courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'LLV0020683', courseCode: 'MAN425'} },
-      {ActivityStartDate: '2019-06-14', Subject: {lecture: 'Lê Thị Ánh Tuyết', courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NVTC161059', courseCode: 'MAN155'} }
+      {ActivityStartDate: '2019-06-26', Subject: {lecture: 'Ngô Trần Minh Nhật', courseName: 'Tourism Management', startingSession: '12 -> 15', room: 'B.06.10', class: '17DNCQA2', lectureCode: 'TLĐ0090188', courseCode: 'MAN725'}},
+      {ActivityStartDate: '2019-06-25', Subject: {lecture: 'Nguyễn Anh Vinh', courseName: 'English Reading 1', startingSession: '1 -> 3', room: 'E.06.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-06-23', Subject: {lecture: 'Lê Đình Tùng', courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'LLV0020683', courseCode: 'MAN425'} },
+      {ActivityStartDate: '2019-06-20', Subject: {lecture: 'Lê Thị Ánh Tuyết', courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NVTC161059', courseCode: 'MAN155'} }
 
     ]
   }
@@ -197,3 +195,7 @@ const styles = StyleSheet.create({
     paddingTop: 30
   }
 });
+
+
+
+export default AgendaComponent

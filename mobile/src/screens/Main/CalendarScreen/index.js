@@ -5,7 +5,7 @@ import {
   ScrollView,
   View
 } from 'react-native';
-import { AgendaComponent } from "../../../components/Agenda";
+import { Agenda } from "../../../components";
 import moment from 'moment';
 
 
@@ -35,7 +35,7 @@ export  class CalendarsScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <AgendaComponent/>
+        <Agenda/>
         {
           this.getDates('01-01-2019','01-03-2019')
         }

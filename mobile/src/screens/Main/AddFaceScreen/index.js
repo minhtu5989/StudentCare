@@ -306,12 +306,12 @@ export class AddFaceScreen extends Component {
                       ?
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../../assets/img/MaleStudent.png')}
+                        source={require('../../../assets/images/icon/MaleStudent.png')}
                       />
                       :
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../../assets/img/FemaleStudent.png')}
+                        source={require('../../../assets/images/icon/FemaleStudent.png')}
                       />
                     }
                   </Text> */}
@@ -323,7 +323,7 @@ export class AddFaceScreen extends Component {
                       :
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../../assets/img/XCircle.png')}
+                        source={require('../../../assets/images/icon/XCircle.png')}
                       />
                     }
                   </Text>

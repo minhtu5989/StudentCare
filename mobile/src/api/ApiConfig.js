@@ -1,16 +1,16 @@
 import wretch from 'wretch';
-import { BASE_URL } from "../constants/index";
+import { FACE_URL } from "../constants/index";
 const keyApi = 'e0496daba30a41a38dc55e1874cd60c3'   //  13/06/2019
 
 
-const Detect = `${BASE_URL}/detect?returnFaceId=true&returnFaceAttributes=age,gender&recognitionModel=recognition_02&returnRecognitionModel=true`;
-const Identify = wretch(`${BASE_URL}/identify`);
-const List = wretch(`${BASE_URL}/largepersongroups`);
-const PutClass = wretch(`${BASE_URL}/largepersongroups`);
-const CreatePersonId = wretch(`${BASE_URL}/largepersongroups`);
-const AddFace = `${BASE_URL}/largepersongroups`;
-const StatusTranning = wretch(`${BASE_URL}/largepersongroups`);
-const Training = wretch(`${BASE_URL}/largepersongroups`);
+const Detect = `${FACE_URL}/detect?returnFaceId=true&returnFaceAttributes=age,gender&recognitionModel=recognition_02&returnRecognitionModel=true`;
+const Identify = wretch(`${FACE_URL}/identify`);
+const List = wretch(`${FACE_URL}/largepersongroups`);
+const PutClass = wretch(`${FACE_URL}/largepersongroups`);
+const CreatePersonId = wretch(`${FACE_URL}/largepersongroups`);
+const AddFace = `${FACE_URL}/largepersongroups`;
+const StatusTranning = wretch(`${FACE_URL}/largepersongroups`);
+const Training = wretch(`${FACE_URL}/largepersongroups`);
 
 export const api = {
     AddFace,

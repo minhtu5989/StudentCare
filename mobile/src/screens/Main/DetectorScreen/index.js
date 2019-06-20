@@ -52,7 +52,6 @@ export class DetectorScreen extends Component {
     classObj = this.props.navigation.getParam('obj')
     nameClass = classObj.lectureCode + classObj.courseCode
     nameClass = nameClass.toLowerCase()
-    nameClass = 'tul2uong1'
   }
 
   render() {
@@ -276,7 +275,7 @@ export class DetectorScreen extends Component {
 
     console.log('nameClass', nameClass);
 
-    resClass = await api.PutClass 
+    api.PutClass 
     .headers({
       "Content-Type": "application/json",
       "Ocp-Apim-Subscription-Key": api.keyApi
@@ -291,7 +290,7 @@ export class DetectorScreen extends Component {
       console.log('response:', res);
     })
 
-    console.log('resClass', resClass );
+    console.log('resClass' );
     
   }
 
@@ -381,12 +380,12 @@ export class DetectorScreen extends Component {
                       ?
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../../assets/img/MaleStudent.png')}
+                        source={require('../../../assets/images/icon/MaleStudent.png')}
                       />
                       :
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../../assets/img/FemaleStudent.png')}
+                        source={require('../../../assets/images/icon/FemaleStudent.png')}
                       />
                     }
                   </Text> */}
@@ -398,7 +397,7 @@ export class DetectorScreen extends Component {
                       :
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../../assets/img/XCircle.png')}
+                        source={require('../../../assets/images/icon/XCircle.png')}
                       />
                     }
                   </Text>
