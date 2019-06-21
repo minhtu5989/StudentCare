@@ -1,6 +1,6 @@
 import wretch from 'wretch';
 import { FACE_URL, BASE_URL } from "../constants/index";
-const keyApi = 'e0496daba30a41a38dc55e1874cd60c3'   //  13/06/2019
+const keyApi = '64f4e3a362394d159d85d2aa6256ca4c'   //  21/06/2019
 
 //===================== API server FACE_URL
 const Detect = `${FACE_URL}/detect?returnFaceId=true&returnFaceAttributes=age,gender&recognitionModel=recognition_02&returnRecognitionModel=true`;

@@ -212,7 +212,7 @@ export class DetectorScreen extends Component {
     })
     .post(
       {
-        "largePersonGroupId": "tuluong1",
+        "largePersonGroupId": nameClass,
         "faceIds": ids,
         "maxNumOfCandidatesReturned": 50,
         "confidenceThreshold": 0.7
@@ -223,6 +223,9 @@ export class DetectorScreen extends Component {
     if(!resCandidates.length){
       alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
     }
+
+    console.log('resCandidates', resCandidates);
+    
    
     let faceDetected = this.state.face_data    
     
