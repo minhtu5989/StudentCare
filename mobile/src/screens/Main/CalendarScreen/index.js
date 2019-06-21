@@ -28,9 +28,9 @@ export  class CalendarsScreen extends Component {
           this.getDates('01-01-2019','01-03-2019')
         }
         <Button
-          title='Log Out'
+          title='Đăng xuất'
           onPress={this._logOut}
-          buttonStyle={{margin: 10, padding: 5, backgroundColor: theme.color.danger}}
+          buttonStyle={{margin: 10, padding: 8, backgroundColor: theme.color.danger}}
         />
       </View>
     );
@@ -62,6 +62,7 @@ export  class CalendarsScreen extends Component {
       if(response){
         this.setState({status: 'Credentials Reset!'});
         console.log("Status: ", this.state.status);
+        alert('Đăng xuất !')
       }
 
       NavigationService.navigate('CheckAuth')

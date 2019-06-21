@@ -12,6 +12,7 @@ export default props => {
 
   return (
     <TextInput
+      autoCapitalize='none'
       underlineColorAndroid={'transparent'}
       onChangeText={handleOnChange}
       placeholderTextColor={theme.color.greyLight}

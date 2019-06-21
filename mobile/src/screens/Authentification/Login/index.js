@@ -8,25 +8,28 @@ import {
   StyleSheet,
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import * as Keychain from 'react-native-keychain';
 
 import { Input, Button, Wrapper } from '../../../components';
 import { theme } from "../../../constants/theme";
-import * as Keychain from 'react-native-keychain';
-
+import { api } from "../../../api/ApiConfig";
 
 export default class Login extends Component {
   constructor(props) {
     super(props)
   
     this.state = {
-       isLoading: false,
+      //  isLoading: false,
        email: null,
        password: null,
     }
+
+    isLoading= false
+
   }
 
   render() {
-    const { isShowRegister, isLoading } = this.state
+    const { isShowRegister } = this.state
     return (
       <Wrapper
         isLoading={isLoading}
@@ -85,34 +88,58 @@ export default class Login extends Component {
 
   _loginWithEmailPassword = async () => {
     const { email, password } = this.state
-    this.setState({isLoading: true})
-
+    
     //=========================SET new token
     try {
-      const credentials = await Keychain.setGenericPassword(
-        'token',
-        'TuLuong283',
-        { accessControl: this.state.accessControl }
-      );
-      if(credentials){
+      if(!email || email == '' || !password || password == '') return alert('Vui lòng không để trống')
+
+      // this.setState({isLoading: true})
+      isLoading= true
+      const res = await api.LogIn 
+      .headers({
+          "Content-Type": "application/json",
+      })
+      .post({
+          "email": this.state.email,
+          "password": this.state.password,
+      })
+      .json()
+
+      console.log('responseeeeee', res);
+      
+      if(!res){
+        // this.setState({isLoading: false})
+        isLoading= false
+
+        return alert('Phát hiện lỗi không kết nối internet.')
+      }
+
+      if(res.message) {
+        // this.setState({isLoading: false})
+        isLoading= false
+        return alert(res.message)
+      }
+
+      if(res.token){
+        const credentials = await Keychain.setGenericPassword(
+          'token',
+          res.token,
+          { accessControl: this.state.accessControl }
+        );
+        if(!credentials) return this.setState({ status: 'Could not save credentials' })
+
+        isLoading= false
         this.setState({ status: 'Credentials saved!' });
         console.log('Status: ', this.state.status);
+        console.log('Access Control: ', this.state.accessControl);
         
-        //=========go to Main
-        setTimeout(() => {
-          this.setState({isLoading: false})
-          this.props.navigation.navigate('Main')
-        }, 3000);
+        this.props.navigation.navigate('Main')
       }
+
     } catch (err) {
       this.setState({ status: 'Could not save credentials, ' + err });
       console.log("Status: ", this.state.status);
     }
-
-
-    
-    
-
   }
   
   // This is Input field
