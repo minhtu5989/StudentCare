@@ -10,20 +10,24 @@ import { dataExcel } from "./modules/dataExcel/index";
 
 middlewaresConfig(app);
 
-app.get('/test', (req, res) => {
-  res.send('Welcome');
-});
-
-app.get('/tkbHutech', (req, res) => {
-  res.status(201).json({ dataExcel })
-});
-
 
 app.use('/api/v1/customers', CustomerRoutes);
 app.use('/api/v1/addresses', AddressRoutes);
 
 
-server.listen( process.env.PORT || 3000, err => {
+
+//===============Test
+app.get('/test', (req, res) => {
+  res.send('Welcome');
+});
+
+app.get('/tkbHutech', (req, res) => {
+  res.status(201).send({ dataExcel })
+});
+
+
+
+server.listen( process.env.PORT || 3500, err => {
   if (err) {
     console.error(err);
   } else {
@@ -31,8 +35,10 @@ server.listen( process.env.PORT || 3000, err => {
   }
 });
 
+
+
 io.on('connection', socket => {
-  socket.on('CHAT_SEX', message => {
+  socket.on('CHAT_NIGHT', message => {
       io.emit('SERVER_REPLY', message )
   });
 });

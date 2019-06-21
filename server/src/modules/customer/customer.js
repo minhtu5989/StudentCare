@@ -1,6 +1,6 @@
 import Customer from './customer.model';
-import { buildCustomerInfo } from './buildCustomerInfo';
 import { AuthServices } from '../../services/Auth';
+import { hash, compare } from 'bcryptjs';
 
 export const customerAuth = async (req, res, next) => {
   const token = AuthServices.getTokenFromHeaders(req);
@@ -23,6 +23,39 @@ export const customerAuth = async (req, res, next) => {
 
   return next();
 };
+
+export const registerCustomer = async (data) => {
+  try {
+    const _customer = await Customer.findOne({ email: data.email });
+    
+    if(_customer) throw Error('Email was exist')
+
+    const encryptedPassword = await hash(data.password, 8);
+    const result = await Customer.create({
+      email: data.email,
+      password: encryptedPassword,
+    });
+
+    return result
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const logInCustomer = async (data) => {
+  try {
+    const result = await Customer.findOne({ email: data.email });
+    
+    if (!result) throw new Error('Email was not exist');
+    const same = await compare(data.password, result.password);
+    if (!same) throw new Error('Wrong password');
+    return result
+
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const getOrCreateCustomer = async (info, providerName) => {
   const customerInfo = buildCustomerInfo(info, providerName);

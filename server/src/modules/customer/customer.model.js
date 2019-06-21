@@ -1,40 +1,35 @@
 import mongoose, { Schema } from 'mongoose';
-import { types } from 'util';
-
-export const PROVIDER_ENUM = ['FACEBOOK', 'GOOGLE'];
 
 const CustomerSchema = new Schema(
   {
-    notifiToken: [
-      {
-        token: { type: String }
-      }
-    ],
-    firstName: String,
-    lastName: String,
+    
     email: {
       type: String,
       required: true,
       unique: true,
     },
-    avatarUrl: String,
-    provider: [
-      {
-        uid: { 
-          type: String,
-          required: true 
-        },
-        type: { 
-          type: String, 
-          required: true, 
-          enum: PROVIDER_ENUM 
-        },
-      },
-    ],
+    password: {
+      type: String,
+      required: true,
+    },
+    info: {
+      courseName: String,
+      courseCode: String, 
+      lecturerCode: String,
+      lecture: String,
+      weekday: String,
+      startingSession: String,
+      numberSession: String,
+      room: String,
+      class: String,
+      timeable: String,
+      week: String,
+      phone: String,
+    },
   },
   { timestamps: true },
 );
 
-CustomerSchema.index({ email: 1 });
+CustomerSchema.index({ email: "TuLuong" });
 
 export default mongoose.model('Customer', CustomerSchema);

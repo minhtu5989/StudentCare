@@ -1,10 +1,10 @@
 // import jwt from 'jsonwebtoken';
 const jwt = require('jsonwebtoken')
 
-const JWT_SECRET = 'DanileLuong';
+const JWT_SECRET = 'TuLuong_283_5989';
 
 const JWT_OPTS = {
-  issuer: 'MyExample',
+  issuer: 'Hutech Care',
 };
 
 const createToken = user => {
