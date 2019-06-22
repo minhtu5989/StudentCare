@@ -41,28 +41,24 @@ export default class CheckAuth extends Component {
 
   componentDidMount = async() => {
 
-    Keychain.getSupportedBiometryType().then(biometryType => {
-        this.setState({ biometryType });
-        console.log('biometryType: ',biometryType);
-    });
+    // Keychain.getSupportedBiometryType().then(biometryType => {
+    //     this.setState({ biometryType });
+    //     console.log('biometryType: ',biometryType);
+    // });
 
     // Get token from KeyChain
     try {
       const credentials = await Keychain.getGenericPassword();
       
       if (credentials) {
-        this.setState({ ...credentials, status: 'Credentials loaded!' });
-        console.log("Status: ", this.state.status);
-        console.log("credentials: ", credentials);
+        console.log("Credentials loaded!");
         NavigationService.navigate('Main')
       } else {
-        this.setState({ status: 'No credentials stored.' });
-        console.log("Status: ", this.state.status);
+        console.log("No credentials stored.");
         NavigationService.navigate('Auth')
       }
     } catch (err) {
-      this.setState({ status: 'Could not load credentials. ' + err });
-      console.log("Status: ", this.state.status);
+      console.log("Could not load credentials.......Error: ", err);
     }
   }
   

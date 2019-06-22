@@ -12,7 +12,7 @@ import { Agenda } from "../../../components";
 import moment from 'moment';
 import { theme } from '../../../constants/theme';
 import { NavigationService } from '../../../constants/NavigationService';
-
+import { api } from "../../../api/ApiConfig";
 
 export  class CalendarsScreen extends Component {
   constructor(props) {
@@ -38,24 +38,36 @@ export  class CalendarsScreen extends Component {
 
   componentDidMount = async() => {
 
-    //=========================GET
+    //=========================VERYFFI TOKEN
     try {
       const credentials = await Keychain.getGenericPassword();
       
       if (credentials) {
-        this.setState({ ...credentials, status: 'Credentials loaded!' });
-        console.log("Status: ", this.state.status);
-        console.log("credentials: ", credentials);
-        NavigationService.navigate('Main')
+        console.log('====================================');
+        console.log('Verify succussfel !');
+        console.log('====================================');
       } else {
-        this.setState({ status: 'No credentials stored.' });
-        console.log("Status: ", this.state.status);
+        console.log("No credentials stored.");
         NavigationService.navigate('Auth')
       }
     } catch (err) {
-      this.setState({ status: 'Could not load credentials. ' + err });
-      console.log("Status: ", this.state.status);
+      console.log("Could not load credentials........ Error:", err);
     }
+
+
+    const resTKB = await api.GetTKB 
+      .headers({
+          "Content-Type": "application/json",
+      })
+      .get()
+      .error( e => {
+          console.log('error', e);
+      })
+      .json()
+
+    if(!res) return alert('Phát hiện lỗi không kết nối internet.');
+    console.log('response', res);
+
   }
 
   _logOut = async() => {
@@ -63,14 +75,14 @@ export  class CalendarsScreen extends Component {
       const response = await Keychain.resetGenericPassword();
       if(response){
         this.setState({status: 'Credentials Reset!'});
-        console.log("Status: ", this.state.status);
-        alert('Đăng xuất !')
+        console.log("Credentials Reset !");
       }
 
-      NavigationService.navigate('CheckAuth')
+      setTimeout(() => {
+        NavigationService.navigate('CheckAuth')
+      }, 1000);
     } catch (err) {
-      this.setState({ status: 'Could not reset credentials, ' + err });
-      console.log("Status: ", this.state.status);
+      console.log("Could not load credentials........ Error:", err);
     }
   }
 

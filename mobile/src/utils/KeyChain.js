@@ -1,53 +1,46 @@
-//=========================SET
+//=========================SET TOKEN
 try {
     const credentials = await Keychain.setGenericPassword(
       'token',
-      'TuLuong283',
+      tokenValue,
       { accessControl: this.state.accessControl }
     );
     if(credentials){
-      this.setState({ status: 'Credentials saved!' });
-      console.log('Status: ', this.state.status);
+      console.log('Credentials saved!');
     }
 } catch (err) {
-    this.setState({ status: 'Could not save credentials, ' + err });
-    console.log("Status: ", this.state.status);
+    console.log("Could not load credentials....Error: ", err);
+
 }
 
 
 
-//=========================GET
+//=========================VERYFFI TOKEN
 try {
     const credentials = await Keychain.getGenericPassword();
     
     if (credentials) {
-      this.setState({ ...credentials, status: 'Credentials loaded!' });
-      console.log("Status: ", this.state.status);
-      console.log("credentials: ", credentials);
+      console.log("Credentials loaded!");
       NavigationService.navigate('Main')
     } else {
-      this.setState({ status: 'No credentials stored.' });
-      console.log("Status: ", this.state.status);
+      console.log("No credentials stored.");
       NavigationService.navigate('Auth')
     }
   } catch (err) {
-    this.setState({ status: 'Could not load credentials. ' + err });
-    console.log("Status: ", this.state.status);
+    console.log("Could not load credentials....Error: ", err);
   }
 
 
 
 
 
-//=========================RESET
+//=========================RESET TOKEN
 try {
     const response = await Keychain.resetGenericPassword();
     if(response){
-      this.setState({status: 'Credentials Reset!'});
-      console.log("Status: ", this.state.status);
+      console.log("Credentials Reset!");
     }
 
   } catch (err) {
-    this.setState({ status: 'Could not reset credentials, ' + err });
-    console.log("Status: ", this.state.status);
+    console.log("Could not reset credentials......Error: ", err);
   }

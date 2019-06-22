@@ -238,6 +238,7 @@ export class AddFaceScreen extends Component {
  
   //===============================================================Detect faces
   _createId = async() => {
+    if(!this.state.tenSV || this.state.tenSV === '') return alert("Vui lòng nhập tên SV")
     try {
       const resId = await api.CreatePersonId 
       .headers({
