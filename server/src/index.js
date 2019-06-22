@@ -27,7 +27,7 @@ app.get('/tkbHutech', (req, res) => {
 
 
 
-server.listen( process.env.PORT || 3500, err => {
+server.listen( process.env.PORT || 3000, err => {
   if (err) {
     console.error(err);
   } else {
