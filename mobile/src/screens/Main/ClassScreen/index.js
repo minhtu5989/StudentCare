@@ -27,7 +27,7 @@ export class ClassScreen extends Component {
                         title="MK"
                         onPress={() => console.log("Works!")}
                     />
-                    <Text>Tên giáo viên: Mỹ Kim</Text>
+                    <Text>Tên giáo viên: ThS. Võ Xuân Lộc</Text>
                 </Box>
                 <Box mt='lg'>
                     <Text>Môn học:   {obj.courseName}</Text>

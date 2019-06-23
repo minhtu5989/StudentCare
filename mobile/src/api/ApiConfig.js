@@ -48,18 +48,8 @@ export const api = {
 //         "password": this.state.password,
 //     })
 //     .json( json => {
-<<<<<<< HEAD
-            
 //     })
 // } catch (error) {
 //     console.log('==============Error: ', error)
 //     return alert('Phát hiện lỗi không kết nối internet.')
 // }
-=======
-
-//     })
-// } catch (error) {
-//     console.log('................Error:   ', error)
-//     return alert('Phát hiện lỗi không kết nối internet.');
-// }
->>>>>>> handle tkb to email done

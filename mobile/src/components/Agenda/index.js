@@ -21,15 +21,32 @@ class AgendaComponent extends Component {
       selectedMonth:''
     };
     activity = [ 
-      {ActivityStartDate: '2019-06-15', Subject: {lecture: 'Võ Thị Cẩm Nhung', courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NVTC161059',courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-06-17', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'English Reading 1', startingSession: '4 -> 7', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'LLV0020683', courseCode: 'MAR105'}},
-      {ActivityStartDate: '2019-06-18', Subject: {lecture: 'Lê Văn Luyện', courseName: 'Tourism Management', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'LNPT191083', courseCode: 'MAT106'}},
-      {ActivityStartDate: '2019-06-12', Subject: {lecture: 'Nguyễn Phụ Thượng Lưu', courseName: 'Programming Techniques', startingSession: '3 -> 6', room: 'B.06.10', class: '15DNCQA3', lectureCode: 'NNTM130785', courseCode: 'MAN127'}},
-      {ActivityStartDate: '2019-06-11', Subject: {lecture: 'Nguyễn Tiến Thành', courseName: 'Practice: Graph Theory', startingSession: '7 -> 9', room: 'A.08.11', class: '17DNCQA2', lectureCode: 'VNA0101083', courseCode: 'MAN128'}},
-      {ActivityStartDate: '2019-06-26', Subject: {lecture: 'Ngô Trần Minh Nhật', courseName: 'Tourism Management', startingSession: '12 -> 15', room: 'B.06.10', class: '17DNCQA2', lectureCode: 'TLĐ0090188', courseCode: 'MAN725'}},
-      {ActivityStartDate: '2019-06-25', Subject: {lecture: 'Nguyễn Anh Vinh', courseName: 'English Reading 1', startingSession: '1 -> 3', room: 'E.06.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-06-23', Subject: {lecture: 'Lê Đình Tùng', courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'LLV0020683', courseCode: 'MAN425'} },
-      {ActivityStartDate: '2019-06-20', Subject: {lecture: 'Lê Thị Ánh Tuyết', courseName: 'Practice: Graph Theory', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NVTC161059', courseCode: 'MAN155'} }
+      {ActivityStartDate: '2019-03-11', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-03-25', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-03-04', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-03-27', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-03-20', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-03-06', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-03-18', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-03-14', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '4 -> 7', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-03-07', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-03-13', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '3 -> 6', room: 'B.06.10', class: '15DNCQA3', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-03-21', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '7 -> 9', room: 'A.08.11', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-03-18', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '12 -> 15', room: 'B.06.10', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-02-11', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '1 -> 3', room: 'E.06.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'}},
+      {ActivityStartDate: '2019-02-04', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-02-11', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-02-06', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-02-15', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-02-08', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-02-13', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-02-20', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-02-18', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-02-22', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-02-25', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-02-27', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-06-23', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'A', startingSession: '1 -> 5', room: 'E.1', class: 'C', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
+      {ActivityStartDate: '2019-06-23', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'B', startingSession: '5 -> 10', room: 'E.2', class: 'D', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
 
     ]
   }
@@ -105,7 +122,6 @@ class AgendaComponent extends Component {
   }
 
   _fetchTKB = async() => {
-    let teacherTimeable = []
     try {
       await api.GetTKB 
       .headers({
@@ -113,41 +129,49 @@ class AgendaComponent extends Component {
       })
       .get()
       .json( json => {
-        let data = json.dataExcel.timeable
-        for(let i=0; data.length; i++){
-          if(data[i].email == 'dvtruc@gmail.com'){
-            teacherTimeable.push(data[i])
-          }
-        }
+        let data = json.dataExcel
+        let dataFilter = []
+        data.forEach( el => {
+          if(el.email == 'nguyenthienthanh2012@yahoo.com.vn')
+            dataFilter.push(el)
+        })
+        // npt.luu@hutech.edu.vn
+
+        // console.log('data=======================', dataFilter)   
+        
+        let result = []
+        // var singleData = Object.assign({}, dataFilter[0]);
+        // delete singleData.timeable
+
+        dataFilter.forEach( el =>{
+          const timeable = JSON.stringify(el.timeable)
+
+          //========================== minus 1 because moment().isoWeekday() returns 1-7 where 1 is Monday and 7 is Sunday
+          const weekday = parseInt(el.weekday) - 1
+          let startDate = timeable.slice(1,9)
+          yy = startDate.slice(6,8)
+          startDate = startDate.slice(0,6)
+          startDate = startDate + 20 + yy
+
+          let stopDate = timeable.slice(12, 20) 
+          yy = stopDate.slice(6,8)
+          stopDate = stopDate.slice(0,6)
+          stopDate = stopDate + 20 + yy
+          // console.log(`startDate ${startDate} stopDate ${stopDate}`);
+
+          const dateRange = this._getDatesRange(startDate, stopDate, weekday)
+          console.log('dateRange-===========',dateRange);
+          
+          dateRange.forEach( el2 => {
+            el = { ...el, teachingDay: el2 }
+            result.push(el)
+          })
+          console.log('result-===========',result);
+        })
       })
     } catch (error) {
         console.log('................Error:   ', error)
     }
-    finally{
-      let data = []
-      for(let i=0; teacherTimeable.length; i++){
-        const timeable = JSON.stringify(teacherTimeable[i].timeable)
-//========================== minus 1 because moment().isoWeekday() returns 1-7 where 1 is Monday and 7 is Sunday
-        const weekday = parseInt(teacherTimeable[i].weekday) - 1
-        let startDate = timeable.slice(1,9)
-        yy = startDate.slice(6,8)
-        startDate = startDate.slice(0,6)
-        startDate = startDate + 20 + yy
-
-        let stopDate = timeable.slice(12, 20) 
-        yy = stopDate.slice(6,8)
-        stopDate = stopDate.slice(0,6)
-        stopDate = stopDate + 20 + yy
-
-        console.log(`startDate ${startDate} stopDate ${stopDate}`);
-
-        const dateRange = this._getDatesRange(startDate, stopDate, weekday)
-        data.push(dateRange)
-      }
-      console.log(`sdasadsad ${data}`);
-
-    }
-
   }
 
   _getDatesRange = (startDate, stopDate, weekDay) => {

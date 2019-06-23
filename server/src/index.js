@@ -22,7 +22,7 @@ app.get('/test', (req, res) => {
 });
 
 app.get('/tkbHutech', (req, res) => {
-  res.status(201).send({ dataExcel })
+  res.json({ dataExcel })
 });
 
 

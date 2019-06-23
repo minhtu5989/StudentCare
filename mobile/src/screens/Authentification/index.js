@@ -14,7 +14,7 @@ import {
   }, {
     initialRouteName: 'Login',
     headerMode: 'none',
-    mode: 'modal',
+    // mode: 'modal',
   })
   
   export default createAppContainer(AuthNavigation)
