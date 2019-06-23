@@ -19,10 +19,10 @@ export const register = async (req, res) => {
     if(!result) throw Error('Can not register now. Please try later.')
 
     const token = await AuthServices.createToken(result);
-    return res.send({ success: true, token });
+    return res.status(200).json({ success: true, token });
 
   } catch (error) {
-    res.send({ success: false, message: error.message });
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 
@@ -41,10 +41,10 @@ export const logIn = async (req, res) => {
     let result = await CustomerServices.logInCustomer(data)
     if(!result) throw Error('Can not log in now. Please try later.')
     const token = await AuthServices.createToken(result);
-    return res.send({ success: true, token });
+    return res.status(200).json({ success: true, token });
 
   } catch (error) {
-    res.send({ success: false, message: error.message });
+    res.json({ success: false, message: error.message });
   }
 };
 
