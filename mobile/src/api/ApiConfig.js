@@ -37,7 +37,8 @@ export const api = {
 
 //Exam
 
-// const res = await api.SignIn 
+// try {
+//     await api.SignIn 
 //     .url()
 //     .headers({
 //         "Content-Type": "application/json",
@@ -46,10 +47,10 @@ export const api = {
 //         "email": this.state.email,
 //         "password": this.state.password,
 //     })
-//     .error( e => {
-//         console.log('error', e);
+//     .json( json => {
+            
 //     })
-//     .json()
-
-//     if(!res) return alert('Phát hiện lỗi không kết nối internet.');
-//     console.log('response', res);
+// } catch (error) {
+//     console.log('==============Error: ', error)
+//     return alert('Phát hiện lỗi không kết nối internet.')
+// }

@@ -20,17 +20,15 @@ export default class Login extends Component {
     super(props)
   
     this.state = {
-      //  isLoading: false,
+       isLoading: false,
        email: null,
        password: null,
     }
 
-    isLoading= false
-
   }
 
   render() {
-    const { isShowRegister } = this.state
+    const { isShowRegister, isLoading } = this.state
     return (
       <Wrapper
         isLoading={isLoading}
@@ -88,49 +86,46 @@ export default class Login extends Component {
   
 
   _loginWithEmailPassword = async () => {
-    const { email, password } = this.state
-    
-    //=========================SET new token
-    if(!email || email == '' || !password || password == '') return alert('Vui lòng không để trống')
+    try {
+      const { email, password } = this.state
+      if(!email || email == '' || !password || password == '') return alert('Vui lòng không để trống')
 
-    // this.setState({isLoading: true})
-    isLoading= true
-    const res = await api.LogIn 
-    .headers({
-        "Content-Type": "application/json",
-    })
-    .post({
-        "email": this.state.email,
-        "password": this.state.password,
-    })
-    .json()
+      this.setState({isLoading: true})
+      await api.LogIn 
+        .headers({
+            "Content-Type": "application/json",
+        })
+        .post({
+            "email": this.state.email,
+            "password": this.state.password,
+        })
+        .json( async(json) => {
+          if(json.message) {
+            // this.setState({isLoading: false})
+            return alert(json.message)
+          }
+          if(json.token){
+            const credentials = await Keychain.setGenericPassword(
+              'token',
+              json.token,
+              { accessControl: this.state.accessControl }
+            );
+            if(!credentials) return console.log('Could not save credentials');
+            console.log('Credentials saved!');
+      
+            setTimeout(() => {
+              NavigationService.navigate('Main')
+            }, 1500);
+        }
+      })
 
-    if(!res){
+    } catch (error) {
       // this.setState({isLoading: false})
-      isLoading= false
-
+      console.log('==============Error: ', error)
       return alert('Phát hiện lỗi không kết nối internet.')
     }
-
-    if(res.message) {
-      // this.setState({isLoading: false})
-      isLoading= false
-      return alert(res.message)
-    }
-
-    if(res.token){
-      const credentials = await Keychain.setGenericPassword(
-        'token',
-        res.token,
-        { accessControl: this.state.accessControl }
-      );
-      if(!credentials) return console.log('Could not save credentials');
-      console.log('Credentials saved!');
-
-      setTimeout(() => {
-        isLoading= false
-        NavigationService.navigate('Main')
-      }, 1500);
+    finally{
+      this.setState({isLoading: false})
     }
 
   }

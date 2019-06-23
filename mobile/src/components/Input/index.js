@@ -16,7 +16,8 @@ export default props => {
       underlineColorAndroid={'transparent'}
       onChangeText={handleOnChange}
       placeholderTextColor={theme.color.greyLight}
-      // clearTextOnFocus
+      clearTextOnFocus
+      // clearButtonMode="always"
       returnKeyType='done'
       {...props}
       style={[styles.textInput, customStyle]}
