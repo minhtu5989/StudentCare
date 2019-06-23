@@ -52,7 +52,7 @@ export default class CheckAuth extends Component {
       
       if (credentials) {
         console.log("Credentials loaded!");
-        NavigationService.navigate('Main')
+        NavigationService.navigate('Home')
       } else {
         console.log("No credentials stored.");
         NavigationService.navigate('Auth')

@@ -114,7 +114,7 @@ export default class Login extends Component {
             console.log('Credentials saved!');
       
             setTimeout(() => {
-              NavigationService.navigate('Main')
+              NavigationService.navigate('Home')
             }, 1500);
         }
       })

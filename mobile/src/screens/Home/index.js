@@ -5,7 +5,7 @@ import { DetectorScreen } from "./DetectorScreen/index";
 import { ClassScreen } from "./ClassScreen/index";
 import { AddFaceScreen } from "./AddFaceScreen/index";
 
-const MainNavigator = createStackNavigator(
+const HomeNavigator = createStackNavigator(
     {
         Calendars: {
             screen : CalendarsScreen
@@ -26,4 +26,4 @@ const MainNavigator = createStackNavigator(
     }
 )
 
-export default MainNav = createAppContainer(MainNavigator)
+export default HomeNav = createAppContainer(HomeNavigator)

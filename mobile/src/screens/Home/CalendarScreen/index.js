@@ -38,9 +38,7 @@ export  class CalendarsScreen extends Component {
       const credentials = await Keychain.getGenericPassword();
       
       if (credentials) {
-        console.log('====================================');
-        console.log('Verify succussfel !');
-        console.log('====================================');
+        console.log('==================================== Verify successful !');
       } else {
         console.log("No credentials stored.");
         NavigationService.navigate('Auth')

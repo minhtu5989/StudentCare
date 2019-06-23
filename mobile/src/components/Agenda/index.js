@@ -12,6 +12,15 @@ import { NavigationService } from '@src/constants/NavigationService';
 import { theme } from "@src/constants/theme";
 import { api } from "../../api/ApiConfig";
 
+
+// LocaleConfig.locales['vi'] = {
+//   monthNames: ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'],
+//   monthNamesShort: ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'],
+//   dayNames: ['Chủ nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'],
+//   dayNamesShort: ['CN','Hai','Ba','Tư','Năm','Sáu','Bảy'],
+// };
+// LocaleConfig.defaultLocale = 'vi';
+
 class AgendaComponent extends Component {
   constructor(props) {
     super(props);
@@ -22,8 +31,9 @@ class AgendaComponent extends Component {
     };
     activity = [ 
       {ActivityStartDate: '2019-03-11', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-03-25', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-03-04', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-06-25', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'x', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-06-25', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'x', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
+      {ActivityStartDate: '2019-06-24', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
       {ActivityStartDate: '2019-03-27', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
       {ActivityStartDate: '2019-03-20', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
       {ActivityStartDate: '2019-03-06', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
@@ -132,16 +142,14 @@ class AgendaComponent extends Component {
         let data = json.dataExcel
         let dataFilter = []
         data.forEach( el => {
-          if(el.email == 'nguyenthienthanh2012@yahoo.com.vn')
+          if(el.email == 'npt.luu@hutech.edu.vn ')
             dataFilter.push(el)
         })
-        // npt.luu@hutech.edu.vn
+        //  nguyenthienthanh2012@yahoo.com.vn
 
         // console.log('data=======================', dataFilter)   
         
         let result = []
-        // var singleData = Object.assign({}, dataFilter[0]);
-        // delete singleData.timeable
 
         dataFilter.forEach( el =>{
           const timeable = JSON.stringify(el.timeable)
@@ -160,13 +168,13 @@ class AgendaComponent extends Component {
           // console.log(`startDate ${startDate} stopDate ${stopDate}`);
 
           const dateRange = this._getDatesRange(startDate, stopDate, weekday)
-          console.log('dateRange-===========',dateRange);
+          // console.log('dateRange-===========',dateRange);
           
           dateRange.forEach( el2 => {
             el = { ...el, teachingDay: el2 }
             result.push(el)
           })
-          console.log('result-===========',result);
+          // console.log('result-===========',result);
         })
       })
     } catch (error) {
@@ -193,34 +201,34 @@ class AgendaComponent extends Component {
 
   loadItems(day) {
     setTimeout(() => {
-      for (let j = 0; j < activity.length ; j++) {
-        const strTime = this.timeToString(activity[j].ActivityStartDate);
-        if (!this.state.items[strTime]){
-          this.state.items[strTime] = []; 
-          this.state.items[strTime].push({ obj: activity[j].Subject });
-          for (let j = 0; j < activity.length ; j++) {
-            if(this.state.items[strTime] == activity[j].ActivityStartDate){
-              this.state.items[strTime].push({ obj: activity[j].Subject });
+
+      for (let i = -365; i<365; i++) {
+        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+        const strTime = this.timeToString(time);
+        if (!this.state.items[strTime]) {
+          this.state.items[strTime] = [];
+          for (let j = 0; j < activity.length; j++) {
+            if(strTime == activity[j].ActivityStartDate){
+              this.state.items[strTime].push({obj: activity[j].Subject});
             }
           }
         }
       }
 
-      for (let i = -30; i < 30; i++) {
+      for (let i = 0; i < 60; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
         }
       }
+
       const newItems = {};
       Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
       this.setState({
         items: newItems
       });
-      console.log(this.state.items);
-    }, 1000);
-    console.log(`Load Items for ${day.year}-${day.month}`);
+    }, 500);
   }
    
   getMonthYear(M,Y) {
