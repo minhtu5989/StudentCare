@@ -10,6 +10,7 @@ import {Agenda} from 'react-native-calendars';
 import moment from "moment";
 import { NavigationService } from '@src/constants/NavigationService';
 import { theme } from "@src/constants/theme";
+import { api } from "../../api/ApiConfig";
 
 class AgendaComponent extends Component {
   constructor(props) {
@@ -33,11 +34,13 @@ class AgendaComponent extends Component {
     ]
   }
 
-  componentWillMount() {
+  componentWillMount = async () => {
     const currentDate = moment(this.state.date, 'YYYY/MM/DD');
     const month = currentDate.format('MM');
     const year = currentDate.format('YYYY');
     this.getMonthYear(month,year);
+
+    this._fetchTKB()
   }
 
   render() {
@@ -101,6 +104,69 @@ class AgendaComponent extends Component {
     );
   }
 
+  _fetchTKB = async() => {
+    let teacherTimeable = []
+    try {
+      await api.GetTKB 
+      .headers({
+          "Content-Type": "application/json",
+      })
+      .get()
+      .json( json => {
+        let data = json.dataExcel.timeable
+        for(let i=0; data.length; i++){
+          if(data[i].email == 'dvtruc@gmail.com'){
+            teacherTimeable.push(data[i])
+          }
+        }
+      })
+    } catch (error) {
+        console.log('................Error:   ', error)
+    }
+    finally{
+      let data = []
+      for(let i=0; teacherTimeable.length; i++){
+        const timeable = JSON.stringify(teacherTimeable[i].timeable)
+//========================== minus 1 because moment().isoWeekday() returns 1-7 where 1 is Monday and 7 is Sunday
+        const weekday = parseInt(teacherTimeable[i].weekday) - 1
+        let startDate = timeable.slice(1,9)
+        yy = startDate.slice(6,8)
+        startDate = startDate.slice(0,6)
+        startDate = startDate + 20 + yy
+
+        let stopDate = timeable.slice(12, 20) 
+        yy = stopDate.slice(6,8)
+        stopDate = stopDate.slice(0,6)
+        stopDate = stopDate + 20 + yy
+
+        console.log(`startDate ${startDate} stopDate ${stopDate}`);
+
+        const dateRange = this._getDatesRange(startDate, stopDate, weekday)
+        data.push(dateRange)
+      }
+      console.log(`sdasadsad ${data}`);
+
+    }
+
+  }
+
+  _getDatesRange = (startDate, stopDate, weekDay) => {
+    var startDate = startDate.split("/").reverse().join("-");
+    var stopDate = stopDate.split("/").reverse().join("-");
+
+    var dateRange = [];
+    var startDate = moment(startDate);
+    var stopDate = moment(stopDate);
+    while (startDate <= stopDate) {
+      if(moment(startDate).isoWeekday() == weekDay){
+
+        dateRange.push( moment(startDate).format('YYYY-MM-DD') )
+      }
+      startDate = moment(startDate).add(1, 'days');
+    }
+    return dateRange
+  }
+
   loadItems(day) {
     setTimeout(() => {
       for (let j = 0; j < activity.length ; j++) {
@@ -108,7 +174,6 @@ class AgendaComponent extends Component {
         if (!this.state.items[strTime]){
           this.state.items[strTime] = []; 
           this.state.items[strTime].push({ obj: activity[j].Subject });
-// alert(JSON.stringify(this.state.items[strTime]))
           for (let j = 0; j < activity.length ; j++) {
             if(this.state.items[strTime] == activity[j].ActivityStartDate){
               this.state.items[strTime].push({ obj: activity[j].Subject });
