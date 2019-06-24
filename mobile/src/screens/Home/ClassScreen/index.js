@@ -12,26 +12,24 @@ export class ClassScreen extends Component {
         obj = this.props.navigation.getParam('obj')
     }
 
-    // static navigationOptions = ({ navigation }) => ({
-    //     title: 'NewFile',
-    // });
-
     render() {
         return (
             <Box f={1} m='lg' >
                 <Box center justify='around'>
                     <Avatar 
+                        source={require('../../../assets/images/icon/MaleStudent.png')}
+                        showEditButton
                         size="large"
                         rounded
                         activeOpacity={0.7}
-                        title="MK"
+                        title=""
                         onPress={() => console.log("Works!")}
                     />
-                    <Text>Tên giáo viên: ThS. Võ Xuân Lộc</Text>
+                    <Text>Giảng viên: {obj.lecturer}</Text>
                 </Box>
                 <Box mt='lg'>
                     <Text>Môn học:   {obj.courseName}</Text>
-                    <Text>Tiết bắt đầu:   {obj.startingSession}</Text>
+                    <Text>Tiết bắt đầu:   {obj.startingSesions} -> {obj.noOfSecsions + obj.startingSesions} </Text>
                     <Text>Phòng:   {obj.room}</Text>
                     <Text>Lớp:   {obj.class}</Text>
                 </Box>

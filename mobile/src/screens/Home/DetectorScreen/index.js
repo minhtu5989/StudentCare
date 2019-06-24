@@ -50,7 +50,7 @@ export class DetectorScreen extends Component {
     };
 
     classObj = this.props.navigation.getParam('obj')
-    nameClass = classObj.lectureCode + classObj.courseCode
+    nameClass = classObj.lectureCode + classObj.codeCourse
     nameClass = nameClass.toLowerCase()
   }
 
@@ -97,7 +97,7 @@ export class DetectorScreen extends Component {
         > 
             <Box f={1} style={{marginTop:10, width: `100%`}}  >
                 <Box align='center' h={30} bg={theme.color.blueLighter} >
-                  <Text style={{textDecorationLine:'underline'}}>Danh sách sinh viên nghỉ học :</Text>
+                  <Text style={{textDecorationLine:'underline'}}>Danh sách sinh viên đi học :</Text>
                 </Box>
                 <Box f={1} center bg={theme.color.white}>
                   {this._renderNoPresence()}
@@ -285,7 +285,7 @@ export class DetectorScreen extends Component {
     })
     .url(`/${nameClass}`)
     .put({
-      "name": classObj.lecture,
+      "name": classObj.lecturer,
       "userData": classObj.lectureCode,
       "recognitionModel": "recognition_02"
     })

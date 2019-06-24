@@ -29,36 +29,6 @@ class AgendaComponent extends Component {
       items:{},
       selectedMonth:''
     };
-    activity = [ 
-      {ActivityStartDate: '2019-03-11', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-06-25', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'x', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-06-25', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'x', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-06-24', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-03-27', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-03-20', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-03-06', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-03-18', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673',courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-03-14', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '4 -> 7', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-03-07', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '1 -> 3', room: 'B.06.09', class: '16DNCQA1', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-03-13', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '3 -> 6', room: 'B.06.10', class: '15DNCQA3', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-03-21', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '7 -> 9', room: 'A.08.11', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-03-18', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Bank Marketing', startingSession: '12 -> 15', room: 'B.06.10', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN125'}},
-      {ActivityStartDate: '2019-02-11', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '1 -> 3', room: 'E.06.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'}},
-      {ActivityStartDate: '2019-02-04', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-02-11', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-02-06', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-02-15', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-02-08', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-02-13', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-02-20', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-02-18', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-02-22', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-02-25', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-02-27', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'Principles of Accounting', startingSession: '2 -> 5', room: 'E.03.09', class: '17DNCQA2', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-06-23', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'A', startingSession: '1 -> 5', room: 'E.1', class: 'C', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-      {ActivityStartDate: '2019-06-23', Subject: {lecture: 'ThS. Võ Xuân Lộc', courseName: 'B', startingSession: '5 -> 10', room: 'E.2', class: 'D', lectureCode: 'NHH0200673', courseCode: 'MAN155'} },
-
-    ]
   }
 
   componentWillMount = async () => {
@@ -73,7 +43,6 @@ class AgendaComponent extends Component {
   render() {
     return (
       <Agenda
-        // loadItemsForMonth={this.loadItemsForMonth(this.state.date)}
         loadItemsForMonth={this.loadItems.bind(this)}
         selected={this.state.date}
         items={this.state.items}
@@ -142,10 +111,10 @@ class AgendaComponent extends Component {
         let data = json.dataExcel
         let dataFilter = []
         data.forEach( el => {
-          if(el.email == 'npt.luu@hutech.edu.vn ')
+          if(el.email == 'nguyenthienthanh2012@yahoo.com.vn')
             dataFilter.push(el)
         })
-        //  nguyenthienthanh2012@yahoo.com.vn
+        //   npt.luu@hutech.edu.vn
 
         // console.log('data=======================', dataFilter)   
         
@@ -175,6 +144,7 @@ class AgendaComponent extends Component {
             result.push(el)
           })
           // console.log('result-===========',result);
+          return this.setState({activity : result})
         })
       })
     } catch (error) {
@@ -207,9 +177,9 @@ class AgendaComponent extends Component {
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
-          for (let j = 0; j < activity.length; j++) {
-            if(strTime == activity[j].ActivityStartDate){
-              this.state.items[strTime].push({obj: activity[j].Subject});
+          for (let j = 0; j < this.state.activity.length; j++) {
+            if(strTime == this.state.activity[j].teachingDay){
+              this.state.items[strTime].push({ obj: {...this.state.activity[j]} });
             }
           }
         }
@@ -241,7 +211,7 @@ class AgendaComponent extends Component {
     return (
       <TouchableOpacity style={styles.item} onPress={ () => NavigationService.navigate('Class', {obj: item.obj}) } >
         <Text>Môn học:   {item.obj.courseName}</Text>
-        <Text>Tiết bắt đầu:   {item.obj.startingSession}</Text>
+        <Text>Tiết bắt đầu:   {item.obj.startingSesions} -> {item.obj.noOfSecsions + item.obj.startingSesions} </Text>
         <Text>Phòng:   {item.obj.room}</Text>
         <Text>Lớp:   {item.obj.class}</Text>
       </TouchableOpacity>

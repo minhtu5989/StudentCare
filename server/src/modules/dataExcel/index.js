@@ -1,7 +1,7 @@
 import excelToJson from 'convert-excel-to-json';
 
 const result = excelToJson({
-    sourceFile: '/Applications/WorkSpace/StudentCare/server/src/modules/dataExcel/hutechTKB.xls'
+    sourceFile: '/Users/lminhtu1/Desktop/workspace/StudentCare/server/src/modules/dataExcel/hutechTKB.xls'
 })
 
 result.timeable.map( el => {
