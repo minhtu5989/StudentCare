@@ -47,9 +47,9 @@ export const logInCustomer = async (data) => {
   try {
     const result = await Customer.findOne({ email: data.email });
     
-    if (!result) throw new Error('Email was not exist');
+    if (!result) return 301 
     const same = await compare(data.password, result.password);
-    if (!same) throw new Error('Wrong password');
+    if (!same) return 302
     return result
 
   } catch (error) {

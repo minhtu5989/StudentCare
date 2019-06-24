@@ -39,12 +39,14 @@ export const logIn = async (req, res) => {
     await bodySchema.validate({ email, password });
     let data = { email, password}
     let result = await CustomerServices.logInCustomer(data)
-    if(!result) throw Error('Can not log in now. Please try later.')
+    if(result == 301) return res.json({ success: false, message: 'Email was not exist' });
+    if(result == 302) return res.json({ success: false, message: 'Wrong password' });
+    if(!result) throw new Error
     const token = await AuthServices.createToken(result);
     return res.status(200).json({ success: true, token });
 
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+    res.status(200).json({ success: true, message: 'Network request failed' });
   }
 };
 

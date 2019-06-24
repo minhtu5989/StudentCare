@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Keyboard,
   StyleSheet,
+  Alert
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as Keychain from 'react-native-keychain';
@@ -24,7 +25,6 @@ export default class Login extends Component {
        email: null,
        password: null,
     }
-
   }
 
   render() {
@@ -101,7 +101,19 @@ export default class Login extends Component {
         })
         .json( async(json) => {
           if(json.message) {
-            // this.setState({isLoading: false})
+            
+            Alert.alert(
+              'Thông báo',
+              (json.message === 'Email was not exist')? 'Email không tồn tại': 'Sai mật khẩu',
+              [
+                {
+                  text: 'Cancel',
+                  onPress: () => this.setState({isLoading: false}),
+                  style: 'cancel',
+                },
+              ],
+              {cancelable: false},
+            );
             return alert(json.message)
           }
           if(json.token){
@@ -114,18 +126,15 @@ export default class Login extends Component {
             console.log('Credentials saved!');
       
             setTimeout(() => {
+              this.setState({isLoading: false})
               NavigationService.navigate('Home')
             }, 1500);
+
         }
       })
 
     } catch (error) {
-      // this.setState({isLoading: false})
-      console.log('==============Error: ', error)
-      return alert('Phát hiện lỗi không kết nối internet.')
-    }
-    finally{
-      this.setState({isLoading: false})
+      return console.log('==============Error: ', error.message)
     }
 
   }
