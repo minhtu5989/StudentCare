@@ -1,10 +1,11 @@
 import { types, flow } from 'mobx-state-tree';
-import { AsyncStorage } from 'react-native';
+import * as Keychain from 'react-native-keychain';
 
-import { customersApi } from "../api/Api";
+import { NavigationService } from '@src/constants'
+import { api } from '../api'
 import { CurrentUserModel } from '../models/CurrentUser';
 
-const TOKEN_KEY = '@DanielLuong/token'
+const TOKEN_KEY = '@TuLuong283/token'
 
 export const AuthStore = types
 .model(`AuthStore`, {
@@ -15,13 +16,13 @@ export const AuthStore = types
 
   getAuthToken: flow(function*(){
     try {
-      const token = yield AsyncStorage.getItem(TOKEN_KEY)
-
-      if(token){
-        self.authToken = token
-        console.log('Got Auth !!');
-      }
-      else{
+    //=========================VERYFFI TOKEN
+      const credentials = yield Keychain.getGenericPassword();
+      if (credentials) {
+        self.authToken = credentials.password
+        console.log('=========================== Got credentials');
+      } else {
+        console.log("No credentials stored.");
         NavigationService.navigate('Auth')
       }
     } catch (error) {
@@ -31,18 +32,23 @@ export const AuthStore = types
 
   getUserInfo: flow(function*(){
     try {
-      if(self.authToken){
-        const res = yield customersApi
-        .url('/user')
-        .headers({ Authorization: `Bearer ${self.authToken}` })
-        .get()
-        .json();
 
-        self.info = res;
+      if(self.authToken){
+        res = yield api.GetTKB 
+          .headers({ 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${self.authToken}` 
+          })
+          .get()
+          .json()
+
+        self.info = res.data;
         NavigationService.navigate('Main')
-      } 
-    } catch (error) {
-      console.log('error', error);
+
+      } catch (error) {
+        console.log('................Error:   ', error)
+        return alert('Phát hiện lỗi Internet')
+      }
     }
   }),
   

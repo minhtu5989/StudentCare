@@ -1,9 +1,9 @@
-// import { AuthStore } from './Auth';
+import { AuthStore } from './Auth';
 
-// const authStore = AuthStore.create();
+const authStore = AuthStore.create();
 
 export const store = {
-  // authStore,
+  authStore,
 };
 
 window.MobxStore = store;

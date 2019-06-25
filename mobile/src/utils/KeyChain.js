@@ -1,3 +1,6 @@
+import * as Keychain from 'react-native-keychain';
+import { NavigationService } from '@src/constants'
+
 //=========================SET TOKEN
 try {
     const credentials = await Keychain.setGenericPassword(
@@ -21,7 +24,7 @@ try {
     
     if (credentials) {
       console.log("Credentials loaded!");
-      NavigationService.navigate('Home')
+      NavigationService.navigate('Main')
     } else {
       console.log("No credentials stored.");
       NavigationService.navigate('Auth')
