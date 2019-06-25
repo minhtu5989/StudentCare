@@ -50,17 +50,14 @@ export const logIn = async (req, res) => {
   }
 };
 
-
-
 export const getUserInfo = async (req, res) => {
   try {
-    if (req.user) {
-      const userInfo = await CustomerServices.me(req.user._id);
 
-      res.status(200).json(userInfo);
-    } else {
-      res.status(400).json({ message: 'No User' });
-    }
+    if(!req.user) throw new Error('No User');
+    const userInfo = await CustomerServices.me(req.user._id);
+    if(userInfo == 401) throw new Error('User not exist');
+    res.status(200).json(userInfo);
+
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -79,7 +76,7 @@ export const saveNotifiToken = async (req, res) => {
 
   } catch (error) {
     console.log('error', error);
-    throw error;
+    res.status(400).json({ message: error.message });
   }
 };
 

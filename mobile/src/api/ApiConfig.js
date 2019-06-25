@@ -15,7 +15,7 @@ const Training = wretch(`${FACE_URL}/largepersongroups`);
 //===================== API server BASE_URL
 const LogIn = wretch(`${BASE_URL}/api/v1/customers/LogIn`);
 const Register = wretch(`${BASE_URL}/api/v1/customers/Register`);
-const GetTKB = wretch(`${BASE_URL}/tkbHutech`);
+const GetTKB = wretch(`${BASE_URL}/api/v1/customers/GetUser`);
 
 export const api = {
     GetTKB,

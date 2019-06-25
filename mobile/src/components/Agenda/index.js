@@ -5,21 +5,22 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
-import {Agenda} from 'react-native-calendars';
-
+import {Agenda, LocaleConfig} from 'react-native-calendars';
+import * as Keychain from 'react-native-keychain';
 import moment from "moment";
+
 import { NavigationService } from '@src/constants/NavigationService';
 import { theme } from "@src/constants/theme";
 import { api } from "../../api/ApiConfig";
 
 
-// LocaleConfig.locales['vi'] = {
-//   monthNames: ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'],
-//   monthNamesShort: ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'],
-//   dayNames: ['Chủ nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'],
-//   dayNamesShort: ['CN','Hai','Ba','Tư','Năm','Sáu','Bảy'],
-// };
-// LocaleConfig.defaultLocale = 'vi';
+LocaleConfig.locales['vi'] = {
+  monthNames: ['Tháng 1,','Tháng 2,','Tháng 3,','Tháng 4,','Tháng 5,','Tháng 6,','Tháng 7,','Tháng 8,','Tháng 9,','Tháng 10,','Tháng 11,','Tháng 12,'],
+  monthNamesShort: ['Tháng 1,','Tháng 2,','Tháng 3,','Tháng 4,','Tháng 5,','Tháng 6,','Tháng 7,','Tháng 8,','Tháng 9,','Tháng 10,','Tháng 11,','Tháng 12,'],
+  dayNames: ['Chủ nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'],
+  dayNamesShort: ['CN','Hai','Ba','Tư','Năm','Sáu','Bảy'],
+};
+LocaleConfig.defaultLocale = 'vi';
 
 class AgendaComponent extends Component {
   constructor(props) {
@@ -36,8 +37,6 @@ class AgendaComponent extends Component {
     const month = currentDate.format('MM');
     const year = currentDate.format('YYYY');
     this.getMonthYear(month,year);
-
-    this._fetchTKB()
   }
 
   render() {
@@ -101,85 +100,44 @@ class AgendaComponent extends Component {
   }
 
   _fetchTKB = async() => {
+
+    const credentials = await Keychain.getGenericPassword();
+    
+    if (credentials) {
+      console.log('==================================== Verify successful !');
+    } else {
+      console.log("No credentials stored.");
+    }
+
     try {
-      await api.GetTKB 
-      .headers({
-          "Content-Type": "application/json",
+      return res = await api.GetTKB 
+      .headers({ 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${credentials.password}` 
       })
       .get()
       .json( json => {
-        let data = json.dataExcel
-        let dataFilter = []
-        data.forEach( el => {
-          if(el.email == 'nguyenthienthanh2012@yahoo.com.vn')
-            dataFilter.push(el)
-        })
-        //   npt.luu@hutech.edu.vn
-
-        // console.log('data=======================', dataFilter)   
-        
-        let result = []
-
-        dataFilter.forEach( el =>{
-          const timeable = JSON.stringify(el.timeable)
-
-          //========================== minus 1 because moment().isoWeekday() returns 1-7 where 1 is Monday and 7 is Sunday
-          const weekday = parseInt(el.weekday) - 1
-          let startDate = timeable.slice(1,9)
-          yy = startDate.slice(6,8)
-          startDate = startDate.slice(0,6)
-          startDate = startDate + 20 + yy
-
-          let stopDate = timeable.slice(12, 20) 
-          yy = stopDate.slice(6,8)
-          stopDate = stopDate.slice(0,6)
-          stopDate = stopDate + 20 + yy
-          // console.log(`startDate ${startDate} stopDate ${stopDate}`);
-
-          const dateRange = this._getDatesRange(startDate, stopDate, weekday)
-          // console.log('dateRange-===========',dateRange);
-          
-          dateRange.forEach( el2 => {
-            el = { ...el, teachingDay: el2 }
-            result.push(el)
-          })
-          // console.log('result-===========',result);
-          return this.setState({activity : result})
-        })
+        return json.data
       })
     } catch (error) {
         console.log('................Error:   ', error)
+        return alert('Phát hiện lỗi Internet')
     }
   }
 
-  _getDatesRange = (startDate, stopDate, weekDay) => {
-    var startDate = startDate.split("/").reverse().join("-");
-    var stopDate = stopDate.split("/").reverse().join("-");
 
-    var dateRange = [];
-    var startDate = moment(startDate);
-    var stopDate = moment(stopDate);
-    while (startDate <= stopDate) {
-      if(moment(startDate).isoWeekday() == weekDay){
+  loadItems= async(day) => {
+    let activity = await this._fetchTKB()
 
-        dateRange.push( moment(startDate).format('YYYY-MM-DD') )
-      }
-      startDate = moment(startDate).add(1, 'days');
-    }
-    return dateRange
-  }
-
-  loadItems(day) {
     setTimeout(() => {
-
       for (let i = -365; i<365; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
-          for (let j = 0; j < this.state.activity.length; j++) {
-            if(strTime == this.state.activity[j].teachingDay){
-              this.state.items[strTime].push({ obj: {...this.state.activity[j]} });
+          for (let j = 0; j < activity.length; j++) {
+            if(strTime == activity[j].teachingDay){
+              this.state.items[strTime].push({ obj: {...activity[j]} });
             }
           }
         }
@@ -199,6 +157,7 @@ class AgendaComponent extends Component {
         items: newItems
       });
     }, 500);
+    console.log('==============', this.state.items)
   }
    
   getMonthYear(M,Y) {

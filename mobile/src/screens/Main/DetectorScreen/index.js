@@ -210,14 +210,12 @@ export default class DetectorScreen extends Component {
       "Content-Type": "application/json",
       "Ocp-Apim-Subscription-Key": api.keyApi
     })
-    .post(
-      {
+    .post({
         "largePersonGroupId": nameClass,
         "faceIds": ids,
         "maxNumOfCandidatesReturned": 50,
         "confidenceThreshold": 0.7
-      }
-    )
+    })
     .json()
 
     if(!resCandidates.length){

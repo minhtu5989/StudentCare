@@ -8,7 +8,6 @@ import * as Keychain from 'react-native-keychain';
 
 import { Button } from 'react-native-elements';
 import { Agenda } from "../../../components";
-import moment from 'moment';
 import { theme } from '../../../constants/theme';
 import { NavigationService } from '../../../constants/NavigationService';
 

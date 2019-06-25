@@ -73,17 +73,7 @@ export default class AddFaceScreen extends Component {
             </Box>
             <Box center dir='row' mt='xs'>
               <TextInput 
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  width: 250,
-                  height: 40,
-                  paddingHorizontal: 5,        
-                  fontSize: 15,
-                  fontWeight: "bold",
-                  color: theme.color.black, 
-                  backgroundColor: theme.color.white,
-                }}            
+                style={styles.textInput}            
                 placeholder={'Họ tên SV'} 
                 keyboardType='default'                   
                 value={this.state.tenSV}
@@ -410,6 +400,17 @@ const styles = StyleSheet.create({
   button_text: {
     color: '#FFF',
     fontSize: 20
+  },
+  textInput: {
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 250,
+    height: 40,
+    paddingHorizontal: 5,        
+    fontSize: 15,
+    fontWeight: "bold",
+    color: theme.color.black, 
+    backgroundColor: theme.color.white,
   },
   modal: {
     justifyContent: 'center',

@@ -1,7 +1,8 @@
 import Customer from './customer.model';
 import { AuthServices } from '../../services/Auth';
 import { hash, compare } from 'bcryptjs';
-
+import { dataExcel } from "../../modules/dataExcel/index";
+import moment from "moment";
 export const customerAuth = async (req, res, next) => {
   const token = AuthServices.getTokenFromHeaders(req);
 
@@ -16,7 +17,7 @@ export const customerAuth = async (req, res, next) => {
   if (!customer) {
     req.user = null;
 
-    return res.sendStatus(401);
+    return res.sendStatus(402);
   }
 
   req.user = customer;
@@ -57,88 +58,60 @@ export const logInCustomer = async (data) => {
   }
 }
 
-export const getOrCreateCustomer = async (info, providerName) => {
-  const customerInfo = buildCustomerInfo(info, providerName);
-
-  try {
-    const _customer = await Customer.findOne({ email: customerInfo.email });
-
-    const { provider, ...userInfo } = customerInfo;
-
-    if (!_customer) {
-      const customer = await Customer.create({
-        ...userInfo,
-        provider: [provider],
-      });
-
-      return customer;
-    }
-
-    const providerExist = _customer.provider.find(
-      el =>
-        el.uid === customerInfo.provider.uid &&
-        el.type === customerInfo.provider.type,
-    );
-
-    if (providerExist) {
-      return _customer;
-    }
-
-    _customer.provider.push(customerInfo.provider);
-
-    await _customer.save();
-
-    return _customer;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const me = async userId => {
   try {
     const user = await Customer.findById(userId);
+    if (!user) return 401
 
-    if (!user) {
-      throw new Error('User not exist');
-    }
+    let dataFilter = []
+    dataExcel.forEach( el => {
+    if(el.email == user.email)
+        dataFilter.push(el)
+    })
+        
+    let result = []
+    dataFilter.forEach( el =>{
+      const timeable = JSON.stringify(el.timeable)
 
-    return user;
+      let startDate = timeable.slice(1,9)
+      let yy = startDate.slice(6,8)
+      startDate = startDate.slice(0,6)
+      startDate = startDate + 20 + yy
+
+      let stopDate = timeable.slice(12, 20) 
+      yy = stopDate.slice(6,8)
+      stopDate = stopDate.slice(0,6)
+      stopDate = stopDate + 20 + yy
+      // console.log(`startDate ${startDate} stopDate ${stopDate}`);
+
+      //========================== handle date range
+      startDate = startDate.split("/").reverse().join("-");
+      stopDate = stopDate.split("/").reverse().join("-");
+
+      var dateRange = [];
+      startDate = moment(startDate);
+      stopDate = moment(stopDate);
+      while (startDate <= stopDate) {
+      //========================== minus 1 because moment().isoWeekday() returns 1-7 where 1 is Monday and 7 is Sunday
+        if(moment(startDate).isoWeekday() == parseInt(el.weekday) -1){
+
+          dateRange.push( moment(startDate).format('YYYY-MM-DD') )
+        }
+        startDate = moment(startDate).add(1, 'days');
+      }
+
+      dateRange.forEach( el2 => {
+        el = { ...el, teachingDay: el2 }
+        result.push(el)
+      })
+    })
+    // console.log('result-===========',result);
+    let userInfo = user.toObject();
+    delete userInfo.password;
+    userInfo = { ...userInfo, data: result }
+
+    return userInfo;
   } catch (error) {
     throw error;
   }
 };
-
-export const getNotifiToken = async (userId, tokenValue) => {
-  try {
-    const user = await Customer.findById(userId);
-    
-    if (!user) {
-      throw new Error('User not exist');
-    }
-
-    const TokenExisted = user.notifiToken.find(el => el.token === tokenValue)
-    if(TokenExisted)
-    {
-      return 203;
-    }
-
-    user.notifiToken.push({ token: tokenValue })
-
-    /* 
-      Tránh việc trong mảng bị lặp phần tử
-      vì có thể người dùng delete app và register lại lần nữa
-
-      token từ Register ko thể bị trùng vì mỗi thiết bị chỉ có 1 token riêng, không thay đổi dc
-      cho nên một thiết bị có thể đky với nhiều user dưới cùng một token Notifi
-
-      notifiToken dạng mảng vì user có thể sử dụng nhiều thiết bị 
-    */ 
-
-    await user.save();
-
-    return; 
-
-  } catch (error) {
-    throw error;
-  }
-}
