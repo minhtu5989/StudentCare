@@ -5,7 +5,7 @@ import { Button, Avatar } from "react-native-elements";
 import { theme } from '../../../constants/theme';
 import { NavigationService } from '../../../constants/NavigationService';
 
-export class ClassScreen extends Component {
+export default class ClassScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {  };

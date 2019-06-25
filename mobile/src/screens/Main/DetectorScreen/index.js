@@ -25,7 +25,7 @@ import { Box } from 'react-native-design-utility'
 
 import { api } from "../../../api/ApiConfig";
 
-export class DetectorScreen extends Component {
+export default class DetectorScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {

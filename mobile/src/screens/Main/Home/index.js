@@ -12,7 +12,7 @@ import moment from 'moment';
 import { theme } from '../../../constants/theme';
 import { NavigationService } from '../../../constants/NavigationService';
 
-export  class CalendarsScreen extends Component {
+export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = { };

@@ -1,14 +1,14 @@
-import { createSwitchNavigator, createAppContainer, createStackNavigator } from 'react-navigation'
+import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 
-import HomeNav from '../screens/Home'
+import MainNav from '../screens/Main'
 import CheckAuth from '../screens/CheckAuth'
-import AuthStack from '../screens/Authentification'
+import AuthStack from '../screens/AuthStack'
 import TabNav from '../screens/Tab'
 
 const AppNavigator = createSwitchNavigator(
     {
         CheckAuth: CheckAuth,
-        Home:  HomeNav,
+        Home:  MainNav,
         Auth: AuthStack,
         Tab: TabNav,
     },{

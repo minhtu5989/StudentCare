@@ -27,7 +27,7 @@ import { Box } from 'react-native-design-utility'
 
 import { api } from "../../../api/ApiConfig";
 
-export class AddFaceScreen extends Component {
+export default class AddFaceScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
