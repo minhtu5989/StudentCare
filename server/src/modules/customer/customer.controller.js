@@ -16,13 +16,11 @@ export const register = async (req, res) => {
     await bodySchema.validate({ email, password });
     let data = { email, password}
     const result = await CustomerServices.registerCustomer(data);
-    if(!result) throw Error('Can not register now. Please try later.')
-
-    const token = await AuthServices.createToken(result);
-    return res.status(200).json({ success: true, token });
+    if(!result) throw new Error
+    return res.json({ status: 200, token });
 
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+    res.json({ status: 400, message: 'Network request failed' });
   }
 };
 
@@ -39,27 +37,28 @@ export const logIn = async (req, res) => {
     await bodySchema.validate({ email, password });
     let data = { email, password}
     let result = await CustomerServices.logInCustomer(data)
-    if(result == 301) return res.json({ success: false, message: 'Email was not exist' });
-    if(result == 302) return res.json({ success: false, message: 'Wrong password' });
+    if(result == 301) return res.json({ status: 301, message: 'Email was not exist' });
+    if(result == 302) return res.json({ status: 302, message: 'Wrong password' });
+    if(result == 302) return res.json({ status: 303, message: 'Pealse do not empty' });
     if(!result) throw new Error
     const token = await AuthServices.createToken(result);
-    return res.status(200).json({ success: true, token });
+    return res.json({ status: 200 , token });
 
   } catch (error) {
-    res.status(200).json({ success: true, message: 'Network request failed' });
+    res.json({ status: 400, message: 'Network request failed' });
   }
 };
 
 export const getUserInfo = async (req, res) => {
   try {
 
-    if(!req.user) throw new Error('No User');
+    if(!req.user) return res.json({ status: 401, message: 'No User' });
     const userInfo = await CustomerServices.me(req.user._id);
-    if(userInfo == 401) throw new Error('User not exist');
-    res.status(200).json(userInfo);
+    if(userInfo == 401) return res.json({ status: 402, message: 'User not exist' }); 
+    res.json({ status: 200, userInfo });
 
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.json({ status: 400, message: 'Network request failed' });
   }
 };
 

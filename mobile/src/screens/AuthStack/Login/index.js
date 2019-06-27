@@ -86,25 +86,36 @@ export default class Login extends Component {
   
 
   _loginWithEmailPassword = async () => {
-    try {
-      const { email, password } = this.state
-      if(!email || email == '' || !password || password == '') return alert('Vui lòng không để trống')
+    const { email, password } = this.state
+    if(!email || !password) return alert('Vui lòng không để trống')
 
+    try {
       this.setState({isLoading: true})
       await api.LogIn 
         .headers({
             "Content-Type": "application/json",
         })
         .post({
-            "email": this.state.email,
-            "password": this.state.password,
+            "email": email,
+            "password": password,
         })
         .json( async(json) => {
-          if(json.message) {
-            
-            Alert.alert(
+          console.log('jopsn ', json);
+          if(json.status != 200){
+            var mess 
+            if(json.status == 301){
+              mess = 'Email không tồn tại'
+            }
+            if(json.status == 302){
+              mess = 'Sai mật khẩu'
+            }
+            if(json.status == 303){
+              mess = 'Vui lòng không để trống'
+            } 
+
+            return Alert.alert(
               'Thông báo',
-              (json.message === 'Email was not exist')? 'Email không tồn tại': 'Sai mật khẩu',
+              mess,
               [
                 {
                   text: 'Cancel',
@@ -114,9 +125,9 @@ export default class Login extends Component {
               ],
               {cancelable: false},
             );
-            return alert(json.message)
           }
-          if(json.token){
+
+          if(json.status == 200){
             const credentials = await Keychain.setGenericPassword(
               'token',
               json.token,
@@ -124,13 +135,11 @@ export default class Login extends Component {
             );
             if(!credentials) return console.log('Could not save credentials');
             console.log('Credentials saved!');
-      
-            setTimeout(() => {
+            return setTimeout(() => {
               this.setState({isLoading: false})
               NavigationService.navigate('Home')
             }, 1500);
-
-        }
+          }
       })
 
     } catch (error) {

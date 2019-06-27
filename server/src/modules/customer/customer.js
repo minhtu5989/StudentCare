@@ -46,6 +46,8 @@ export const registerCustomer = async (data) => {
 
 export const logInCustomer = async (data) => {
   try {
+    if(!data.email || !data.password) return 303
+
     const result = await Customer.findOne({ email: data.email });
     
     if (!result) return 301 

@@ -128,7 +128,7 @@ class AgendaComponent extends Component {
 
   loadItems= async(day) => {
     let activity = await this._fetchTKB()
-
+    if(!activity) return 
     setTimeout(() => {
       for (let i = -365; i<365; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
