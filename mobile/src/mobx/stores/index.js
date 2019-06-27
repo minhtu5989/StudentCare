@@ -2,8 +2,8 @@ import { AuthStore } from './Auth';
 
 const authStore = AuthStore.create();
 
-export const store = {
+export const stores = {
   authStore,
 };
 
-window.MobxStore = store;
+window.MobxStore = stores;

@@ -10,28 +10,39 @@ import {
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as Keychain from 'react-native-keychain';
+import { observer, inject, } from 'mobx-react';
+import { observable } from 'mobx';
 
 import { Input, Button, Wrapper } from '../../../components';
 import { theme } from "../../../constants/theme";
 import { api } from "../../../api/ApiConfig";
 import { NavigationService } from '../../../constants/NavigationService';
 
+// @inject(stores => ({
+//   userStore: stores.userStore,
+//   authStore: stores.authStore,
+//   }))
+
+@inject('authStore')
+
+@observer
 export default class Login extends Component {
-  constructor(props) {
-    super(props)
+  @observable
+  isLoading= false
+
+  @observable
+  isShowRegister= false
+
+  @observable
+  email= ''
   
-    this.state = {
-       isLoading: false,
-       email: null,
-       password: null,
-    }
-  }
+  @observable
+  password= ''
 
   render() {
-    const { isShowRegister, isLoading } = this.state
     return (
       <Wrapper
-        isLoading={isLoading}
+        isLoading={this.isLoading} 
         customStyle={{flex:1}}
       >
         <ImageBackground
@@ -58,7 +69,7 @@ export default class Login extends Component {
               
 
                 {/* Need Register? */}
-                {isShowRegister ? this._onRenderSuggestRegister() : null}
+                {this.isShowRegister ? this._onRenderSuggestRegister() : null}
             </View>
         </ImageBackground>
       </Wrapper>
@@ -77,75 +88,35 @@ export default class Login extends Component {
   
 
   _keyboardDidShow() {
-    this.setState({ isShowRegister: false })
+    this.isShowRegister = false
   }
 
   _keyBoardDidHide() {
-    this.setState({ isShowRegister: true })
+    this.isShowRegister = true
   }
   
 
   _loginWithEmailPassword = async () => {
-    const { email, password } = this.state
-    if(!email || !password) return alert('Vui lòng không để trống')
-
-    try {
-      this.setState({isLoading: true})
-      await api.LogIn 
-        .headers({
-            "Content-Type": "application/json",
-        })
-        .post({
-            "email": email,
-            "password": password,
-        })
-        .json( async(json) => {
-          console.log('jopsn ', json);
-          if(json.status != 200){
-            var mess 
-            if(json.status == 301){
-              mess = 'Email không tồn tại'
-            }
-            if(json.status == 302){
-              mess = 'Sai mật khẩu'
-            }
-            if(json.status == 303){
-              mess = 'Vui lòng không để trống'
-            } 
-
-            return Alert.alert(
-              'Thông báo',
-              mess,
-              [
-                {
-                  text: 'Cancel',
-                  onPress: () => this.setState({isLoading: false}),
-                  style: 'cancel',
-                },
-              ],
-              {cancelable: false},
-            );
-          }
-
-          if(json.status == 200){
-            const credentials = await Keychain.setGenericPassword(
-              'token',
-              json.token,
-              { accessControl: this.state.accessControl }
-            );
-            if(!credentials) return console.log('Could not save credentials');
-            console.log('Credentials saved!');
-            return setTimeout(() => {
-              this.setState({isLoading: false})
-              NavigationService.navigate('Home')
-            }, 1500);
-          }
-      })
-
-    } catch (error) {
-      return console.log('==============Error: ', error.message)
+    this.isLoading=true
+    let mess = await this.props.authStore.login(this.email, this.password)
+    if(mess == 200){
+      return setTimeout(() => {
+        this.isLoading = false
+        NavigationService.navigate('Home')
+      }, 1500);
     }
-
+    return Alert.alert(
+      'Thông báo',
+      mess,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => this.isLoading = false ,
+          style: 'cancel',
+        },
+      ],
+      {cancelable: false},
+    )
   }
   
   // This is Input field
@@ -153,18 +124,23 @@ export default class Login extends Component {
     return (
       <View style={styles.inputWrapper}>
         <Input
+          onTouchStart={()=> this.email=''}
           placeholder='Email'
-          onChange={email => this.setState({ email })}
+          value={this.email}
+          onChange={text => this.email = text}
           returnKeyType='next'
         />
 
         <Input
+          onTouchStart={()=> this.password=''}
           placeholder='Password'
           clearTextOnFocus
-          onChange={password => this.setState({ password })}
+          value={this.password}
+          onChange={text => this.password = text}
           customStyle={{ marginTop: 50, marginBottom: 40 }}
           secureTextEntry
         />
+
         <Button
           onPress={() => this._loginWithEmailPassword()}
         >Login</Button>

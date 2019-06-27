@@ -5,7 +5,7 @@ import { NavigationService } from './src/constants/NavigationService';
 import { Provider } from 'mobx-react';
 
 import { theme } from './src/constants/theme'
-import { store } from './src/stores';
+import { stores } from './src/mobx/stores';
 import { AppNav } from "./src/navigations/AppNav";
 
 export default class App extends Component{
@@ -17,7 +17,7 @@ export default class App extends Component{
   
   render() {
     return (
-      <Provider {...store}>
+      <Provider {...stores}>
         <UtilityThemeProvider theme={theme}>
           <SafeAreaView style={{flex:1, backgroundColor: theme.color.white}}>
             <StatusBar barStyle='dark-content'/>

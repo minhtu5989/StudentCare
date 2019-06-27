@@ -40,7 +40,7 @@ export default class Home extends Component {
         console.log('==================================== Verify successful !');
       } else {
         console.log("No credentials stored.");
-        NavigationService.navigate('Auth')
+        NavigationService.navigate('CheckAuth')
       }
     } catch (err) {
       console.log("Could not load credentials........ Error:", err);
