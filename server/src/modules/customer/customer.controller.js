@@ -14,10 +14,13 @@ export const register = async (req, res) => {
   try {
 
     await bodySchema.validate({ email, password });
-    let data = { email, password}
-    const result = await CustomerServices.registerCustomer(data);
+
+    const result = await CustomerServices.registerCustomer(email, password);
     if(!result) throw new Error
-    return res.json({ status: 200, token });
+    if(result == 301) res.json({ status: 301, message: 'Email was exist' });
+
+    const token = await AuthServices.createToken(result);
+    return res.json({ status: 200 , token });
 
   } catch (error) {
     res.json({ status: 400, message: 'Network request failed' });

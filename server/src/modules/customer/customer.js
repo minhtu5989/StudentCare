@@ -25,15 +25,15 @@ export const customerAuth = async (req, res, next) => {
   return next();
 };
 
-export const registerCustomer = async (data) => {
+export const registerCustomer = async (email, password) => {
   try {
-    const _customer = await Customer.findOne({ email: data.email });
+    const _customer = await Customer.findOne({ email });
     
-    if(_customer) throw Error('Email was exist')
+    if(_customer) return 301
 
-    const encryptedPassword = await hash(data.password, 8);
+    const encryptedPassword = await hash(password, 8);
     const result = await Customer.create({
-      email: data.email,
+      email: email,
       password: encryptedPassword,
     });
 
