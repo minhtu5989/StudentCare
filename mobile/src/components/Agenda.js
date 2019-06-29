@@ -10,8 +10,8 @@ import * as Keychain from 'react-native-keychain';
 import moment from "moment";
 
 import { NavigationService } from '@src/constants/NavigationService';
-import { theme } from "@src/constants/theme";
-import { api } from "../../api/ApiConfig";
+import { theme } from "../constants/theme";
+import { api } from "../api/ApiConfig";
 
 
 LocaleConfig.locales['vi'] = {
@@ -22,7 +22,7 @@ LocaleConfig.locales['vi'] = {
 };
 LocaleConfig.defaultLocale = 'vi';
 
-class AgendaComponent extends Component {
+export class AgendaComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,19 +53,19 @@ class AgendaComponent extends Component {
         onDayChange={(day)=>{console.log('day changed')}}
         onDayPress={(date) => { this.getMonthYear(date.month,date.year); }}
         theme={{
-            agendaKnobColor: 'green',
-            backgroundColor: '#ffffff',
-            calendarBackground: '#ffffff',
-            textSectionTitleColor: 'black',
-            selectedDayBackgroundColor: '#00adf5',
-            selectedDayTextColor: '#ffffff',
-            todayTextColor: '#00adf5',
-            dayTextColor: '#2d4150',
-            textDisabledColor: '#d9e1e8',
-            dotColor: '#00adf5',
-            selectedDotColor: '#ffffff',
-            arrowColor: '#00adf5',
-            monthTextColor: '#00adf5',
+            agendaKnobColor: theme.color.green,   
+            backgroundColor: theme.color.white,   
+            calendarBackground: theme.color.white,
+            textSectionTitleColor: theme.color.black,
+            selectedDayBackgroundColor: theme.color.myAppColor,
+            selectedDayTextColor: theme.color.white,
+            todayTextColor: theme.color.myAppColor,
+            dayTextColor: theme.color.dayTextColor,
+            textDisabledColor: theme.color.greyLight,
+            dotColor: theme.color.myAppColor,
+            selectedDotColor: theme.color.white,
+            arrowColor: theme.color.myAppColor,
+            monthTextColor: theme.color.myAppColor,
             textDayFontFamily: 'Cochin',
             textMonthFontFamily: 'Cochin',
             textDayHeaderFontFamily: 'Cochin',
@@ -100,25 +100,25 @@ class AgendaComponent extends Component {
   }
 
   _fetchTKB = async() => {
-
-    const credentials = await Keychain.getGenericPassword();
-    
-    if (credentials) {
-      console.log('==================================== Verify successful !');
-    } else {
-      console.log("No credentials stored.");
-    }
-
     try {
-      return res = await api.GetTKB 
+      const credentials = await Keychain.getGenericPassword();
+      
+      if (credentials) {
+        console.log('==================================== Verify successful !');
+
+      } else {
+        console.log("No credentials stored.");
+      }
+
+      res = await api.GetTKB 
       .headers({ 
         "Content-Type": "application/json",
         Authorization: `Bearer ${credentials.password}` 
       })
       .get()
-      .json( json => {
-        return json.data
-      })
+      .json()
+      return res.data
+
     } catch (error) {
         console.log('................Error:   ', error)
         return alert('Phát hiện lỗi Internet')
@@ -196,7 +196,7 @@ class AgendaComponent extends Component {
 const styles = StyleSheet.create({
   item: {
     justifyContent: 'center',
-    backgroundColor: '#e6f7ff',
+    backgroundColor: theme.color.white,
     flex: 1,
     borderRadius: 5,
     padding: 10,
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   calendar: {
     borderWidth: 1,
     paddingTop: 5,
-    borderColor: 'lightblue',
+    borderColor: theme.color.myAppColor,
     height: 350,
     width: 350
   },
@@ -221,7 +221,3 @@ const styles = StyleSheet.create({
     paddingTop: 30
   }
 });
-
-
-
-export default AgendaComponent

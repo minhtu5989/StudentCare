@@ -4,7 +4,9 @@ var {height, width} = Dimensions.get('window')
 
 const color = {
 
-  myAppColor: '#2196f3',
+  myAppColor: '#3D6DCC',
+
+  dayTextColor: '#2d4150',
 
   primary: '#0099FF',
   success: '#25c73a',

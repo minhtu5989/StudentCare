@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Box } from 'react-native-design-utility'
 
-export class MyButton extends Component {
+export default class Button extends Component {
     getAdditionalStyle(){
         const { type } = this.props;
         switch (type) {
@@ -27,7 +27,7 @@ export class MyButton extends Component {
     }
     
     render() {
-        const { children, ref, style, disabled, disabledStyle, ...rest } = this.props;
+        const { children, ref, style, disabled, disabledStyle, ...props } = this.props;
         const additionalStyle = this.getAdditionalStyle();
         const _style = [styles.button]
         if(disabled){
@@ -38,7 +38,7 @@ export class MyButton extends Component {
         }
         return  (
                 <TouchableOpacity
-                    {...rest}  
+                    {...props}  
                     ref={ref}
                     style={[ additionalStyle, _style ]} 
                     disabled={disabled}
@@ -53,8 +53,10 @@ export class MyButton extends Component {
 
 const styles = StyleSheet.create({
     button: {
+        flex:1,
+        padding: 10,
+        margin: 10,
         height:50, 
-        width:200, 
         alignSelf:'center', 
         borderRadius: 6,
     }

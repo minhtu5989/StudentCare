@@ -4,23 +4,18 @@ import { theme } from "../../constants/theme";
 
 
 export default props => {
-  const { onChange, customStyle } = props
-
-  const handleOnChange = e => {
-    onChange(e)
-  }
+  const { style } = props
 
   return (
     <TextInput
       autoCapitalize='none'
       underlineColorAndroid={'transparent'}
-      onChangeText={handleOnChange}
       placeholderTextColor={theme.color.greyLight}
       clearTextOnFocus
       // clearButtonMode="always"
       returnKeyType='done'
       {...props}
-      style={[styles.textInput, customStyle]}
+      style={[styles.textInput, style]}
     />
   )
 }

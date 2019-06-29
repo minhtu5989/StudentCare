@@ -44,7 +44,7 @@ export const AuthStore = types
           .json()
 
         self.info = res.data;
-        NavigationService.navigate('Main')
+        NavigationService.navigate('Tab')
       }
     } catch (error) {
       console.log('................Error:   ', error)

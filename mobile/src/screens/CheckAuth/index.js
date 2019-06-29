@@ -11,18 +11,11 @@ import {
 import * as Keychain from 'react-native-keychain';
 
 import { NavigationService } from "../../constants/NavigationService";
-import { Input, Button, Wrapper } from '../../components';
+import { Input, Button, Wrapper } from '../../commons';
 import { theme } from "../../constants/theme";
 
 
 export default class CheckAuth extends Component {
-  constructor(props) {
-    super(props)
-  
-    this.state = {
-       accessControl: null
-    }
-  }
 
   render() {
     return (
@@ -30,9 +23,7 @@ export default class CheckAuth extends Component {
           source={require('../../assets/images/backgrounds/phone.jpeg')}
           style={styles.backgroundImg}
         >
-          
             <View style={styles.loginContainer}>
-              
             </View>
         </ImageBackground>
     )
@@ -40,11 +31,6 @@ export default class CheckAuth extends Component {
 
 
   componentDidMount = async() => {
-
-    // Keychain.getSupportedBiometryType().then(biometryType => {
-    //     this.setState({ biometryType });
-    //     console.log('biometryType: ',biometryType);
-    // });
 
     // Get token from KeyChain
     try {
@@ -61,7 +47,6 @@ export default class CheckAuth extends Component {
       console.log("Could not load credentials.......Error: ", err);
     }
   }
-  
 }
 
 const styles = StyleSheet.create({

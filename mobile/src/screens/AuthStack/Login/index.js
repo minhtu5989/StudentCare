@@ -13,7 +13,7 @@ import * as Keychain from 'react-native-keychain';
 import { observer, inject, } from 'mobx-react';
 import { observable } from 'mobx';
 
-import { Input, Button, Wrapper } from '../../../components';
+import { Input, Button, Wrapper } from '../../../commons';
 import { theme } from "../../../constants/theme";
 import { api } from "../../../api/ApiConfig";
 import { NavigationService } from '../../../constants/NavigationService';
@@ -102,7 +102,7 @@ export default class Login extends Component {
     if(mess == 200){
       return setTimeout(() => {
         this.isLoading = false
-        NavigationService.navigate('Home')
+        NavigationService.navigate('Tab')
       }, 1500);
     }
     return Alert.alert(
