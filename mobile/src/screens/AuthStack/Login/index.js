@@ -9,19 +9,13 @@ import {
   Alert
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import * as Keychain from 'react-native-keychain';
 import { observer, inject, } from 'mobx-react';
 import { observable } from 'mobx';
+import { Button } from 'react-native-elements';
 
-import { Input, Button, Wrapper } from '../../../commons';
+import { Input, Wrapper } from '../../../commons';
 import { theme } from "../../../constants/theme";
-import { api } from "../../../api/ApiConfig";
 import { NavigationService } from '../../../constants/NavigationService';
-
-// @inject(stores => ({
-//   userStore: stores.userStore,
-//   authStore: stores.authStore,
-//   }))
 
 @inject('authStore')
 
@@ -34,10 +28,10 @@ export default class Login extends Component {
   isShowRegister= false
 
   @observable
-  email= ''
+  email= 'phuclt@hcmute.edu.vn'
   
   @observable
-  password= ''
+  password= '123'
 
   render() {
     return (
@@ -134,7 +128,6 @@ export default class Login extends Component {
         <Input
           onTouchStart={()=> this.password=''}
           placeholder='Password'
-          clearTextOnFocus
           value={this.password}
           onChange={text => this.password = text}
           customStyle={{ marginTop: 50, marginBottom: 40 }}
@@ -142,8 +135,11 @@ export default class Login extends Component {
         />
 
         <Button
-          onPress={() => this._loginWithEmailPassword()}
-        >Login</Button>
+          title="Log In"
+          style={{width: '85%', alignSelf: 'center', marginTop: '20%'}}
+          onPress={this._loginWithEmailPassword}
+        />
+        
       </View>
     )
   }

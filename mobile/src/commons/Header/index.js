@@ -12,7 +12,7 @@ const leftBtn = (
   </TouchableOpacity>
 ) 
 
-class HeaderComponent extends Component {
+export default class MyHeader extends Component {
   render() {
     const { title, ...props } = this.props
     return (
@@ -30,5 +30,3 @@ class HeaderComponent extends Component {
     );
   }
 }
-
-export default HeaderComponent

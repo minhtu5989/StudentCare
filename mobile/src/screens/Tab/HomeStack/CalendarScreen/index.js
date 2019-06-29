@@ -6,39 +6,47 @@ import {
   TouchableOpacity
 } from 'react-native';
 import * as Keychain from 'react-native-keychain';
-import { Button } from 'react-native-elements';
+
 import { AgendaComponent } from "../../../../components/Agenda";
 import { theme } from '../../../../constants/theme';
 import { NavigationService } from '../../../../constants/NavigationService';
 import { Header } from "../../../../commons";
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { isEmptyStatement } from '@babel/types';
 
+const rightBtn = (
+  <TouchableOpacity style={{ padding:10 }}>
+    <AntDesign name="logout" 
+    onPress={async()=> {
+      try {
+        const credentials = await Keychain.resetGenericPassword();
+        if(!credentials) throw new Error
+  
+        console.log("Credentials Reset !");
+        setTimeout(() => {
+          NavigationService.navigate('CheckAuth')
+        }, 300);
+        alert('Đăng xuất')
+      } catch (err) {
+        console.log("Could not load credentials........ Error:", err);
+      }
+    }} size={23} color={theme.color.white} />
+  </TouchableOpacity>
+)
 export default class CalendarScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     header: (
       <Header
-        rightComponent={
-          <TouchableOpacity style={{ padding:10 }}>
-            <AntDesign name="logout" size={23} color={theme.color.white} />
-          </TouchableOpacity>
-        }
+        rightComponent={rightBtn}
         leftComponent
         title='Thời khoá biểu'
       />
     )
   });
 
-  
-
   render() {
     return (
       <View style={styles.container}>
         <AgendaComponent/>
-        <Button
-          title="exit"
-          onPress={()=> this._logOut}
-        />
       </View>
     );
   }
@@ -58,23 +66,7 @@ export default class CalendarScreen extends Component {
     } catch (err) {
       console.log("Could not load credentials........ Error:", err);
     }
-
   }
-
-  _logOut = async() => {
-    try {
-      const credentials = await Keychain.resetGenericPassword();
-      if(!credentials) throw new Error
-
-      console.log("Credentials Reset !");
-      setTimeout(() => {
-        NavigationService.navigate('CheckAuth')
-      }, 300);
-    } catch (err) {
-      console.log("Could not load credentials........ Error:", err);
-    }
-  }
-
 }
 
 const styles = StyleSheet.create({

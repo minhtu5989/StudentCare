@@ -64,10 +64,9 @@ export const AuthStore = types
         'token',
         token,
       );
-      if(credentials){
-        console.log('Credentials saved --> Save Token');
-        self.authToken = credentials.password;
-      }
+      if(!credentials) throw new Error
+      console.log('Credentials saved --> Save Token');
+      self.authToken = token;
     } catch (err) {
       console.log("Could not load credentials....Error: ", err);
     }
@@ -101,13 +100,6 @@ export const AuthStore = types
       }
 
       if(res.status == 200){
-        const credentials = yield Keychain.setGenericPassword(
-          'token',
-          res.token,
-        );
-        if(!credentials) return console.log('Could not save credentials');
-        console.log('Credentials saved!');
-
         yield self.saveToken(res.token)
         // yield self.getUserInfo()
 

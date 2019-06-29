@@ -105,7 +105,6 @@ export class AgendaComponent extends Component {
       
       if (credentials) {
         console.log('==================================== Verify successful !');
-
       } else {
         console.log("No credentials stored.");
       }
@@ -117,7 +116,8 @@ export class AgendaComponent extends Component {
       })
       .get()
       .json()
-      return res.data
+
+      return res.userInfo.data
 
     } catch (error) {
         console.log('................Error:   ', error)
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     marginTop: 17,
     borderWidth: 1,
     borderColor: theme.color.greyLight,
-    height: 100
+    height: 145
   },
   calendar: {
     borderWidth: 1,

@@ -7,3 +7,9 @@ export const stores = {
 };
 
 window.MobxStore = stores;
+
+
+// @inject(stores => ({
+//   userStore: stores.userStore,
+//   authStore: stores.authStore,
+//   }))

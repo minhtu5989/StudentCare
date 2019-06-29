@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Box } from 'react-native-design-utility'
 
-export default class Button extends Component {
+export default class MyButton extends Component {
     getAdditionalStyle(){
         const { type } = this.props;
         switch (type) {
@@ -54,8 +54,9 @@ export default class Button extends Component {
 const styles = StyleSheet.create({
     button: {
         flex:1,
-        padding: 10,
+        padding: 5,
         margin: 10,
+        width: 100,
         height:50, 
         alignSelf:'center', 
         borderRadius: 6,
