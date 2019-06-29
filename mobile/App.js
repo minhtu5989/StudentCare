@@ -19,10 +19,10 @@ export default class App extends Component{
     return (
       <Provider {...stores}>
         <UtilityThemeProvider theme={theme}>
-          <SafeAreaView style={{flex:1, backgroundColor: theme.color.white}}>
+          {/* <SafeAreaView style={{flex:1, backgroundColor: theme.color.white}}> */}
             <StatusBar barStyle='dark-content'/>
             <AppNav ref={ r => NavigationService.setTopLevelNavigator(r) }/>
-          </SafeAreaView>
+          {/* </SafeAreaView> */}
         </UtilityThemeProvider>
       </Provider>
     );

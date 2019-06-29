@@ -7,15 +7,32 @@ import {
 import * as Keychain from 'react-native-keychain';
 
 import { Button } from 'react-native-elements';
-import { Agenda } from "../../../components";
-import { theme } from '../../../constants/theme';
-import { NavigationService } from '../../../constants/NavigationService';
+import { Agenda } from "../../../../components";
+import { theme } from '../../../../constants/theme';
+import { NavigationService } from '../../../../constants/NavigationService';
+import { Header } from 'react-native-elements';
+import IconVector from 'react-native-vector-icons/Ionicons';
 
-export default class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { };
-  }
+const leftIcon = <IconVector name="ios-arrow-back" size={40} color={theme.color.white} />
+
+export default class CalendarScreen extends Component {
+  
+  static navigationOptions = ({ navigation }) => ({
+    header: (
+      <Header
+        containerStyle={{
+          backgroundColor: '#3D6DCC',
+          justifyContent: 'space-around',
+        }}
+        statusBarProps={{ barStyle: 'light-content' }}
+        barStyle="light-content" // or directly
+        // leftComponent={leftIcon}
+        centerComponent={{ text: 'Thời khoá biểu', style: { color: '#fff', fontWeight:'800', fontSize: 17, } }}
+      />
+    )
+  });
+
+  
 
   render() {
     return (
@@ -74,6 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee'
   },
   container: {
+    paddingTop: 20,
     flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',

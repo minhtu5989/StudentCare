@@ -7,7 +7,7 @@ import {
   import RegisterScreen from './Register'
   import ResetScreen from './Reset'
   
-  const AuthNavigation = createStackNavigator({
+  const AuthStack = createStackNavigator({
     Login: LoginScreen,
     Register: RegisterScreen,
     Reset: ResetScreen,
@@ -17,4 +17,4 @@ import {
     // mode: 'modal',
   })
   
-  export default createAppContainer(AuthNavigation)
+  export default createAppContainer(AuthStack)

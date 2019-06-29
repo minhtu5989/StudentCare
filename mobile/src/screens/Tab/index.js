@@ -1,26 +1,51 @@
-import React, { Component } from 'react'
-import { 
-    Dimensions, 
-    Image,
-    Alert,
-    Platform,
-    StyleSheet, 
-} from 'react-native';
-import { Box, Text } from 'react-native-design-utility'
+import { createAppContainer, createBottomTabNavigator } from 'react-navigation'
 
-import { theme } from '@src/constants/theme';
+import HomeStack from "./HomeStack";
+// import ProfileScreen from "./Settings/ProfileScreen";
+import AddFaceScreen from "./AddFaceScreen";
+import { theme } from "../../constants/theme";
 
-export default class TabScreen extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {  };
-    }
+const TabNavigator = createBottomTabNavigator(
+    {
+        Home: HomeStack, 
+        AddFace: AddFaceScreen, 
+        // Profile: ProfileScreen, 
+    },
+    {
+        initialRouteName: 'Home',
+        order: ['AddFace', 'Home',],
+        animationEnabled: true,
+        swipeEnabled: false,
+        lazy: true,
+        tabBarOptions: { 
+            // pressColor: 'white',
+            showIcon: true, 
+            showLabel: true,
+            labelStyle:{
+                fontSize: 10,
+                // fontFamily: 
+                marginBottom: 6
+            },
+            activeTintColor: theme.color.blueDark, 
+            inactiveTintColor: theme.color.greyDarkest,
+            // inactiveBackgroundColor: theme.color.greyLighter,
+            activeBackgroundColor: theme.color.greyLighter,
+            style:{
+                height: 60,
+                // paddingBottom: 5,
+                backgroundColor: theme.color.greyLightest,
+                borderTopWidth: 0.3,
+                borderTopColor:'gray',
+                shadowColor: 'black',
+                shadowOffset: {
+                    width: 0,
+                    height: -1,
+                },
+                shadowOpacity: 0.2,
+                shadowRadius: 5,
+            },
+        },
+    } 
+)
 
-    render() {
-        return (
-            <Box f={1} center bg={theme.blueLight}>
-                <Text>Tab Screen</Text>
-            </Box>
-        );
-    }
-}
+export default TabNav = createAppContainer(TabNavigator)

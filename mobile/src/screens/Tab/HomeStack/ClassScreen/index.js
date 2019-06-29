@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Box, Text } from 'react-native-design-utility'
 import { Button, Avatar } from "react-native-elements";
 
-import { theme } from '../../../constants/theme';
-import { NavigationService } from '../../../constants/NavigationService';
+import { theme } from '../../../../constants/theme';
+import { NavigationService } from '../../../../constants/NavigationService';
 
 export default class ClassScreen extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ export default class ClassScreen extends Component {
             <Box f={1} m='lg' >
                 <Box center justify='around'>
                     <Avatar 
-                        source={require('../../../assets/images/icon/MaleStudent.png')}
+                        source={require('../../../../assets/images/icons/MaleStudent.png')}
                         showEditButton
                         size="large"
                         rounded

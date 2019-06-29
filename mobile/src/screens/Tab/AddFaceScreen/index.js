@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react'
 
 import {
   StyleSheet,
@@ -297,12 +297,12 @@ export default class AddFaceScreen extends Component {
                       ?
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../assets/images/icon/MaleStudent.png')}
+                        source={require('../../../assets/images/icons/MaleStudent.png')}
                       />
                       :
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../assets/images/icon/FemaleStudent.png')}
+                        source={require('../../../assets/images/icons/FemaleStudent.png')}
                       />
                     }
                   </Text> */}
@@ -314,7 +314,7 @@ export default class AddFaceScreen extends Component {
                       :
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../assets/images/icon/XCircle.png')}
+                        source={require('../../../assets/images/icons/XCircle.png')}
                       />
                     }
                   </Text>

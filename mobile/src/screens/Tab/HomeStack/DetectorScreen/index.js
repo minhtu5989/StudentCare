@@ -18,12 +18,12 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import Permissions from 'react-native-permissions'
 import { Button } from "react-native-elements";
 import _ from 'lodash';
-import { NavigationService } from '../../../constants/NavigationService';
+import { NavigationService } from '../../../../constants/NavigationService';
 import Modal from 'react-native-modalbox';
-import {theme} from '../../../constants/theme'
+import {theme} from '../../../../constants/theme'
 import { Box } from 'react-native-design-utility'
 
-import { api } from "../../../api/ApiConfig";
+import { api } from "../../../../api/ApiConfig";
 
 export default class DetectorScreen extends Component {
   constructor(props) {
@@ -381,12 +381,12 @@ export default class DetectorScreen extends Component {
                       ?
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../assets/images/icon/MaleStudent.png')}
+                        source={require('../../../../assets/images/icons/MaleStudent.png')}
                       />
                       :
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../assets/images/icon/FemaleStudent.png')}
+                        source={require('../../../../assets/images/icons/FemaleStudent.png')}
                       />
                     }
                   </Text> */}
@@ -398,7 +398,7 @@ export default class DetectorScreen extends Component {
                       :
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../assets/images/icon/XCircle.png')}
+                        source={require('../../../../assets/images/icons/XCircle.png')}
                       />
                     }
                   </Text>

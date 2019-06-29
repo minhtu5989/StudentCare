@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Component } from 'react'
+
 import { View, StatusBar, StyleSheet } from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { theme } from '../../constants/theme';

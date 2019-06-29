@@ -17,6 +17,10 @@ export class NewFile extends Component {
         this.state = {  };
     }
 
+    static navigationOptions = ({ navigation }) => ({
+        title: 'NewFile',
+    });
+
     render() {
         return (
             <Box f={1} center bg={theme.blueLight}>

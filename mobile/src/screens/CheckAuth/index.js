@@ -27,7 +27,7 @@ export default class CheckAuth extends Component {
   render() {
     return (
         <ImageBackground
-          source={require('../../assets/images/background/phone.jpeg')}
+          source={require('../../assets/images/backgrounds/phone.jpeg')}
           style={styles.backgroundImg}
         >
           
@@ -52,7 +52,7 @@ export default class CheckAuth extends Component {
       
       if (credentials) {
         console.log("Credentials loaded!");
-        NavigationService.navigate('Home')
+        NavigationService.navigate('Tab')
       } else {
         console.log("No credentials stored.");
         NavigationService.navigate('Auth')

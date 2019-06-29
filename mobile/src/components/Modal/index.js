@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Component } from 'react'
+
 import { View, Text, StyleSheet, Modal } from 'react-native'
 import { Button } from '../index'
 import { theme } from "../../constants/theme";

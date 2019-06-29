@@ -46,7 +46,7 @@ export default class Login extends Component {
         customStyle={{flex:1}}
       >
         <ImageBackground
-          source={require('../../../assets/images/background/phone.jpeg')}
+          source={require('../../../assets/images/backgrounds/phone.jpeg')}
           style={styles.backgroundImg}
         >
           
