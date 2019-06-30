@@ -13,7 +13,7 @@ const TabNavigator = createBottomTabNavigator(
     },
     {
         initialRouteName: 'Home',
-        order: ['AddFace', 'Home',],
+        order: [ 'Home', 'AddFace', ],
         animationEnabled: true,
         swipeEnabled: false,
         lazy: true,
@@ -31,7 +31,7 @@ const TabNavigator = createBottomTabNavigator(
             // inactiveBackgroundColor: theme.color.greyLighter,
             activeBackgroundColor: theme.color.greyLighter,
             style:{
-                height: 60,
+                height: 50,
                 // paddingBottom: 5,
                 backgroundColor: theme.color.greyLightest,
                 borderTopWidth: 0.3,

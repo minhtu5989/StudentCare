@@ -6,24 +6,23 @@ import { NavigationService } from '../../constants/NavigationService'
 import { api } from '../../api/ApiConfig'
 import { CurrentUserModel } from '../models/CurrentUser';
 
-const TOKEN_KEY = '@TuLuong283/token'
-
 export const AuthStore = types
 .model(`AuthStore`, {
-  authToken: types.maybe(types.string),
   info: types.maybe(CurrentUserModel),
 })
 .actions(self => ({
 
-  getAuthToken: flow(function*(){
+  verifyToken: flow(function*(){
     try {
     //=========================VERYFFI TOKEN
       const credentials = yield Keychain.getGenericPassword();
       if (credentials) {
-        self.authToken = credentials.password
         console.log('=========================== Got credentials');
+        console.log(credentials.password);
+        
+        return credentials.password
       } else {
-        console.log("No credentials stored.");
+        console.log("=========================== No credentials stored.");
         NavigationService.navigate('Auth')
       }
     } catch (error) {
@@ -31,32 +30,26 @@ export const AuthStore = types
     }
   }),
 
-  getUserInfo: flow(function*(){
+  getUserInfo: flow(function*(token){
     try {
+      const res = yield api.GetTKB 
+        .headers({ 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}` 
+        })
+        .get()
+        .json()
 
-      if(self.authToken){
-        res = yield api.GetTKB 
-          .headers({ 
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${self.authToken}` 
-          })
-          .get()
-          .json()
-
-        self.info = res.data;
-        NavigationService.navigate('Tab')
-      }
+      if(!res.userInfo) throw new Error
+        
+      return self.info = res.userInfo
+  
     } catch (error) {
       console.log('................Error:   ', error)
       return alert('Phát hiện lỗi Internet')
     }
   }),
   
-  setupAuth: flow(function*(){
-      yield self.getAuthToken()
-      yield self.getUserInfo()
-  }),
-
   saveToken: flow(function*(token){
     //=========================SET TOKEN
     try {
@@ -65,11 +58,15 @@ export const AuthStore = types
         token,
       );
       if(!credentials) throw new Error
-      console.log('Credentials saved --> Save Token');
-      self.authToken = token;
+      console.log('=========================== Credentials saved --> Save Token');
     } catch (err) {
       console.log("Could not load credentials....Error: ", err);
     }
+  }),
+
+  setupAuth: flow(function*(){
+    const token = yield self.verifyToken()
+    yield self.getUserInfo(token)
   }),
 
   login: flow(function*(email, password){
@@ -84,6 +81,8 @@ export const AuthStore = types
             "password": password,
         })
         .json()
+
+      if(!res) throw new Error
 
       // console.log('res ', res);
       if(res.status != 200){
@@ -101,25 +100,24 @@ export const AuthStore = types
 
       if(res.status == 200){
         yield self.saveToken(res.token)
-        // yield self.getUserInfo()
-
         return 200
       }
-
     } catch (error) {
+      alert('Lỗi kết nối Internet')
       return console.log('==============Error: ', error.message)
     }
   }),
 
-  logOut: flow(function*(){
+  resetToken: flow(function*(){
     //=========================RESET TOKEN
     try {
-      const response = yield Keychain.resetGenericPassword();
-      if(response){
-        console.log("Credentials Reset --> Log Out");
+      const result = yield Keychain.resetGenericPassword();
+      if(result){
+        console.log("=========================== Credentials Reset --> Log Out");
         setTimeout(() => {
           NavigationService.navigate('CheckAuth')
-        }, 500); 
+        }, 300); 
+        alert('Đăng xuất')
       }
     } catch (err) {
       console.log("Could not reset credentials......Error: ", err);

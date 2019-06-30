@@ -18,7 +18,7 @@ const HomeStack = createStackNavigator(
         },
     },{
         initialRouteName: 'Calendars',
-        // headerMode: 'none',
+        headerMode: 'screen',
         mode: 'modal',
     }
 )

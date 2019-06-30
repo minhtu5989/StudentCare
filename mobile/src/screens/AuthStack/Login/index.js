@@ -18,7 +18,6 @@ import { theme } from "../../../constants/theme";
 import { NavigationService } from '../../../constants/NavigationService';
 
 @inject('authStore')
-
 @observer
 export default class Login extends Component {
   @observable
@@ -28,7 +27,7 @@ export default class Login extends Component {
   isShowRegister= false
 
   @observable
-  email= 'phuclt@hcmute.edu.vn'
+  email= 'tt.trang@hutech.edu.vn'
   
   @observable
   password= '123'
@@ -92,7 +91,10 @@ export default class Login extends Component {
 
   _loginWithEmailPassword = async () => {
     this.isLoading=true
-    let mess = await this.props.authStore.login(this.email, this.password)
+    const email = this.email
+    const password = this.password
+
+    let mess = await this.props.authStore.login(email, password)
     if(mess == 200){
       return setTimeout(() => {
         this.isLoading = false

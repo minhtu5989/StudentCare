@@ -108,11 +108,18 @@ export const me = async userId => {
       })
     })
     // console.log('result-===========',result);
+    Object.keys(result).forEach(key => {
+        user.data[key] = result[key];
+    });
+
+    await user.save();
+
     let userInfo = user.toObject();
     delete userInfo.password;
-    userInfo = { ...userInfo, data: result }
+    userInfo = { ...userInfo }
 
     return userInfo;
+    
   } catch (error) {
     throw error;
   }

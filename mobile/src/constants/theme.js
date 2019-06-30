@@ -79,7 +79,7 @@ const theme = {
     weight: {
       light: '200',
       normal: '400',
-      bold: '700',
+      bold: '600',
     },
     spacing: {
       tight: 0.8,
@@ -144,8 +144,8 @@ const theme = {
     {
       shadowColor: color.black,
       shadowOffset: {
-        width: 0,
-        height: 0,
+        width: 5,
+        height: 5,
       },
       shadowOpacity: 0.6,
       shadowRadius: 5,

@@ -28,10 +28,22 @@ export default class ClassScreen extends Component {
                     <Text>Giảng viên: {obj.lecturer}</Text>
                 </Box>
                 <Box mt='lg'>
-                    <Text>Môn học:   {obj.courseName}</Text>
-                    <Text>Tiết bắt đầu:   {obj.startingSesions} -> {obj.noOfSecsions + obj.startingSesions} </Text>
-                    <Text>Phòng:   {obj.room}</Text>
-                    <Text>Lớp:   {obj.class}</Text>
+                    <Box>
+                        <Text weight='bold'>Môn học: </Text> 
+                        <Text numberOfLines={1} style={{width: '100%'}}>{obj.courseName}</Text>  
+                    </Box>
+                    <Box dir='row'>
+                        <Text weight='bold' mr='2xs'>Tiết bắt đầu:</Text>
+                        <Text>{obj.startingSesions} -> { parseInt(item.obj.noOfSecsions) + parseInt(item.obj.startingSesions)}</Text>
+                    </Box>
+                    <Box dir='row'>
+                        <Text weight='bold' mr='2xs'>Phòng:</Text>
+                        <Text>{obj.room}</Text>
+                    </Box>
+                    <Box dir='row'>
+                        <Text weight='bold' mr='2xs'>Lớp:</Text>
+                        <Text>{obj.class}</Text>
+                    </Box>
                 </Box>
                 <Box>
                     <Button

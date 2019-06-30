@@ -2,7 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 
 const CustomerSchema = new Schema(
   {
-    
     email: {
       type: String,
       required: true,
@@ -12,20 +11,33 @@ const CustomerSchema = new Schema(
       type: String,
       required: true,
     },
-    info: {
-      courseName: String,
-      courseCode: String, 
-      lecturerCode: String,
-      lecture: String,
-      weekday: String,
-      startingSession: String,
-      numberSession: String,
-      room: String,
-      class: String,
-      timeable: String,
-      week: String,
-      phone: String,
-    },
+    avatar: String,
+    data: [
+      {
+        nhomBang: String,
+        codeCourse: String,
+        courseName: String,
+        cr: String, 
+        noOfStudent: String, 
+        lectureCode: String,
+        lecturer: String,
+        weekday: String,
+        startingSesions: String,
+        noOfSecsions: String,
+        room: String,
+        lopBang: String,
+        class: String,
+        timeable: String,
+        week: String,
+        examDate: String,
+        phone: String,
+        email: String,
+        lastName: String,
+        firstName: String,
+        shs: String,
+        teachingDay: String
+      }
+    ],
   },
   { timestamps: true },
 );

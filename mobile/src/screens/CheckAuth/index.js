@@ -37,7 +37,7 @@ export default class CheckAuth extends Component {
       const credentials = await Keychain.getGenericPassword();
       
       if (credentials) {
-        console.log("Credentials loaded!");
+        console.log("==================================== Credentials loaded!");
         NavigationService.navigate('Tab')
       } else {
         console.log("No credentials stored.");

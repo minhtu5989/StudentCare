@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
 import {Agenda, LocaleConfig} from 'react-native-calendars';
-import * as Keychain from 'react-native-keychain';
 import moment from "moment";
+import { Box, Text } from 'react-native-design-utility';
+import { observer, inject, } from 'mobx-react';
+import { observable } from 'mobx';
 
 import { NavigationService } from '@src/constants/NavigationService';
 import { theme } from "../constants/theme";
@@ -22,38 +23,30 @@ LocaleConfig.locales['vi'] = {
 };
 LocaleConfig.defaultLocale = 'vi';
 
+@inject('authStore')
+@observer
 export class AgendaComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      date: new Date(),
-      items:{},
-      selectedMonth:''
-    };
-  }
-
-  componentWillMount = async () => {
-    const currentDate = moment(this.state.date, 'YYYY/MM/DD');
-    const month = currentDate.format('MM');
-    const year = currentDate.format('YYYY');
-    this.getMonthYear(month,year);
-  }
+  @observable date = new Date()
+  
+  @observable items = {}
+  
+  @observable selectedMonth = ''
 
   render() {
     return (
       <Agenda
         loadItemsForMonth={this.loadItems.bind(this)}
-        selected={this.state.date}
-        items={this.state.items}
-        minDate={'2018-01-01'}
-        maxDate={'2020-01-01'}
+        selected={this.date}
+        items={this.items}
+        // minDate={'2018-01-01'}
+        // maxDate={'2020-01-01'}
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
         onDayChange={(day)=>{console.log('day changed')}}
         onDayPress={(date) => { this.getMonthYear(date.month,date.year); }}
         theme={{
-            agendaKnobColor: theme.color.green,   
+            agendaKnobColor: theme.color.myAppColor,   
             backgroundColor: theme.color.white,   
             calendarBackground: theme.color.white,
             textSectionTitleColor: theme.color.black,
@@ -99,45 +92,27 @@ export class AgendaComponent extends Component {
     );
   }
 
-  _fetchTKB = async() => {
-    try {
-      const credentials = await Keychain.getGenericPassword();
-      
-      if (credentials) {
-        console.log('==================================== Verify successful !');
-      } else {
-        console.log("No credentials stored.");
-      }
-
-      res = await api.GetTKB 
-      .headers({ 
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${credentials.password}` 
-      })
-      .get()
-      .json()
-
-      return res.userInfo.data
-
-    } catch (error) {
-        console.log('................Error:   ', error)
-        return alert('Phát hiện lỗi Internet')
-    }
+  componentDidMount = async() => {
+    const currentDate = moment(this.date, 'YYYY/MM/DD');
+    const month = currentDate.format('MM');
+    const year = currentDate.format('YYYY');
+    this.getMonthYear(month,year);
   }
 
+  loadItems = async(day) => {
+    //fetch Data & verify Token
+    await this.props.authStore.setupAuth()
+    activity = this.props.authStore.info.dataList
 
-  loadItems= async(day) => {
-    let activity = await this._fetchTKB()
-    if(!activity) return 
     setTimeout(() => {
-      for (let i = -365; i<365; i++) {
+      for (let i = -150; i<150; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
-        if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
+        if (!this.items[strTime]) {
+          this.items[strTime] = [];
           for (let j = 0; j < activity.length; j++) {
             if(strTime == activity[j].teachingDay){
-              this.state.items[strTime].push({ obj: {...activity[j]} });
+              this.items[strTime].push({ obj: {...activity[j]} });
             }
           }
         }
@@ -146,34 +121,46 @@ export class AgendaComponent extends Component {
       for (let i = 0; i < 60; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
-        if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
+        if (!this.items[strTime]) {
+          this.items[strTime] = [];
         }
       }
 
       const newItems = {};
-      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
-      this.setState({
-        items: newItems
-      });
+      Object.keys(this.items).forEach(key => {newItems[key] = this.items[key];});
+        this.items = newItems
     }, 500);
-    console.log('==============', this.state.items)
+    // console.log('==============', this.items)
   }
    
   getMonthYear(M,Y) {
     const month = M - 1;
     const monthNames = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
-    this.setState({selectedMonth: monthNames[month]+' '+Y, showMonth: true });
+    this.selectedMonth = monthNames[month]+' '+Y
   }
 
   renderItem(item) {
     return (
-      <TouchableOpacity style={styles.item} onPress={ () => NavigationService.navigate('Class', {obj: item.obj}) } >
-        <Text>Môn học:   {item.obj.courseName}</Text>
-        <Text>Tiết bắt đầu:   {item.obj.startingSesions} -> {item.obj.noOfSecsions + item.obj.startingSesions} </Text>
-        <Text>Phòng:   {item.obj.room}</Text>
-        <Text>Lớp:   {item.obj.class}</Text>
-      </TouchableOpacity>
+      <Box shadows={2} style={styles.item} >
+        <TouchableOpacity onPress={ () => NavigationService.navigate('Class', {obj: item.obj}) } >
+            <Box>
+              <Text weight='bold'>Môn học: </Text> 
+              <Text numberOfLines={1} style={{width: '100%'}}>{item.obj.courseName}</Text>  
+            </Box>
+            <Box dir='row'>
+              <Text weight='bold' mr='2xs'>Tiết bắt đầu:</Text>
+              <Text>{item.obj.startingSesions} -> { parseInt(item.obj.noOfSecsions) + parseInt(item.obj.startingSesions)}</Text>
+            </Box>
+            <Box dir='row'>
+              <Text weight='bold' mr='2xs'>Phòng:</Text>
+              <Text>{item.obj.room}</Text>
+            </Box>
+            <Box dir='row'>
+              <Text weight='bold' mr='2xs'>Lớp:</Text>
+              <Text>{item.obj.class}</Text>
+            </Box>
+        </TouchableOpacity>
+      </Box>
     );
   }
 
@@ -196,15 +183,15 @@ export class AgendaComponent extends Component {
 const styles = StyleSheet.create({
   item: {
     justifyContent: 'center',
-    backgroundColor: theme.color.white,
+    backgroundColor: theme.color.greyLightest,
     flex: 1,
     borderRadius: 5,
     padding: 10,
     marginRight: 10,
-    marginTop: 17,
+    marginTop: 10,
     borderWidth: 1,
     borderColor: theme.color.greyLight,
-    height: 145
+    height: 130,
   },
   calendar: {
     borderWidth: 1,

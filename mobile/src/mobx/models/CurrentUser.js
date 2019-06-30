@@ -1,66 +1,26 @@
 import { types, flow, getParent, destroy } from 'mobx-state-tree';
 
+import { TeachingDayModel } from "./TeachingDay";
 import { api } from "../../api/ApiConfig";
 
 export const CurrentUserModel = types
   .model('CurrentUserModel', {
     _id: types.identifier,
-    firstName: types.maybeNull(types.string),
-    lastName: types.maybeNull(types.string),
-    avatarUrl: types.maybeNull(types.string),
-    notifiToken: types.optional(types.array(types.model({token: types.string})), [] ),
+    email: types.string,
+    avatar: types.maybeNull(types.string),
+    data: types.optional(types.array(TeachingDayModel), [] ),
   })
   .views(self => ({
-    get totalAddresses(){
-      return self.addresses.length
-    },
 
-    get addressList(){
-      return self.addresses.slice()
+    get dataList(){
+      return self.data.slice()
     },
 
     get parent(){
       return getParent(self)
     },
   }))
-//   .actions(self => ({
-
-//     createAddress: flow(function*(data){
-//       try {
-//         const res = yield baseApi
-//         .url('/addresses')
-//         // .auth(`Bearer ${self.parent.authToken}`)
-//         .headers({ Authorization: `Bearer ${self.parent.authToken}` })
-//         .post({ data })
-//         .json()
-
-//         if (res.address) {
-//           self.addresses.push(res.address);
-//         }
-
-//         return res;
-//       } catch (error) {
-//         throw error;
-//       }
-//     }),
-
-//     getAddresses: flow(function*(){
-//       try {
-//         const res = yield baseApi
-//         .url('/addresses')
-//         .auth(`Bearer ${self.parent.authToken}`)
-//         // .headers({ Authorization: `Bearer ${self.parent.authToken}` })
-//         .get()
-//         .json()
-
-//         if(Array.isArray(res.addresses)){      //check boolean Array
-//             return self.addresses = res.addresses
-//         }
-//       } catch (error) {
-//         throw error;
-//       }
-//     }),
-
+  .actions(self => ({
 //     removeAddress(address){
 //         // self.addresses = self.addresses.filter(
 //         //   el => el._id !== address._id
@@ -69,5 +29,5 @@ export const CurrentUserModel = types
 //         console.log('Delete Address Successful');
 //     },
 
-// }))
+}))
   
