@@ -2,7 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 
 const StudentSchema = new Schema(
   {
-    role: String,
     mssv: {
       type: String,
       required: true,

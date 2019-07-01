@@ -4,18 +4,18 @@ import * as CustomerServices from './customer';
 import { AuthServices } from '../../services/Auth';
 
 export const register = async (req, res) => {
-  const { email, password } = req.body;
+  const { userName, password } = req.body;
 
   const bodySchema = Yup.object().shape({
-    email: Yup.string().required(),
+    userName: Yup.string().required(),
     password: Yup.string().required(),
   });
 
   try {
 
-    await bodySchema.validate({ email, password });
+    await bodySchema.validate({ userName, password });
 
-    const result = await CustomerServices.registerCustomer(email, password);
+    const result = await CustomerServices.registerCustomer(userName, password);
     if(!result) throw new Error
     if(result == 301) res.json({ status: 301, message: 'Email was exist' });
 
@@ -28,21 +28,22 @@ export const register = async (req, res) => {
 };
 
 export const logIn = async (req, res) => {
-  const { email, password } = req.body;
+  const { userName, password } = req.body;
 
   const bodySchema = Yup.object().shape({
-    email: Yup.string().required(),
+    userName: Yup.string().required(),
     password: Yup.string().required(),
   });
 
   try {
 
-    await bodySchema.validate({ email, password });
-    let data = { email, password}
-    let result = await CustomerServices.logInCustomer(data)
-    if(result == 301) return res.json({ status: 301, message: 'Email was not exist' });
+    await bodySchema.validate({ userName, password });
+    console.log(`${userName} ${password}`);
+    
+    let result = await CustomerServices.logInCustomer(userName, password)
+    if(result == 301) return res.json({ status: 301, message: 'Account does not exist' });
     if(result == 302) return res.json({ status: 302, message: 'Wrong password' });
-    if(result == 302) return res.json({ status: 303, message: 'Pealse do not empty' });
+    if(result == 303) return res.json({ status: 303, message: 'Pealse do not empty' });
     if(!result) throw new Error
     const token = await AuthServices.createToken(result);
     return res.json({ status: 200 , token });

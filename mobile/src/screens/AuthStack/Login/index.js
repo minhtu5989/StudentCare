@@ -118,16 +118,16 @@ export default class Login extends Component {
     return (
       <View style={styles.inputWrapper}>
         <Input
-          onTouchStart={()=> this.email=''}
-          placeholder='Tên đăng nhập...'
-          value={this.email}
-          onChangeText={text => this.email = text}
+          onTouchStart={()=> this.userName=''}
+          placeholder='User name'
+          value={this.userName}
+          onChangeText={text => this.userName = text}
           returnKeyType='next'
         />
 
         <Input
           onTouchStart={()=> this.password=''}
-          placeholder='Mật khẩu...'
+          placeholder='Password'
           value={this.password}
           onChangeText={text => this.password = text}
           customStyle={{ marginTop: 50, marginBottom: 40 }}

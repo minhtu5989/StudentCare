@@ -69,24 +69,23 @@ export const AuthStore = types
     yield self.getUserInfo(token)
   }),
 
-  login: flow(function*(email, password){
-    if(!email || !password) return alert('Vui lòng không để trống')
+  login: flow(function*(userName, password){
+    if(!userName || !password) return alert('Vui lòng không để trống.')
     try {
       const res = yield api.LogIn 
         .headers({
             "Content-Type": "application/json",
         })
         .post({
-            "email": email,
+            "userName": userName,
             "password": password,
         })
         .json()
 
       if(!res) throw new Error
 
-      // console.log('res ', res);
+      console.log('res ', res);
       if(res.status != 200){
-        var mess 
         if(res.status == 301){
           return mess = 'Email không tồn tại'
         }
