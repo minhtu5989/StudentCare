@@ -1,9 +1,10 @@
-import Customer from './customer.model';
+import Customer from './student.model';
 import { AuthServices } from '../../services/Auth';
 import { hash, compare } from 'bcryptjs';
-import { dataExcel } from "../../modules/dataExcel/index";
+import { dataExcel } from "../dataExcel/index";
 import moment from "moment";
-export const customerAuth = async (req, res, next) => {
+
+export const customerAuth2 = async (req, res, next) => {
   const token = AuthServices.getTokenFromHeaders(req);
 
   if (!token) {
@@ -25,7 +26,7 @@ export const customerAuth = async (req, res, next) => {
   return next();
 };
 
-export const registerCustomer = async (email, password) => {
+export const registerCustomer3 = async (email, password) => {
   try {
     const _customer = await Customer.findOne({ email });
     
@@ -44,13 +45,16 @@ export const registerCustomer = async (email, password) => {
   }
 }
 
-export const logInCustomer = async (data) => {
+export const logInCustomer3 = async (data) => {
   try {
     if(!data.email || !data.password) return 303
 
     const result = await Customer.findOne({ email: data.email });
     
-    if (!result) return 301 
+    if (!result) {
+      
+      return 301 
+    }
     const same = await compare(data.password, result.password);
     if (!same) return 302
     return result
@@ -60,7 +64,7 @@ export const logInCustomer = async (data) => {
   }
 }
 
-export const me = async userId => {
+export const me2 = async userId => {
   try {
     const user = await Customer.findById(userId);
     if (!user) return 401

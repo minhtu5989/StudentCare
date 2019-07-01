@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-import * as CustomerServices from './customer';
+import * as CustomerServices from './student';
 import { AuthServices } from '../../services/Auth';
 
 export const register = async (req, res) => {
@@ -15,7 +15,7 @@ export const register = async (req, res) => {
 
     await bodySchema.validate({ email, password });
 
-    const result = await CustomerServices.registerCustomer(email, password);
+    const result = await CustomerServices.registerCustomer3(email, password);
     if(!result) throw new Error
     if(result == 301) res.json({ status: 301, message: 'Email was exist' });
 
@@ -39,7 +39,7 @@ export const logIn = async (req, res) => {
 
     await bodySchema.validate({ email, password });
     let data = { email, password}
-    let result = await CustomerServices.logInCustomer(data)
+    let result = await CustomerServices.logInCustomer3(data)
     if(result == 301) return res.json({ status: 301, message: 'Email was not exist' });
     if(result == 302) return res.json({ status: 302, message: 'Wrong password' });
     if(result == 302) return res.json({ status: 303, message: 'Pealse do not empty' });
@@ -56,7 +56,7 @@ export const getUserInfo = async (req, res) => {
   try {
 
     if(!req.user) return res.json({ status: 401, message: 'No User' });
-    const userInfo = await CustomerServices.me(req.user._id);
+    const userInfo = await CustomerServices.me2(req.user._id);
     if(userInfo == 401) return res.json({ status: 402, message: 'User not exist' }); 
     res.json({ status: 200, userInfo });
 

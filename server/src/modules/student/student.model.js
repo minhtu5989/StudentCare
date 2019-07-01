@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 const StudentSchema = new Schema(
   {
+    role: String,
     mssv: {
       type: String,
       required: true,
@@ -42,6 +43,6 @@ const StudentSchema = new Schema(
   { timestamps: true },
 );
 
-StudentSchema.index({ email: "TuLuong Student" });
+StudentSchema.index({ mssv: "TuLuongSV" });
 
 export default mongoose.model('Student', StudentSchema);

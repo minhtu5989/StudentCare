@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 const CustomerSchema = new Schema(
   {
+    role: String,
     email: {
       type: String,
       required: true,

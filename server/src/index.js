@@ -10,9 +10,9 @@ import { dataExcel } from "./modules/dataExcel/index";
 middlewaresConfig(app);
 
 
-app.use('/api/v1/login', CheckUserRoutes);
+app.use('/api/v1/checkUser', CheckUserRoutes);
 app.use('/api/v1/customers', CustomerRoutes);
-app.use('/api/v1/students', StudentRoutes);
+// app.use('/api/v1/students', StudentRoutes);
 
 //===============Test
 app.get('/test', (req, res) => {
