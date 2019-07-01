@@ -84,7 +84,6 @@ export const AuthStore = types
 
       if(!res) throw new Error
 
-      console.log('res ', res);
       if(res.status != 200){
         if(res.status == 301){
           return mess = 'Email không tồn tại'
@@ -110,8 +109,8 @@ export const AuthStore = types
   resetToken: flow(function*(){
     //=========================RESET TOKEN
     try {
-      const result = yield Keychain.resetGenericPassword();
-      if(result){
+      const credentials = yield Keychain.resetGenericPassword();
+      if(credentials){
         console.log("=========================== Credentials Reset --> Log Out");
         setTimeout(() => {
           NavigationService.navigate('CheckAuth')

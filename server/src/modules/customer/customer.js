@@ -3,6 +3,7 @@ import { AuthServices } from '../../services/Auth';
 import { hash, compare } from 'bcryptjs';
 import { dataExcel } from "../../modules/dataExcel/index";
 import moment from "moment";
+
 export const customerAuth = async (req, res, next) => {
   const token = AuthServices.getTokenFromHeaders(req);
 
@@ -54,9 +55,6 @@ export const logInCustomer = async (userName, password) => {
     if (!result) return 301 
     const same = await compare(password, result.password);
     if (!same) return 302
-    console.log('====================================');
-    console.log(result);
-    console.log('====================================');
     return result
 
   } catch (error) {
@@ -68,7 +66,7 @@ export const me = async userId => {
   try {
     const user = await Customer.findById(userId);
     if (!user) return 401
-
+    
     let dataFilter = []
     dataExcel.forEach( el => {
     if(el.email == user.email)
@@ -115,6 +113,11 @@ export const me = async userId => {
     Object.keys(result).forEach(key => {
         user.data[key] = result[key];
     });
+
+    //========================================================temporary student
+    if(!isNaN(user.email)) {
+      user.role = 'student'
+    }
 
     await user.save();
 

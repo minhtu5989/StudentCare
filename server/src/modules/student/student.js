@@ -1,10 +1,9 @@
 import Customer from './student.model';
 import { AuthServices } from '../../services/Auth';
-import { hash, compare } from 'bcryptjs';
 import { dataExcel } from "../dataExcel/index";
 import moment from "moment";
 
-export const customerAuth2 = async (req, res, next) => {
+export const studentAuth = async (req, res, next) => {
   const token = AuthServices.getTokenFromHeaders(req);
 
   if (!token) {
@@ -25,44 +24,6 @@ export const customerAuth2 = async (req, res, next) => {
 
   return next();
 };
-
-export const registerCustomer3 = async (email, password) => {
-  try {
-    const _customer = await Customer.findOne({ email });
-    
-    if(_customer) return 301
-
-    const encryptedPassword = await hash(password, 8);
-    const result = await Customer.create({
-      email: email,
-      password: encryptedPassword,
-    });
-
-    return result
-
-  } catch (error) {
-    throw error;
-  }
-}
-
-export const logInCustomer3 = async (data) => {
-  try {
-    if(!data.email || !data.password) return 303
-
-    const result = await Customer.findOne({ email: data.email });
-    
-    if (!result) {
-      
-      return 301 
-    }
-    const same = await compare(data.password, result.password);
-    if (!same) return 302
-    return result
-
-  } catch (error) {
-    throw error;
-  }
-}
 
 export const me2 = async userId => {
   try {

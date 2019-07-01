@@ -12,7 +12,6 @@ export const register = async (req, res) => {
   });
 
   try {
-
     await bodySchema.validate({ userName, password });
 
     const result = await CustomerServices.registerCustomer(userName, password);
@@ -36,15 +35,15 @@ export const logIn = async (req, res) => {
   });
 
   try {
-
     await bodySchema.validate({ userName, password });
-    console.log(`${userName} ${password}`);
-    
+
     let result = await CustomerServices.logInCustomer(userName, password)
+
     if(result == 301) return res.json({ status: 301, message: 'Account does not exist' });
     if(result == 302) return res.json({ status: 302, message: 'Wrong password' });
     if(result == 303) return res.json({ status: 303, message: 'Pealse do not empty' });
     if(!result) throw new Error
+
     const token = await AuthServices.createToken(result);
     return res.json({ status: 200 , token });
 
@@ -55,9 +54,10 @@ export const logIn = async (req, res) => {
 
 export const getUserInfo = async (req, res) => {
   try {
-
     if(!req.user) return res.json({ status: 401, message: 'No User' });
+
     const userInfo = await CustomerServices.me(req.user._id);
+
     if(userInfo == 401) return res.json({ status: 402, message: 'User not exist' }); 
     res.json({ status: 200, userInfo });
 

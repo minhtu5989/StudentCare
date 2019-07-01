@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 const StudentSchema = new Schema(
   {
-    mssv: {
+    email: {
       type: String,
       required: true,
       unique: true,
