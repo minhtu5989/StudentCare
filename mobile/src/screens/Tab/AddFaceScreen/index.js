@@ -20,6 +20,9 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import Permissions from 'react-native-permissions'
 import { Button } from "react-native-elements";
 import _ from 'lodash';
+import { observer, inject, } from 'mobx-react';
+import { observable } from 'mobx';
+
 import { NavigationService } from '../../../constants/NavigationService';
 import Modal from 'react-native-modalbox';
 import {theme} from '../../../constants/theme'
@@ -27,6 +30,8 @@ import { Box } from 'react-native-design-utility'
 
 import { api } from "../../../api/ApiConfig";
 
+@inject('authStore')
+@observer
 export default class AddFaceScreen extends Component {
   constructor(props) {
     super(props);
@@ -99,7 +104,6 @@ export default class AddFaceScreen extends Component {
             {/* <View style={{ marginTop: 10}}>
               {this._renderBtnList()}
             </View> */}
-
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

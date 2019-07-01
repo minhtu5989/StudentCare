@@ -1,21 +1,17 @@
 import React, {Component} from 'react';
 import {
-  Text,
   StyleSheet,
   View,
   TouchableOpacity
 } from 'react-native';
 import * as Keychain from 'react-native-keychain';
-import { observer, inject, } from 'mobx-react';
-import { observable, action } from 'mobx';
 
 import { AgendaComponent } from "../../../../components/Agenda";
 import { theme } from '../../../../constants/theme';
 import { NavigationService } from '../../../../constants/NavigationService';
 import { Header } from "../../../../commons";
 import AntDesign from 'react-native-vector-icons/AntDesign';
-@inject('authStore')
-// @observer
+
 export default class CalendarScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     header: (
@@ -64,7 +60,6 @@ const logOutBtn = (
         setTimeout(() => {
           NavigationService.navigate('CheckAuth')
         }, 300);
-        alert('Đăng xuất')
       } catch (err) {
         console.log("Could not load credentials........ Error:", err);
       }

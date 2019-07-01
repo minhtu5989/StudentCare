@@ -27,10 +27,10 @@ export default class Login extends Component {
   isShowRegister= false
 
   @observable
-  email= 'tt.trang@hutech.edu.vn'
-  
+  userName= ''
+  // tt.trang@hutech.edu.vn
   @observable
-  password= '123'
+  password= ''
 
   render() {
     return (
@@ -91,10 +91,8 @@ export default class Login extends Component {
 
   _loginWithEmailPassword = async () => {
     this.isLoading=true
-    const email = this.email
-    const password = this.password
 
-    let mess = await this.props.authStore.login(email, password)
+    let mess = await this.props.authStore.login(this.userName, this.password)
     if(mess == 200){
       return setTimeout(() => {
         this.isLoading = false
@@ -121,17 +119,17 @@ export default class Login extends Component {
       <View style={styles.inputWrapper}>
         <Input
           onTouchStart={()=> this.email=''}
-          placeholder='Email'
+          placeholder='Tên đăng nhập...'
           value={this.email}
-          onChange={text => this.email = text}
+          onChangeText={text => this.email = text}
           returnKeyType='next'
         />
 
         <Input
           onTouchStart={()=> this.password=''}
-          placeholder='Password'
+          placeholder='Mật khẩu...'
           value={this.password}
-          onChange={text => this.password = text}
+          onChangeText={text => this.password = text}
           customStyle={{ marginTop: 50, marginBottom: 40 }}
           secureTextEntry
         />

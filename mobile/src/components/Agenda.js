@@ -12,7 +12,6 @@ import { observable } from 'mobx';
 
 import { NavigationService } from '@src/constants/NavigationService';
 import { theme } from "../constants/theme";
-import { api } from "../api/ApiConfig";
 
 
 LocaleConfig.locales['vi'] = {
@@ -143,9 +142,11 @@ export class AgendaComponent extends Component {
     return (
       <Box shadows={2} style={styles.item} >
         <TouchableOpacity onPress={ () => NavigationService.navigate('Class', {obj: item.obj}) } >
-            <Box>
-              <Text weight='bold'>Môn học: </Text> 
-              <Text numberOfLines={1} style={{width: '100%'}}>{item.obj.courseName}</Text>  
+            <Box dir='row'>
+              <Text numberOfLines={1} style={{width: '100%'}}>
+                <Text weight='bold'>Môn học: </Text> 
+                <Text  ml='2xs'>{item.obj.courseName}</Text>  
+              </Text>
             </Box>
             <Box dir='row'>
               <Text weight='bold' mr='2xs'>Tiết bắt đầu:</Text>

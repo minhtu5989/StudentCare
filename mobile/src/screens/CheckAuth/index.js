@@ -9,12 +9,15 @@ import {
   AsyncStorage
 } from 'react-native'
 import * as Keychain from 'react-native-keychain';
+import { observer, inject, } from 'mobx-react';
+import { observable } from 'mobx'
 
 import { NavigationService } from "../../constants/NavigationService";
 import { Input, Button, Wrapper } from '../../commons';
 import { theme } from "../../constants/theme";
 
-
+@inject('authStore')
+@observer
 export default class CheckAuth extends Component {
 
   render() {
@@ -38,10 +41,14 @@ export default class CheckAuth extends Component {
       
       if (credentials) {
         console.log("==================================== Credentials loaded!");
-        NavigationService.navigate('Tab')
+        setTimeout(() => {
+          NavigationService.navigate('Tab')
+        }, 1000);
       } else {
-        console.log("No credentials stored.");
-        NavigationService.navigate('Auth')
+        console.log("==================================== No credentials stored.");
+        setTimeout(() => {
+          NavigationService.navigate('Auth')
+        }, 1000);
       }
     } catch (err) {
       console.log("Could not load credentials.......Error: ", err);
