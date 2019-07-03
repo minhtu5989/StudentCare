@@ -26,7 +26,8 @@ export const TeachingDayModel = types
     lastName: types.maybeNull(types.string),
     firstName: types.maybeNull(types.string),
     shs: types.maybeNull(types.string),
-    teachingDay: types.maybeNull(types.string)
+    teachingDay: types.maybeNull(types.string),
+    presence: types.maybeNull(types.string),
   })
   .views(self => ({
     

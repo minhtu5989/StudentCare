@@ -7,7 +7,10 @@ import {
   Image,
   ImageBackground,
   Alert,
+  Picker,
   FlatList,
+  ScrollView,
+  TouchableOpacity
 } from 'react-native';
  
 import ImagePicker from "react-native-image-picker";
@@ -17,28 +20,23 @@ import { Button } from "react-native-elements";
 import _ from 'lodash';
 import Modal from 'react-native-modalbox';
 import { Header } from "../../../../commons";
-import { observer, inject, } from 'mobx-react';
-import { observable, toJS } from 'mobx';
 
 import { NavigationService } from '../../../../constants/NavigationService';
 import {theme} from '../../../../constants/theme'
 import { Box } from 'react-native-design-utility'
 import { api } from "../../../../api/ApiConfig";
 
-@inject('authStore')
-@observer
 export default class DetectorScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-    //   isOpen: false,
-    //   faceDetected: null,
+      isOpen: false,
+      faceDetected: null,
       photo_style: {
           position: 'absolute'
       },
       photo: null,
-      face_data: null,
-      photo_data: null
+      face_data: null
     };
     imagePickerOptions = {
       title: 'Chọn ảnh', 
@@ -51,24 +49,11 @@ export default class DetectorScreen extends Component {
       noData: false, 
       path: 'images'
     };
+
     classObj = this.props.navigation.getParam('obj')
     nameClass = classObj.lectureCode + classObj.codeCourse
     nameClass = nameClass.toLowerCase()
   }
-  // obj = observable({ 
-  //   position: 'absolute',
-  // })
-  // photo_style = toJS(obj)
-
-  @observable isOpen = false
-  // @observable photo = null
-  // @observable face_data = null
-  @observable cameraPermission = false
-  @observable photoPermission = false
-  @observable listFaces = null
-  @observable faceDetected = null
-  // @observable photo_data = null
-
 
   static navigationOptions = ({ navigation }) => ({
     header: (
@@ -97,7 +82,7 @@ export default class DetectorScreen extends Component {
             buttonStyle={styles.button}
           /> */}
           <Button
-            title='Chụp ảnh'
+            title='Chọn ảnh'
             onPress={this._pickImage}
             buttonStyle={styles.button}
           />
@@ -111,10 +96,11 @@ export default class DetectorScreen extends Component {
           ref={"modal1"}
           backdropOpacity={0.4}
           backdropColor="black"
-          isOpen={this.isOpen} 
-          onClosed={() => this.isOpen = false} 
+          isOpen={this.state.isOpen} 
+          onClosed={() => this.setState({isOpen: false})} 
           style={styles.modal} 
           position={"bottom"} 
+          // backdropContent={<Text>dsa</Text>}
           animationDuration={500}
           swipeArea={100}
         > 
@@ -137,17 +123,25 @@ export default class DetectorScreen extends Component {
     this._checkCameraAndPhotos()
   }
 
+  _requestPermission = () => {
+    Permissions.request('photo').then(response => {
+      this.setState({ photoPermission: response })
+    })
+  }
+
   _checkCameraAndPhotos = () => {
     // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
     Permissions.checkMultiple(['camera', 'photo']).then(response => {
-      this.cameraPermission = response.camera
-      this.photoPermission = response.photo
+      this.setState({
+        cameraPermission: response.camera,
+        photoPermission: response.photo,
+      })
     })
   }
 
   _alertForPhotosPermission() {
     Alert.alert(
-      'Cho phép truy cập thư viện ảnh',
+      'Can we access your photos ?',
       '',
       [
         {
@@ -155,7 +149,7 @@ export default class DetectorScreen extends Component {
           onPress: () => console.log('Permission denied'),
           style: 'cancel',
         },
-        this.photoPermission == 'undetermined'
+        this.state.photoPermission == 'undetermined'
           ? { text: 'Chấp nhận', onPress: this._checkCameraAndPhotos }
           : { text: 'Cài đặt', onPress: Permissions.openSettings },
       ],
@@ -167,33 +161,34 @@ export default class DetectorScreen extends Component {
     this._putClass()
     this._training()
 
-    this.face_data = null
+    this.setState({
+        face_data: null,
+    });
 
     ImagePicker.showImagePicker(imagePickerOptions, (response) => {
           
       if(response.error){
         this._alertForPhotosPermission()
       }else{
+          
         let source = {uri: response.uri};
 
         this.setState({
-          photo_style : {
+          photo_style: {
             position: 'relative',
-            width : response.width,
-            height : response.height
+            width: response.width,
+            height: response.height
           },
-          photo : source,
-          photo_data : response.data,
-        })
-
-        // this.photo_data = response.data,
-        // this.faceDetected = null
+          photo: source,
+          photo_data: response.data,
+          faceDetected: null
+        });
       }
     });
   }
 
   _renderBtnList = () => {
-  if(this.faceDetected){
+  if(this.state.faceDetected){
     return  (
         <Button
           title='Xem danh sách'
@@ -218,7 +213,7 @@ export default class DetectorScreen extends Component {
 
   //===============================================================Identify & List
   _presence = async() => {
-    let ids = this.face_data.map( el => el.faceId )
+    let ids = this.state.face_data.map( el => el.faceId )
     const resCandidates = await api.Identify
     .headers({
       "Content-Type": "application/json",
@@ -239,7 +234,7 @@ export default class DetectorScreen extends Component {
     console.log('resCandidates', resCandidates);
     
    
-    let faceDetected = this.face_data    
+    let faceDetected = this.state.face_data    
     
     for ( let i = 0; i < faceDetected.length; i++ ) {
       for ( let j = 0; j < resCandidates.length; j++ ) {
@@ -264,7 +259,7 @@ export default class DetectorScreen extends Component {
       return console.log('No list response !') 
     }
 
-    this.listFaces = resList
+    this.setState({ listFaces: resList })
 
     for ( let i = 0; i < faceDetected.length; i++ ) {
       for ( let j = 0; j < resList.length; j++ ) {
@@ -282,7 +277,7 @@ export default class DetectorScreen extends Component {
     console.log('data name', faceDetected);
     console.log('====================================');
     
-    return this.faceDetected = faceDetected
+    return this.setState({ faceDetected })
   }
 
   //===============================================================PUT class
@@ -346,7 +341,9 @@ export default class DetectorScreen extends Component {
     })
     .then((json) => {
         if(json.length){
-          this.face_data = json
+            this.setState({
+                face_data: json
+            });
         }else{
           console.log(`No face detected`);
           return alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
@@ -361,9 +358,9 @@ export default class DetectorScreen extends Component {
  
   _renderFaceBoxes = () => {
   
-    if(this.faceDetected){
+    if(this.state.faceDetected){
     
-      let views = this.faceDetected.map((f) => {
+      let views = this.state.faceDetected.map((f) => {
           
           let box = {
               position: 'absolute',
@@ -433,13 +430,13 @@ export default class DetectorScreen extends Component {
   }
 
   _renderNoPresence = () => {
-    if(!this.faceDetected){
+    if(!this.state.faceDetected){
       return console.log('have not Face');
     }
     else{
       let noPresence = []
-      let faces = this.faceDetected
-      let list = this.listFaces
+      let faces = this.state.faceDetected
+      let list = this.state.listFaces
       console.log(`faces ${faces}, list ${list}`);
       
 
