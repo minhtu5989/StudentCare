@@ -36,7 +36,8 @@ const CustomerSchema = new Schema(
         lastName: String,
         firstName: String,
         shs: String,
-        teachingDay: String
+        teachingDay: String,
+        presence: String,
       }
     ],
   },

@@ -30,16 +30,6 @@ import { api } from "../../../../api/ApiConfig";
 export default class DetectorScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    //   isOpen: false,
-    //   faceDetected: null,
-      photo_style: {
-          position: 'absolute'
-      },
-      photo: null,
-      face_data: null,
-      photo_data: null
-    };
     imagePickerOptions = {
       title: 'Chọn ảnh', 
       takePhotoButtonTitle: 'Chụp ảnh', 
@@ -55,19 +45,22 @@ export default class DetectorScreen extends Component {
     nameClass = classObj.lectureCode + classObj.codeCourse
     nameClass = nameClass.toLowerCase()
   }
-  // obj = observable({ 
+  // @observable _style = ({ 
   //   position: 'absolute',
+  //   photo: null
   // })
-  // photo_style = toJS(obj)
 
+  @observable photo_style = { 
+    position: 'absolute',
+    photo: null,
+  }
   @observable isOpen = false
-  // @observable photo = null
-  // @observable face_data = null
+  @observable face_data = null
   @observable cameraPermission = false
   @observable photoPermission = false
   @observable listFaces = null
   @observable faceDetected = null
-  // @observable photo_data = null
+  @observable photo_data = null
 
 
   static navigationOptions = ({ navigation }) => ({
@@ -81,10 +74,10 @@ export default class DetectorScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{flex:1, height: theme.height*0.8}}>
+        <View style={{flex:1, height: theme.height*0.75}}>
           <ImageBackground
-              style={this.state.photo_style}
-              source={this.state.photo}
+              style={toJS(this.photo_style)}
+              source={toJS(this.photo_style.photo)}
               resizeMode={"contain"}
           >
               { this._renderFaceBoxes() }
@@ -115,6 +108,7 @@ export default class DetectorScreen extends Component {
           onClosed={() => this.isOpen = false} 
           style={styles.modal} 
           position={"bottom"} 
+          // backdropContent={<Text>dsa</Text>}
           animationDuration={500}
           swipeArea={100}
         > 
@@ -170,24 +164,19 @@ export default class DetectorScreen extends Component {
     this.face_data = null
 
     ImagePicker.showImagePicker(imagePickerOptions, (response) => {
-          
       if(response.error){
         this._alertForPhotosPermission()
       }else{
         let source = {uri: response.uri};
 
-        this.setState({
-          photo_style : {
-            position: 'relative',
-            width : response.width,
-            height : response.height
-          },
-          photo : source,
-          photo_data : response.data,
-        })
-
-        // this.photo_data = response.data,
-        // this.faceDetected = null
+        this.photo_data = response.data,
+        this.faceDetected = null
+        this.photo_style = {
+          position: 'relative',
+          width : response.width,
+          height : response.height,
+          photo: source
+        }
       }
     });
   }
@@ -205,7 +194,7 @@ export default class DetectorScreen extends Component {
   }
  
   _renderDetectFacesButton = () => {
-    if(this.state.photo_data){
+    if(this.photo_data){
         return  (
             <Button
               title='Nhận diện'
@@ -340,7 +329,7 @@ export default class DetectorScreen extends Component {
     await RNFetchBlob.fetch('POST', api.Detect, {
       "Content-Type": "application/octet-stream",
       "Ocp-Apim-Subscription-Key": api.keyApi
-    }, this.state.photo_data)
+    }, this.photo_data)
     .then((res) => {
         return res.json();      
     })
