@@ -22,7 +22,7 @@ const TabNavigator = createBottomTabNavigator(
     },
     {
         initialRouteName: 'Home',
-        order: [ 'Home', ],
+        order: [ 'Home', 'AddFace' ],
         animationEnabled: true,
         swipeEnabled: false,
         lazy: true,
@@ -57,4 +57,4 @@ const TabNavigator = createBottomTabNavigator(
     } 
 )
 
-export default TabNav = createAppContainer(TabNavigator)
+export default TabStudent = createAppContainer(TabNavigator)

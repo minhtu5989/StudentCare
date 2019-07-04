@@ -87,17 +87,23 @@ export default class Login extends Component {
   _keyBoardDidHide() {
     this.isShowRegister = true
   }
-  
 
   _loginWithEmailPassword = async () => {
     this.isLoading=true
 
     let mess = await this.props.authStore.login(this.userName, this.password)
     if(mess == 200){
-      return setTimeout(() => {
-        this.isLoading = false
-        NavigationService.navigate('Tab')
-      }, 1500);
+      if(this.props.authStore.role == 'student'){
+        console.log(`==================================== Credentials loaded -------- role: ${this.props.authStore.role}`);
+        return setTimeout(() => {
+          NavigationService.navigate('TabStu')
+        }, 1000);
+      }
+      setTimeout(() => {
+        console.log(`==================================== Credentials loaded -------- role: ${this.props.authStore.role}`);
+        NavigationService.navigate('TabTea')
+      }, 1000);
+      return this.isLoading = false
     }
     return Alert.alert(
       'Thông báo',

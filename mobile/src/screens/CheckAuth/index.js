@@ -34,25 +34,26 @@ export default class CheckAuth extends Component {
 
 
   componentDidMount = async() => {
+    //fetch data
+    const token = await this.props.authStore.setupAuth()
 
-    // Get token from KeyChain
-    try {
-      const credentials = await Keychain.getGenericPassword();
-      
-      if (credentials) {
-        console.log("==================================== Credentials loaded!");
-        setTimeout(() => {
-          NavigationService.navigate('Tab')
-        }, 1000);
-      } else {
-        console.log("==================================== No credentials stored.");
-        setTimeout(() => {
-          NavigationService.navigate('Auth')
-        }, 1000);
-      }
-    } catch (err) {
-      console.log("Could not load credentials.......Error: ", err);
+    if(!token){
+      console.log("==================================== No credentials stored.");
+      return setTimeout(() => {
+        NavigationService.navigate('Auth')
+      }, 1000);
     }
+    if(this.props.authStore.role == 'student'){
+      console.log(`==================================== Credentials loaded -------- role: ${this.props.authStore.role}`);
+      return setTimeout(() => {
+        NavigationService.navigate('TabStu')
+      }, 1000);
+    }
+    return setTimeout(() => {
+      console.log(`==================================== Credentials loaded -------- role: ${this.props.authStore.role}`);
+      NavigationService.navigate('TabTea')
+    }, 1000);
+    
   }
 }
 

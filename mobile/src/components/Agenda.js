@@ -100,7 +100,7 @@ export class AgendaComponent extends Component {
 
   loadItems = async(day) => {
     //fetch Data & verify Token
-    await this.props.authStore.setupAuth()
+    // await this.props.authStore.setupAuth()
     activity = this.props.authStore.info.dataList
 
     setTimeout(() => {

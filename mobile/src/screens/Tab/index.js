@@ -57,4 +57,4 @@ const TabNavigator = createBottomTabNavigator(
     } 
 )
 
-export default TabNav = createAppContainer(TabNavigator)
+export default TabTeacher = createAppContainer(TabNavigator)

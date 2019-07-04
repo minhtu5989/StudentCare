@@ -58,7 +58,7 @@ const logOutBtn = (
   
         console.log("Credentials Reset !");
         setTimeout(() => {
-          NavigationService.navigate('CheckAuth')
+          NavigationService.navigate('Auth')
         }, 300);
       } catch (err) {
         console.log("Could not load credentials........ Error:", err);

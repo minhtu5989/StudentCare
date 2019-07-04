@@ -25,7 +25,7 @@ import {theme} from '../../../../constants/theme'
 import { Box } from 'react-native-design-utility'
 import { api } from "../../../../api/ApiConfig";
 
-@inject('faceStore')
+@inject('authStore')
 @observer
 export default class DetectorScreen extends Component {
   constructor(props) {
@@ -124,8 +124,7 @@ export default class DetectorScreen extends Component {
   }
   
   componentDidMount() {
-    // this._checkCameraAndPhotos()
-    this.props.faceStore.checkCameraAndPhotos()
+    this._checkCameraAndPhotos()
   }
 
   _checkCameraAndPhotos = () => {

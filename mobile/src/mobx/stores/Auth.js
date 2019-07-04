@@ -9,6 +9,7 @@ import { CurrentUserModel } from '../models/CurrentUser';
 export const AuthStore = types
 .model(`AuthStore`, {
   info: types.maybe(CurrentUserModel),
+  role: types.maybe(types.string)
 })
 .actions(self => ({
 
@@ -39,17 +40,19 @@ export const AuthStore = types
         .json()
 
       if(!res.userInfo) throw new Error
-        
-      return self.info = res.userInfo
-  
+
+      self.role = res.userInfo.role
+      self.info = res.userInfo
+      return 
+
     } catch (error) {
       console.log('................Error:   ', error)
-      return alert('Phát hiện lỗi Internet')
     }
   }),
   
   saveToken: flow(function*(token){
     //=========================SET TOKEN
+    
     try {
       const credentials = yield Keychain.setGenericPassword(
         'token',
@@ -65,6 +68,7 @@ export const AuthStore = types
   setupAuth: flow(function*(){
     const token = yield self.verifyToken()
     yield self.getUserInfo(token)
+    return token
   }),
 
   login: flow(function*(userName, password){
@@ -93,9 +97,9 @@ export const AuthStore = types
           return mess = 'Vui lòng không để trống'
         } 
       }
-
       if(res.status == 200){
         yield self.saveToken(res.token)
+        yield self.setupAuth()
         return 200
       }
     } catch (error) {

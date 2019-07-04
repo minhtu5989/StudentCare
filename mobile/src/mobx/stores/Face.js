@@ -11,80 +11,80 @@ import { theme } from "../../constants/theme";
 
 export const AuthStore = types
 .model(`FaceStore`, {
-    photo_style: {
-      position: "absolute", 
-      photo: null,
-    },
-    isOpen: false,
-    face_data: null,
-    listFaces: null,
-    faceDetected: null,
-    photo_data: null,
-    cameraPermission: false,
-    photoPermission: false,
-    imagePickerOptions: {
-        title: 'Chọn ảnh', 
-        takePhotoButtonTitle: 'Chụp ảnh', 
-        chooseFromLibraryButtonTitle: 'Chọn từ thư viện',
-        cameraType: 'front', 
-        mediaType: 'photo',
-        maxWidth: theme.width,
-        quality: 1, 
-        noData: false, 
-        path: 'images'
-    }
+    // photo_style: {
+    //   position: "absolute", 
+    //   photo: null,
+    // },
+    // isOpen: false,
+    // face_data: null,
+    // listFaces: null,
+    // faceDetected: null,
+    // photo_data: null,
+    // cameraPermission: false,
+    // photoPermission: false,
+    // imagePickerOptions: {
+    //     title: 'Chọn ảnh', 
+    //     takePhotoButtonTitle: 'Chụp ảnh', 
+    //     chooseFromLibraryButtonTitle: 'Chọn từ thư viện',
+    //     cameraType: 'front', 
+    //     mediaType: 'photo',
+    //     maxWidth: theme.width,
+    //     quality: 1, 
+    //     noData: false, 
+    //     path: 'images'
+    // }
 })
 .views(self => ({
 
 }))
 .actions(self => ({
 
-    checkCameraAndPhotos : flow(function*(){
-        // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
-        Permissions.checkMultiple(['camera', 'photo']).then(response => {
-          self.cameraPermission = response.camera
-          self.photoPermission = response.photo
-        })
-    }),
+    // checkCameraAndPhotos : flow(function*(){
+    //     // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+    //     Permissions.checkMultiple(['camera', 'photo']).then(response => {
+    //       self.cameraPermission = response.camera
+    //       self.photoPermission = response.photo
+    //     })
+    // }),
     
-    alertForPhotosPermission: flow(function*(){
-        Alert.alert(
-            'Cho phép truy cập thư viện ảnh',
-            '',
-            [
-            {
-                text: 'Từ chối',
-                onPress: () => console.log('Permission denied'),
-                style: 'cancel',
-            },
-            self.photoPermission == 'undetermined'
-                ? { text: 'Chấp nhận', onPress:  self.checkCameraAndPhotos() }
-                : { text: 'Cài đặt', onPress: Permissions.openSettings },
-            ],
-        )
-    }),
+    // alertForPhotosPermission: flow(function*(){
+    //     Alert.alert(
+    //         'Cho phép truy cập thư viện ảnh',
+    //         '',
+    //         [
+    //         {
+    //             text: 'Từ chối',
+    //             onPress: () => console.log('Permission denied'),
+    //             style: 'cancel',
+    //         },
+    //         self.photoPermission == 'undetermined'
+    //             ? { text: 'Chấp nhận', onPress:  self.checkCameraAndPhotos() }
+    //             : { text: 'Cài đặt', onPress: Permissions.openSettings },
+    //         ],
+    //     )
+    // }),
 
-    pickImage: flow(function*(){
-        // this._putClass()
-        // this._training()
+    // pickImage: flow(function*(){
+    //     // this._putClass()
+    //     // this._training()
     
-        self.face_data = null
+    //     self.face_data = null
     
-        ImagePicker.showImagePicker(self.imagePickerOptions, (response) => {
-          if(response.error){
-            self.alertForPhotosPermission()
-          }else{
-            self.photo_data = response.data,
-            self.faceDetected = null
-            self.photo_style = {
-              position: 'relative',
-              width : response.width,
-              height : response.height,
-              photo: { uri: response.uri }
-            }
-          }
-        })
-    }),
+    //     ImagePicker.showImagePicker(self.imagePickerOptions, (response) => {
+    //       if(response.error){
+    //         self.alertForPhotosPermission()
+    //       }else{
+    //         self.photo_data = response.data,
+    //         self.faceDetected = null
+    //         self.photo_style = {
+    //           position: 'relative',
+    //           width : response.width,
+    //           height : response.height,
+    //           photo: { uri: response.uri }
+    //         }
+    //       }
+    //     })
+    // }),
 
     // putClass: flow(function*(nameClass){
     //     console.log('nameClass', nameClass);

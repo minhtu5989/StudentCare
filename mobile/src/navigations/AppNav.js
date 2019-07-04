@@ -2,13 +2,15 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 
 import CheckAuth from '../screens/CheckAuth'
 import AuthStack from '../screens/AuthStack'
-import TabNav from '../screens/Tab'
+import TabTeacher from '../screens/Tab'
+import TabStuent from '../screens/TabStudent'
 
 const AppNavigator = createSwitchNavigator(
     {
         CheckAuth: CheckAuth,
         Auth: AuthStack,
-        Tab: TabNav,
+        TabTea: TabTeacher,
+        TabStu : TabStuent,
     },{
         initialRouteName: 'CheckAuth'
     }
