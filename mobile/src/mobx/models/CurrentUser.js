@@ -21,13 +21,6 @@ export const CurrentUserModel = types
     },
   }))
   .actions(self => ({
-//     removeAddress(address){
-//         // self.addresses = self.addresses.filter(
-//         //   el => el._id !== address._id
-//         // )
-//         destroy(address)
-//         console.log('Delete Address Successful');
-//     },
 
 }))
   

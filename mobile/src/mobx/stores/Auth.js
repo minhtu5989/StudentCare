@@ -18,8 +18,6 @@ export const AuthStore = types
       const credentials = yield Keychain.getGenericPassword();
       if (credentials) {
         console.log('=========================== Got credentials');
-        console.log(credentials.password);
-        
         return credentials.password
       } else {
         console.log("=========================== No credentials stored.");

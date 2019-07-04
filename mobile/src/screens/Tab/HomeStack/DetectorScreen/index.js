@@ -25,7 +25,7 @@ import {theme} from '../../../../constants/theme'
 import { Box } from 'react-native-design-utility'
 import { api } from "../../../../api/ApiConfig";
 
-@inject('authStore')
+@inject('faceStore')
 @observer
 export default class DetectorScreen extends Component {
   constructor(props) {
@@ -45,10 +45,6 @@ export default class DetectorScreen extends Component {
     nameClass = classObj.lectureCode + classObj.codeCourse
     nameClass = nameClass.toLowerCase()
   }
-  // @observable _style = ({ 
-  //   position: 'absolute',
-  //   photo: null
-  // })
 
   @observable photo_style = { 
     position: 'absolute',
@@ -128,7 +124,8 @@ export default class DetectorScreen extends Component {
   }
   
   componentDidMount() {
-    this._checkCameraAndPhotos()
+    // this._checkCameraAndPhotos()
+    this.props.faceStore.checkCameraAndPhotos()
   }
 
   _checkCameraAndPhotos = () => {
@@ -145,7 +142,7 @@ export default class DetectorScreen extends Component {
       '',
       [
         {
-          text: 'Không',
+          text: 'Từ chối',
           onPress: () => console.log('Permission denied'),
           style: 'cancel',
         },
@@ -279,7 +276,7 @@ export default class DetectorScreen extends Component {
 
     console.log('nameClass', nameClass);
 
-    api.PutClass 
+    await api.PutClass 
     .headers({
       "Content-Type": "application/json",
       "Ocp-Apim-Subscription-Key": api.keyApi
@@ -294,8 +291,6 @@ export default class DetectorScreen extends Component {
       console.log('response:', res);
     })
 
-    console.log('resClass' );
-    
   }
 
   //===============================================================Turn on Training
@@ -310,7 +305,7 @@ export default class DetectorScreen extends Component {
     .json()
     console.log('train', resTrain);
 
-    const resStatusTrainning = await api.StatusTranning 
+    const resStatusTrainning = await api.StatusTrainning 
     .url(`/${nameClass}/training`)
     .headers({
       "Content-Type": "application/json",
