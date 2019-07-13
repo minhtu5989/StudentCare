@@ -4,44 +4,22 @@ const StudentSchema = new Schema(
   {
     userName: {
       type: String,
-      required: true,
-      unique: true,
+      unique: true
     },
-    password: {
-      type: String,
-      required: true,
-    },
+    password: String,
+    role: String,
+    email: String,
+    holotvn: String,
+    tenvn: String,
     avatar: String,
-    data: [
-      {
-        nhomBang: String,
-        codeCourse: String,
-        courseName: String,
-        cr: String, 
-        noOfStudent: String, 
-        lectureCode: String,
-        lecturer: String,
-        weekday: String,
-        startingSesions: String,
-        noOfSecsions: String,
-        room: String,
-        lopBang: String,
-        class: String,
-        timeable: String,
-        week: String,
-        examDate: String,
-        phone: String,
-        email: String,
-        lastName: String,
-        firstName: String,
-        shs: String,
-        teachingDay: String
-      }
-    ],
+    mobile: String,
+    lop: String,
+    tenns: String,
+    ngaysinh: String,
   },
   { timestamps: true },
 );
 
-StudentSchema.index({ mssv: "TuLuongSV" });
+StudentSchema.index({ email: "TuLuong_Student" });
 
 export default mongoose.model('Student', StudentSchema);
