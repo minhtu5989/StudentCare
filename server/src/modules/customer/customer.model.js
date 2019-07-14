@@ -10,7 +10,6 @@ const CustomerSchema = new Schema(
     name: String,
     data: [
       {
-        _id: false,
         nhomBang: String,
         codeCourse: String,
         courseName: String,

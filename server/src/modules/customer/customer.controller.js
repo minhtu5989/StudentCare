@@ -66,21 +66,3 @@ export const getUserInfo = async (req, res) => {
     res.json({ status: 400, message: 'Network request failed' });
   }
 };
-
-export const saveNotifiToken = async (req, res) => {
-  try {
-    
-    const result = await CustomerServices.getNotifiToken(req.body._id, req.body.token);
-
-    if(result === 203){
-      res.status(203).json({ message: 'Notification token existed !' });
-    }
-
-    return res.status(202).json({ message: 'Save token successful !' });
-
-  } catch (error) {
-    console.log('error', error);
-    res.status(400).json({ message: error.message });
-  }
-};
-
