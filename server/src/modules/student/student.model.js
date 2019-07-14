@@ -10,12 +10,11 @@ const StudentSchema = new Schema(
     tenvn: String,
     avatar: String,
     mobile: String,
-    lop: String,
+    tenlop: String,
     tenns: String,
     ngaysinh: String,
     data: [
       {
-        _id: false,
         nhomBang: String,
         codeCourse: String,
         courseName: String,

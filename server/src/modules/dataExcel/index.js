@@ -38,7 +38,7 @@ export const register = () => {
                     tenvn: el.tenvn,
                     email: el.email,
                     mobile: el.mobile,
-                    lop: el.lop,
+                    tenlop: el.tenlop,
                     tenns: el.tenns,
                     ngaysinh: el.ngaysinh,
                 });

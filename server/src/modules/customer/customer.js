@@ -1,4 +1,5 @@
 import Customer from './customer.model';
+import Student from '../student/student.model';
 import { AuthServices } from '../../services/Auth';
 import { hash, compare } from 'bcryptjs';
 import _ from 'lodash';
@@ -88,6 +89,17 @@ export const me = async userId => {
     Object.keys(result).forEach(key => {
         user.data[key] = result[key];
     });
+
+    // user.data.forEach(el => {
+    //   const students = await Student.find({ lop: el.class });
+
+    //   el.students
+    // });
+
+    const students = await Student.find({tenlop: '16DTHQA1'})
+    console.log('====================================');
+    console.log(students);
+    console.log('====================================');
 
     await user.save();
 

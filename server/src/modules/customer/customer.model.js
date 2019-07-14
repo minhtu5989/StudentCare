@@ -32,7 +32,12 @@ const CustomerSchema = new Schema(
         firstName: String,
         shs: String,
         teachingDay: String,
-        presence: String,
+        students: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'Student',
+          },
+        ],
       }
     ],
   },
