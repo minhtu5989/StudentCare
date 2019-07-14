@@ -6,11 +6,8 @@ import middlewaresConfig from './config/middlewares';
 import { CustomerRoutes, StudentRoutes, } from './modules';
 import './config/db'
 import "./modules/dataExcel/index";
-import Customer from "./modules/customer/customer.model";
-import Student from "./modules/student/student.model";
 
 middlewaresConfig(app);
-
 
 app.use('/api/tuluongV1/customers', CustomerRoutes);
 app.use('/api/tuluongV1/students', StudentRoutes);
@@ -21,7 +18,7 @@ app.get('/test', (req, res) => {
 });
 
 
-server.listen( process.env.PORT || 3000, err => {
+server.listen( process.env.PORT || 3000, async (err) => {
   if (err) {
     console.error(err);
   } else {

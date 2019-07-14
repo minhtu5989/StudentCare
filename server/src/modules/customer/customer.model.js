@@ -2,14 +2,12 @@ import mongoose, { Schema } from 'mongoose';
 
 const CustomerSchema = new Schema(
   {
-    userName: {
-      type: String,
-      required: true,
-      unique: true
-    },
+    userName: String,
     password: String,
     role: String,
     avatar: String,
+    phone: String,
+    name: String,
     data: [
       {
         nhomBang: String,
@@ -41,6 +39,6 @@ const CustomerSchema = new Schema(
   { timestamps: true },
 );
 
-CustomerSchema.index({ email: "TuLuong_Teacher" });
+CustomerSchema.index({ userName: "TuLuong_Teacher" });
 
 export default mongoose.model('Customer', CustomerSchema);
