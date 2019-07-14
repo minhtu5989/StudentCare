@@ -90,16 +90,14 @@ export const me = async userId => {
         user.data[key] = result[key];
     });
 
-    // user.data.forEach(el => {
-    //   const students = await Student.find({ lop: el.class });
-
-    //   el.students
-    // });
-
-    const students = await Student.find({tenlop: '16DTHQA1'})
-    console.log('====================================');
-    console.log(students);
-    console.log('====================================');
+    user.data.forEach(async el => {
+      let arrStu = []
+      let students = await Student.find({ tenlop: el.class });
+      students.forEach(el => {
+        arrStu.push(el._id)
+      })
+      el.students = students
+    });
 
     await user.save();
 
