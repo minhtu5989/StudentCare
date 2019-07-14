@@ -88,9 +88,6 @@ export const me = async userId => {
     Object.keys(result).forEach(key => {
         user.data[key] = result[key];
     });
-    console.log('====================================');
-    console.log(result);
-    console.log('====================================');
 
     await user.save();
 
