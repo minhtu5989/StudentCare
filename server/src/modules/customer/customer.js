@@ -1,7 +1,7 @@
 import Customer from './customer.model';
 import { AuthServices } from '../../services/Auth';
 import { hash, compare } from 'bcryptjs';
-import { dataExcel } from "../../modules/dataExcel/index";
+import _ from 'lodash';
 import moment from "moment";
 
 export const customerAuth = async (req, res, next) => {
@@ -26,27 +26,6 @@ export const customerAuth = async (req, res, next) => {
   return next();
 };
 
-// export const registerCustomer = async (userName, password, name) => {
-//   try {
-//     const _customer = await Customer.findOne({ email: userName });
-    
-//     if(_customer) return 301
-
-//     const encryptedPassword = await hash(password, 8);
-//     const result = await Customer.create({
-//       email: userName,
-//       password: encryptedPassword,
-//       role: 'teacher',
-//       name
-//     });
-
-//     return result
-
-//   } catch (error) {
-//     throw error;
-//   }
-// }
-
 export const logInCustomer = async (userName, password) => {
   try {
     if(!userName || !password) return 303
@@ -68,14 +47,9 @@ export const me = async userId => {
     const user = await Customer.findById(userId);
     if (!user) return 401
     
-    let dataFilter = []
-    dataExcel.forEach( el => {
-    if(el.email == user.email)
-        dataFilter.push(el)
-    })
-        
     let result = []
-    dataFilter.forEach( el =>{
+    _.forEach(user, async (el) => {
+
       const timeable = JSON.stringify(el.timeable)
 
       let startDate = timeable.slice(1,9)
@@ -116,56 +90,56 @@ export const me = async userId => {
     });
 
     //========================================================temporary student
-    if(!isNaN(user.email)) {
-      user.role = 'student'
+    // if(!isNaN(user.email)) {
+    //   user.role = 'student'
 
-      let dataFilter = []
-      dataExcel.forEach( el => {
-      if(el.email == 'nguyenthienthanh2012@yahoo.com.vn')
-          dataFilter.push(el)
-      })
+      // let dataFilter = []
+      // dataExcel.forEach( el => {
+      // if(el.email == 'nguyenthienthanh2012@yahoo.com.vn')
+      //     dataFilter.push(el)
+      // })
           
-      let result = []
-      dataFilter.forEach( el =>{
-        const timeable = JSON.stringify(el.timeable)
+    //   let result = []
+    //   dataFilter.forEach( el =>{
+    //     const timeable = JSON.stringify(el.timeable)
 
-        let startDate = timeable.slice(1,9)
-        let yy = startDate.slice(6,8)
-        startDate = startDate.slice(0,6)
-        startDate = startDate + 20 + yy
+    //     let startDate = timeable.slice(1,9)
+    //     let yy = startDate.slice(6,8)
+    //     startDate = startDate.slice(0,6)
+    //     startDate = startDate + 20 + yy
 
-        let stopDate = timeable.slice(12, 20) 
-        yy = stopDate.slice(6,8)
-        stopDate = stopDate.slice(0,6)
-        stopDate = stopDate + 20 + yy
-        // console.log(`startDate ${startDate} stopDate ${stopDate}`);
+    //     let stopDate = timeable.slice(12, 20) 
+    //     yy = stopDate.slice(6,8)
+    //     stopDate = stopDate.slice(0,6)
+    //     stopDate = stopDate + 20 + yy
+    //     // console.log(`startDate ${startDate} stopDate ${stopDate}`);
 
-        //========================== handle date range
-        startDate = startDate.split("/").reverse().join("-");
-        stopDate = stopDate.split("/").reverse().join("-");
+    //     //========================== handle date range
+    //     startDate = startDate.split("/").reverse().join("-");
+    //     stopDate = stopDate.split("/").reverse().join("-");
 
-        var dateRange = [];
-        startDate = moment(startDate);
-        stopDate = moment(stopDate);
-        while (startDate <= stopDate) {
-        //========================== minus 1 because moment().isoWeekday() returns 1-7 where 1 is Monday and 7 is Sunday
-          if(moment(startDate).isoWeekday() == parseInt(el.weekday) -1){
+    //     var dateRange = [];
+    //     startDate = moment(startDate);
+    //     stopDate = moment(stopDate);
+    //     while (startDate <= stopDate) {
+    //     //========================== minus 1 because moment().isoWeekday() returns 1-7 where 1 is Monday and 7 is Sunday
+    //       if(moment(startDate).isoWeekday() == parseInt(el.weekday) -1){
 
-            dateRange.push( moment(startDate).format('YYYY-MM-DD') )
-          }
-          startDate = moment(startDate).add(1, 'days');
-        }
+    //         dateRange.push( moment(startDate).format('YYYY-MM-DD') )
+    //       }
+    //       startDate = moment(startDate).add(1, 'days');
+    //     }
 
-        dateRange.forEach( el2 => {
-          el = { ...el, teachingDay: el2 }
-          result.push(el)
-        })
-      })
-      // console.log('result-===========',result);
-      Object.keys(result).forEach(key => {
-          user.data[key] = result[key];
-      });
-    }
+    //     dateRange.forEach( el2 => {
+    //       el = { ...el, teachingDay: el2 }
+    //       result.push(el)
+    //     })
+    //   })
+    //   // console.log('result-===========',result);
+    //   Object.keys(result).forEach(key => {
+    //       user.data[key] = result[key];
+    //   });
+    // }
 
     await user.save();
 

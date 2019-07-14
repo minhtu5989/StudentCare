@@ -15,6 +15,7 @@ const StudentSchema = new Schema(
     ngaysinh: String,
     data: [
       {
+        _id: false,
         nhomBang: String,
         codeCourse: String,
         courseName: String,

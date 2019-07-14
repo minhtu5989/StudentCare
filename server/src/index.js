@@ -5,7 +5,7 @@ var io = require('socket.io')(server);
 import middlewaresConfig from './config/middlewares';
 import { CustomerRoutes, StudentRoutes, } from './modules';
 import './config/db'
-import "./modules/dataExcel/index";
+import { register, fetchData } from  "./modules/dataExcel/index";
 
 middlewaresConfig(app);
 
@@ -13,10 +13,17 @@ app.use('/api/tuluongV1/customers', CustomerRoutes);
 app.use('/api/tuluongV1/students', StudentRoutes);
 
 //===============Test
-app.get('/test', (req, res) => {
-  res.send('Welcome');
+// app.get('/test', (req, res) => {
+//   res.send('Welcome');
+// });
+
+app.get('/register', () => {
+  register();
 });
 
+app.get('/fetchData', () => {
+  fetchData()
+});
 
 server.listen( process.env.PORT || 3000, async (err) => {
   if (err) {
