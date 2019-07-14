@@ -26,32 +26,32 @@ export const customerAuth = async (req, res, next) => {
   return next();
 };
 
-export const registerCustomer = async (userName, password, name) => {
-  try {
-    const _customer = await Customer.findOne({ email: userName });
+// export const registerCustomer = async (userName, password, name) => {
+//   try {
+//     const _customer = await Customer.findOne({ email: userName });
     
-    if(_customer) return 301
+//     if(_customer) return 301
 
-    const encryptedPassword = await hash(password, 8);
-    const result = await Customer.create({
-      email: userName,
-      password: encryptedPassword,
-      role: 'teacher',
-      name
-    });
+//     const encryptedPassword = await hash(password, 8);
+//     const result = await Customer.create({
+//       email: userName,
+//       password: encryptedPassword,
+//       role: 'teacher',
+//       name
+//     });
 
-    return result
+//     return result
 
-  } catch (error) {
-    throw error;
-  }
-}
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 export const logInCustomer = async (userName, password) => {
   try {
     if(!userName || !password) return 303
 
-    const result = await Customer.findOne({ email: userName });
+    const result = await Customer.findOne({ userName });
     
     if (!result) return 301 
     const same = await compare(password, result.password);

@@ -44,21 +44,15 @@ try {
         }
     });
 
+    _.forEach(dataTea, async (el) => {
+        const _customer = await Customer.findOne({ userName: el.email });
+    // add data
+        if(_customer){
+            _customer.data.push(el)
+            await _customer.save();
+        }  
+    });
+
 } catch (error) {
     throw error;
 }
-
-// export const fetchData = () => {
-//     try {
-//         _.forEach(dataTea, async (el) => {
-//             const _customer = await Customer.findOne({ userName: el.email });
-//         // add data
-//             if(_customer){
-//                 _customer.data.push(el)
-//                 await _customer.save();
-//             }  
-//         });
-//     } catch (error) {
-//         throw error;
-//     }
-// }
