@@ -10,19 +10,21 @@ export const customerAuth = async (req, res, next) => {
 
   if (!token) {
     req.user = null;
-
     return res.sendStatus(401);
   }
 
-  const customer = await Customer.findById(token.id);
+  let _customer = await Customer.findById(token.id);
 
-  if (!customer) {
-    req.user = null;
+  if (!_customer) {
+    _customer = await Student.findById(token.id);
 
-    return res.sendStatus(402);
+    if(!_customer){
+      req.user = null;
+      return res.sendStatus(402);
+    }
   }
 
-  req.user = customer;
+  req.user = _customer;
 
   return next();
 };
@@ -31,9 +33,12 @@ export const logInCustomer = async (userName, password) => {
   try {
     if(!userName || !password) return 303
 
-    const result = await Customer.findOne({ userName });
+    let result = await Customer.findOne({ userName });
     
-    if (!result) return 301 
+    if (!result){
+      result = await Student.findOne({ userName });
+    }
+    password = JSON.stringify(password)
     const same = await compare(password, result.password);
     if (!same) return 302
     return result
@@ -43,9 +48,10 @@ export const logInCustomer = async (userName, password) => {
   }
 }
 
-export const me = async userId => {
+export const iamTea = async userId => {
   try {
-    const user = await Customer.findById(userId);
+    let user = await Customer.findById(userId);
+
     if (!user) return 401
     
     let result = []
@@ -101,6 +107,23 @@ export const me = async userId => {
 
     await user.save();
 
+    let userInfo = user.toObject();
+    delete userInfo.password;
+    userInfo = { ...userInfo }
+
+    return userInfo;
+    
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const iamStu = async userId => {
+  try {
+    let user = await Student.findById(userId);
+
+    if (!user) return 401
+    
     let userInfo = user.toObject();
     delete userInfo.password;
     userInfo = { ...userInfo }

@@ -12,14 +12,13 @@ const AddFace = `${FACE_URL}/largepersongroups`;
 const StatusTraining = wretch(`${FACE_URL}/largepersongroups`);
 const Training = wretch(`${FACE_URL}/largepersongroups`);
 
-//===================== API server BASE_URL
+//===================== API server NodeJs
 const LogIn = wretch(`${BASE_URL}/api/tuluongV1/customers/LogIn`);
-const Register = wretch(`${BASE_URL}/api/tuluongV1/customers/Register`);
-const GetTKB = wretch(`${BASE_URL}/api/tuluongV1/customers/GetUser`);
+const GetTeas = wretch(`${BASE_URL}/api/tuluongV1/customers/GetUserInfo`);
 
 export const api = {
-    GetTKB,
-    Register,
+    GetStus,
+    GetTeas,
     LogIn,
     AddFace,
     CreatePersonId,

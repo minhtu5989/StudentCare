@@ -31,7 +31,7 @@ export const AuthStore = types
 
   getUserInfo: flow(function*(token){
     try {
-      const res = yield api.GetTKB 
+      const res = yield api.GetTeas 
         .headers({ 
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}` 
@@ -91,7 +91,7 @@ export const AuthStore = types
 
       if(res.status != 200){
         if(res.status == 301){
-          return mess = 'Email không tồn tại'
+          return mess = 'Tài khoảng không tồn tại'
         }
         if(res.status == 302){
           return mess = 'Sai mật khẩu'

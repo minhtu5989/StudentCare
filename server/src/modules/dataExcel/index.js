@@ -8,11 +8,12 @@ export const register = () => {
     try {
     //=============================== register & add data for teachers
         _.forEach(dataTea, async (el) => {
-            const _customer = await Customer.findOne({ userName: el.email });
+            let _customer = await Customer.findOne({ userName: el.email });
             if(!_customer){
+            let pass = JSON.stringify(el.email)
                 
     // create new user
-                const encryptedPassword = await hash( '072019', 8);
+                let encryptedPassword = await hash( pass, 8);
                 await Customer.create({
                     userName: el.email,
                     password: encryptedPassword,
@@ -26,10 +27,11 @@ export const register = () => {
         
     // =============================== register & add data for students
         _.forEach(dataStu, async (el) => {
-            const _customer = await Student.findOne({ userName: el.mssv });
+            let _customer = await Student.findOne({ userName: el.mssv });
+            let pass = JSON.stringify(el.mssv)
             if(!_customer){
     // create new user
-                const encryptedPassword = await hash( toString(el.mssv), 8);
+                let encryptedPassword = await hash(pass, 8);
                 await Student.create({
                     userName: el.mssv,
                     password: encryptedPassword,

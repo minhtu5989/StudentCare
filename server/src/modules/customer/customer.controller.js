@@ -1,31 +1,6 @@
 import * as Yup from 'yup';
-
 import * as CustomerServices from './customer';
 import { AuthServices } from '../../services/Auth';
-
-export const register = async (req, res) => {
-  const { userName, password, name } = req.body;
-
-  const bodySchema = Yup.object().shape({
-    userName: Yup.string().required(),
-    password: Yup.string().required(),
-    name: Yup.string().required(),
-  });
-
-  try {
-    await bodySchema.validate({ userName, password, name });
-
-    const result = await CustomerServices.registerCustomer(userName, password, name);
-    if(!result) throw new Error
-    if(result == 301) res.json({ status: 301, message: 'Email was exist' });
-
-    const token = await AuthServices.createToken(result);
-    return res.json({ status: 200 , token });
-
-  } catch (error) {
-    res.json({ status: 400, message: 'Network request failed' });
-  }
-};
 
 export const logIn = async (req, res) => {
   const { userName, password } = req.body;
@@ -55,12 +30,17 @@ export const logIn = async (req, res) => {
 
 export const getUserInfo = async (req, res) => {
   try {
+
     if(!req.user) return res.json({ status: 401, message: 'No User' });
-
-    const userInfo = await CustomerServices.me(req.user._id);
-
-    if(userInfo == 401) return res.json({ status: 402, message: 'User not exist' }); 
-    res.json({ status: 200, userInfo });
+    let userInfo = await CustomerServices.iamTea(req.user._id);
+    if(userInfo == 401){
+      userInfo = await CustomerServices.iamStu(req.user._id);
+      if(userInfo == 401){
+        return res.json({ status: 402, message: 'User not exist' }); 
+      }
+      return res.json({ status: 200, userInfo });
+    } 
+    return res.json({ status: 200, userInfo });
 
   } catch (error) {
     res.json({ status: 400, message: 'Network request failed' });

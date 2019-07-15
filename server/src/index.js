@@ -13,9 +13,9 @@ app.use('/api/tuluongV1/customers', CustomerRoutes);
 app.use('/api/tuluongV1/students', StudentRoutes);
 
 //===============Test
-// app.get('/test', (req, res) => {
-//   res.send('Welcome');
-// });
+app.get('/test', (req, res) => {
+  res.send('Welcome');
+});
 
 app.get('/register', () => {
   register();
