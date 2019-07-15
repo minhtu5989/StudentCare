@@ -54,6 +54,14 @@ export const iamTea = async userId => {
 
     if (!user) return 401
 
+    user.data.forEach(async el => {
+      let students = await Student.find({ tenlop: el.class });
+      el.students = students
+      await user.save();
+    });
+
+    // await user.save();
+
     let userInfo = user.toObject();
     delete userInfo.password;
     userInfo = { ...userInfo }
@@ -68,7 +76,7 @@ export const iamTea = async userId => {
 export const iamStu = async userId => {
   try {
     let user = await Student.findById(userId);
-
+    
     if (!user) return 401
     
     let userInfo = user.toObject();

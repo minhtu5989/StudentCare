@@ -91,17 +91,6 @@ export const fetchData = async () => {
                     _customer.data.push(el)
                 })
 
-                // await _customer.save();
-
-                _customer.data.forEach(async el1 => {
-                    let students = await Student.find({ tenlop: el1.class });
-                    // students.forEach( async el2 => {
-                    //     el1.students.push(el2)
-
-                    // })
-                    el1.students = students
-
-                });
                 await _customer.save();
             }  
 
