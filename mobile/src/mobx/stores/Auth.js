@@ -31,7 +31,7 @@ export const AuthStore = types
 
   getUserInfo: flow(function*(token){
     try {
-      const res = yield api.GetTeas 
+      const res = yield api.GetUserInfo 
         .headers({ 
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}` 
@@ -43,7 +43,6 @@ export const AuthStore = types
 
       self.role = res.userInfo.role
       self.info = res.userInfo
-      self.info.name = res.userInfo.name
       console.log('self.info.name', self.info.name);
       
       return 

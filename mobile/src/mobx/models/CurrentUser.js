@@ -6,9 +6,11 @@ import { api } from "../../api/ApiConfig";
 export const CurrentUserModel = types
   .model('CurrentUserModel', {
     _id: types.identifier,
-    email: types.string,
-    avatar: types.maybeNull(types.string),
+    userName: types.maybeNull(types.string),
+    role: types.maybeNull(types.string),
     name: types.maybeNull(types.string),
+    phone: types.maybeNull(types.string),
+    avatar: types.maybeNull(types.string),
     data: types.optional(types.array(TeachingDayModel), [] ),
   })
   .views(self => ({

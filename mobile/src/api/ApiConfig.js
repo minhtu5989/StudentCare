@@ -14,11 +14,10 @@ const Training = wretch(`${FACE_URL}/largepersongroups`);
 
 //===================== API server NodeJs
 const LogIn = wretch(`${BASE_URL}/api/tuluongV1/customers/LogIn`);
-const GetTeas = wretch(`${BASE_URL}/api/tuluongV1/customers/GetUserInfo`);
+const GetUserInfo = wretch(`${BASE_URL}/api/tuluongV1/customers/GetUserInfo`);
 
 export const api = {
-    GetStus,
-    GetTeas,
+    GetUserInfo,
     LogIn,
     AddFace,
     CreatePersonId,

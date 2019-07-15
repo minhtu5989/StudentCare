@@ -2,8 +2,8 @@ import { types, flow, getParent, destroy } from 'mobx-state-tree';
 import { StudentModel } from "./Student";
 import { api } from "../../api/ApiConfig";
 
-export const TeachingDayModel = types
-  .model('TeachingDayModel', {
+export const LearningDayModel = types
+  .model('LearningDayModel', {
     _id: types.identifier,
     nhomBang: types.maybeNull(types.string),
     codeCourse: types.maybeNull(types.string),
@@ -27,8 +27,6 @@ export const TeachingDayModel = types
     firstName: types.maybeNull(types.string),
     shs: types.maybeNull(types.string),
     teachingDay: types.maybeNull(types.string),
-    students: types.optional(types.array(StudentModel), [] ),
-    count: types.optional(types.array(CountModel), [] ),
   })
   .views(self => ({
     
