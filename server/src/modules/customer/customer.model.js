@@ -32,32 +32,30 @@ const CustomerSchema = new Schema(
         firstName: String,
         shs: String,
         teachingDay: String,
-        count: {
-          exist:  [
-            {
-              type: Schema.Types.ObjectId,
-              ref: 'Student',
-            },
-          ],
-          noExist: [
-            {
-              type: Schema.Types.ObjectId,
-              ref: 'Student',
-            },
-          ],
-          semiExist: [
-            {
-              type: Schema.Types.ObjectId,
-              ref: 'Student',
-            },
-          ]
-        },
         students: [
           {
             type: Schema.Types.ObjectId,
-            ref: 'Student',
+            ref: 'Customer'
           },
         ],
+        exist:  [
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'Customer'
+          },
+        ],
+        noExist: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'Customer'
+          },
+        ],
+        semiExist: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'Customer'
+          },
+        ]
       }
     ],
   },
