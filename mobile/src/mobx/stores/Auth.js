@@ -8,8 +8,8 @@ import { CurrentUserModel } from '../models/CurrentUser';
 
 export const AuthStore = types
 .model(`AuthStore`, {
-  info: types.maybe(CurrentUserModel),
-  role: types.maybe(types.string)
+  info: types.maybeNull(CurrentUserModel),
+  role: types.maybeNull(types.string)
 })
 .actions(self => ({
 
@@ -31,6 +31,7 @@ export const AuthStore = types
 
   getUserInfo: flow(function*(token){
     try {
+
       const res = yield api.GetUserInfo 
         .headers({ 
           "Content-Type": "application/json",
@@ -40,10 +41,9 @@ export const AuthStore = types
         .json()
 
       if(!res.userInfo) throw new Error
-
       self.role = res.userInfo.role
       self.info = res.userInfo
-      console.log('self.info.name', self.info.name);
+      // console.log('------------------------------', self.info);
       
       return 
 

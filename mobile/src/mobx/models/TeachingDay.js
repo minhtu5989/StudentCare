@@ -1,5 +1,6 @@
 import { types, flow, getParent, destroy } from 'mobx-state-tree';
 import { StudentModel } from "./Student";
+import { CountModel } from "./Count";
 import { api } from "../../api/ApiConfig";
 
 export const TeachingDayModel = types
@@ -28,7 +29,7 @@ export const TeachingDayModel = types
     shs: types.maybeNull(types.string),
     teachingDay: types.maybeNull(types.string),
     students: types.optional(types.array(StudentModel), [] ),
-    count: types.optional(types.array(CountModel), [] ),
+    count: types.maybeNull(CountModel),
   })
   .views(self => ({
     

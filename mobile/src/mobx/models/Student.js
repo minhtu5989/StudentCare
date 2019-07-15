@@ -7,7 +7,7 @@ export const StudentModel = types
   .model('StudentModel', {
     _id: types.identifier,
     userName: types.maybeNull(types.string),
-    password: types.maybeNull(types.string),
+    // password: types.maybeNull(types.string),
     role: types.maybeNull(types.string),
     email: types.maybeNull(types.string),
     holotvn: types.maybeNull(types.string),

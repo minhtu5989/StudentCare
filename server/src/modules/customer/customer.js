@@ -54,8 +54,9 @@ export const iamTea = async userId => {
 
     if (!user) return 401
     
-    let result = []
-    _.forEach(user.data, async (el) => {
+    const result = []
+    let _user = user
+    _.forEach(_user.data, async (el) => {
 
       const timeable = JSON.stringify(el.timeable)
       let startDate = timeable.slice(1,9)
@@ -86,24 +87,28 @@ export const iamTea = async userId => {
       }
 
       dateRange.forEach( el2 => {
-        // el = { ...el, teachingDay: el2 }
-        el.teachingDay = el2
-        result.push(el)
+          el.teachingDay = el2
+          console.log('====================================');
+          console.log(el);
+          console.log('====================================');
+          // result.push(el)
       })
     })
-    // console.log('result===============',result);
-    Object.keys(result).forEach(key => {
-        user.data[key] = result[key];
-    });
 
-    user.data.forEach(async el => {
-      let arrStu = []
-      let students = await Student.find({ tenlop: el.class });
-      students.forEach(el => {
-        arrStu.push(el._id)
-      })
-      el.students = students
+    // console.log('================day====================');
+    // console.log(result);
+    // console.log('===============day=====================');
+    Object.keys(_user.data).forEach(key => {
+        user.data[key] = _user.data[key];
     });
+    // user.data.forEach(async el => {
+    //   let arrStu = []
+    //   let students = await Student.find({ tenlop: el.class });
+    //   students.forEach(el => {
+    //     arrStu.push(el._id)
+    //   })
+    //   el.students = students
+    // });
 
     await user.save();
 
