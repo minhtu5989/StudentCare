@@ -6,8 +6,8 @@ import { StudentModel } from "../models/Student";
 import { stores } from '../stores';
 
 export const StuStore = types
-.model(`stuStore`, {
-  students: StudentModel,
+.model(`stuStore`,{
+  students: types.maybeNull(StudentModel),
 })
 .actions(self => ({
   getStu: flow(function*(){

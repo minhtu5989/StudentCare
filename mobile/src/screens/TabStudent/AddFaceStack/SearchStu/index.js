@@ -46,7 +46,7 @@ export default class SearchStuScreen extends Component {
     render() {
         return (
             <Box f={1} center bg={theme.blueLight}>
-                <Text>this is NewFile</Text>
+                {console.log('asd', this.props.stuStore.students)}
             </Box>
         );
     }
