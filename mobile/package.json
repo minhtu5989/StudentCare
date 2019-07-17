@@ -17,7 +17,6 @@
     "moment": "^2.24.0",
     "react": "16.8.3",
     "react-native": "^0.59.8",
-    "react-native-atoz-listview": "^0.0.7",
     "react-native-calendars": "^1.141.0",
     "react-native-design-utility": "0.0.30",
     "react-native-elements": "^1.1.0",

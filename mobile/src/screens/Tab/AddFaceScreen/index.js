@@ -109,93 +109,6 @@ export default class AddFaceScreen extends Component {
     );
   }
 
-  componentDidMount() {
-    this._checkCameraAndPhotos()
-  }
-
-  _requestPermission = () => {
-    Permissions.request('photo').then(response => {
-      this.setState({ photoPermission: response })
-    })
-  }
-
-  _checkCameraAndPhotos = () => {
-    // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
-    Permissions.checkMultiple(['camera', 'photo']).then(response => {
-      this.setState({
-        cameraPermission: response.camera,
-        photoPermission: response.photo,
-      })
-    })
-  }
-
-  _alertForPhotosPermission() {
-    Alert.alert(
-      'Can we access your photos ?',
-      '',
-      [
-        {
-          text: 'Không',
-          onPress: () => console.log('Permission denied'),
-          style: 'cancel',
-        },
-        this.state.photoPermission == 'undetermined'    
-          ? { text: 'Chấp nhận', onPress: this._checkCameraAndPhotos }
-          : { text: 'Cài đặt', onPress: Permissions.openSettings },
-      ],
-    )
-  }
-  
-  _takePic = () => {
-    this.setState({
-      face_data: null,
-    });
-
-    ImagePicker.showImagePicker(imagePickerOptions, (response) => {
-         
-      if(response.error){
-        this._alertForPhotosPermission()
-      }else{
-         
-        let source = {uri: response.uri};
- 
-        this.setState({
-          photo_style: {
-            position: 'relative',
-            width: response.width,
-            height: response.height
-          },
-          photo: source,
-          photo_data: response.data,
-          faceDetected: null
-        });
-      }
-    });
-  }
-
-  _renderBtnList = () => {
-  if(this.state.faceDetected){
-    return  (
-        <Button
-          title='Xem danh sách'
-          onPress={() => this.refs.modal1.open()}
-          buttonStyle={styles.button}
-        />
-    );
-  }
-  }
- 
-  _renderAddFacesButton = () => {
-    if(this.state.photo_data){
-        return  (
-            <Button
-              title='Add Face'
-              onPress={this._addFace}
-              buttonStyle={styles.button}
-            />
-        );
-    }
-  }
 
   //===============================================================Identify faces
   _addFace = async() => {
@@ -226,44 +139,6 @@ export default class AddFaceScreen extends Component {
         console.log(error);
         return alert('Lỗi kết nối internet');
     });
-  }
-
- 
-  //===============================================================Detect faces
-  _createId = async() => {
-    if(!this.state.tenSV || this.state.tenSV === '') return alert("Vui lòng nhập tên SV")
-    try {
-      const resId = await api.CreatePersonId 
-      .headers({
-          "Content-Type": "application/json",
-          "Ocp-Apim-Subscription-Key": api.keyApi
-      })
-      .url(`/${nameClass}/persons`)
-      .post({
-          "name": this.state.tenSV,
-          "userData": "App builed by Tu Luong",
-          "recognitionModel": "recognition_02"
-      })
-      .json()
-
-      if(resId.personId){
-        console.log(`resId`, resId.personId);
-        alert("Thêm thành công !")
-        svID = resId.personId
-        return this.setState({ svID })
-      }
-
-      if(!resId){
-        throw new Error
-      }
-
-      throw new Error
-
-    } catch (error) {
-      console.log('error: ',error);
-      alert('Lỗi kết nối internet')
-    }
-    
   }
  
   _renderFaceBoxes = () => {
@@ -383,6 +258,94 @@ export default class AddFaceScreen extends Component {
           />
         )
       }
+    }
+  }
+
+  componentDidMount() {
+    this._checkCameraAndPhotos()
+  }
+
+  _requestPermission = () => {
+    Permissions.request('photo').then(response => {
+      this.setState({ photoPermission: response })
+    })
+  }
+
+  _checkCameraAndPhotos = () => {
+    // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+    Permissions.checkMultiple(['camera', 'photo']).then(response => {
+      this.setState({
+        cameraPermission: response.camera,
+        photoPermission: response.photo,
+      })
+    })
+  }
+
+  _alertForPhotosPermission() {
+    Alert.alert(
+      'Can we access your photos ?',
+      '',
+      [
+        {
+          text: 'Không',
+          onPress: () => console.log('Permission denied'),
+          style: 'cancel',
+        },
+        this.state.photoPermission == 'undetermined'    
+          ? { text: 'Chấp nhận', onPress: this._checkCameraAndPhotos }
+          : { text: 'Cài đặt', onPress: Permissions.openSettings },
+      ],
+    )
+  }
+  
+  _takePic = () => {
+    this.setState({
+      face_data: null,
+    });
+
+    ImagePicker.showImagePicker(imagePickerOptions, (response) => {
+         
+      if(response.error){
+        this._alertForPhotosPermission()
+      }else{
+         
+        let source = {uri: response.uri};
+ 
+        this.setState({
+          photo_style: {
+            position: 'relative',
+            width: response.width,
+            height: response.height
+          },
+          photo: source,
+          photo_data: response.data,
+          faceDetected: null
+        });
+      }
+    });
+  }
+
+  _renderBtnList = () => {
+  if(this.state.faceDetected){
+    return  (
+        <Button
+          title='Xem danh sách'
+          onPress={() => this.refs.modal1.open()}
+          buttonStyle={styles.button}
+        />
+    );
+  }
+  }
+ 
+  _renderAddFacesButton = () => {
+    if(this.state.photo_data){
+        return  (
+            <Button
+              title='Add Face'
+              onPress={this._addFace}
+              buttonStyle={styles.button}
+            />
+        );
     }
   }
 }

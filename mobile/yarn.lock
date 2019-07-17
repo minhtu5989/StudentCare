@@ -5529,13 +5529,6 @@ react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-native-atoz-listview@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/react-native-atoz-listview/-/react-native-atoz-listview-0.0.7.tgz#ae1d8ac11a224aeacdf3b6f1c938b030c92788cd"
-  integrity sha1-rh2KwRoiSurN87bxyTiwMMkniM0=
-  dependencies:
-    merge "^1.2.0"
-
 react-native-calendars@^1.141.0:
   version "1.172.0"
   resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.172.0.tgz#afe8cb6ae2674cc7ff356bff801c8bedd9f10d40"

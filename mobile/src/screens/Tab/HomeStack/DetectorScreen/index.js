@@ -19,6 +19,7 @@ import Modal from 'react-native-modalbox';
 import { Header } from "../../../../commons";
 import { observer, inject, } from 'mobx-react';
 import { observable, toJS } from 'mobx';
+import { ListItem } from 'react-native-elements'
 
 import { NavigationService } from '../../../../constants/NavigationService';
 import {theme} from '../../../../constants/theme'
@@ -42,8 +43,6 @@ export default class DetectorScreen extends Component {
       path: 'images'
     };
     classObj = this.props.navigation.getParam('obj')
-    // nameClass = classObj.lectureCode + classObj.codeCourse
-    // nameClass = nameClass.toLowerCase()
   }
 
   @observable photo_style = { 
@@ -80,11 +79,6 @@ export default class DetectorScreen extends Component {
           </ImageBackground>
         </View>
         <View style={{flexDirection: 'row', marginTop: 100}}>
-          {/* <Button
-            title='Thêm SV'
-            onPress={ () =>  NavigationService.navigate('AddFace', {nameClass}) }
-            buttonStyle={styles.button}
-          /> */}
           <Button
             title='Chụp ảnh'
             onPress={this._pickImage}
@@ -122,58 +116,6 @@ export default class DetectorScreen extends Component {
       </View>
     );
   }
-  
-  componentDidMount() {
-    this._checkCameraAndPhotos()
-  }
-
-  _checkCameraAndPhotos = () => {
-    // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
-    Permissions.checkMultiple(['camera', 'photo']).then(response => {
-      this.cameraPermission = response.camera
-      this.photoPermission = response.photo
-    })
-  }
-
-  _alertForPhotosPermission() {
-    Alert.alert(
-      'Cho phép truy cập thư viện ảnh',
-      '',
-      [
-        {
-          text: 'Từ chối',
-          onPress: () => console.log('Permission denied'),
-          style: 'cancel',
-        },
-        this.photoPermission == 'undetermined'
-          ? { text: 'Chấp nhận', onPress: this._checkCameraAndPhotos }
-          : { text: 'Cài đặt', onPress: Permissions.openSettings },
-      ],
-    )
-  }
-
-  //===============================================================Take Picture --> Create Class --> Turn On Training
-  _pickImage = () => {
-    this._training()
-    this.face_data = null
-
-    ImagePicker.showImagePicker(imagePickerOptions, (response) => {
-      if(response.error){
-        this._alertForPhotosPermission()
-      }else{
-        let source = {uri: response.uri};
-
-        this.photo_data = response.data,
-        this.faceDetected = null
-        this.photo_style = {
-          position: 'relative',
-          width : response.width,
-          height : response.height,
-          photo: source
-        }
-      }
-    });
-  }
 
   _renderBtnList = () => {
   if(this.faceDetected){
@@ -199,122 +141,6 @@ export default class DetectorScreen extends Component {
     }
   }
 
-  //===============================================================Identify & List
-  _presence = async() => {
-    let ids = this.face_data.map( el => el.faceId )
-    const resCandidates = await api.Identify
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .post({
-        "largePersonGroupId": nameClass,
-        "faceIds": ids,
-        "maxNumOfCandidatesReturned": 50,
-        "confidenceThreshold": 0.7
-    })
-    .json()
-
-    if(!resCandidates.length){
-      alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
-    }
-
-    console.log('resCandidates', resCandidates);
-    
-   
-    let faceDetected = this.face_data    
-    
-    for ( let i = 0; i < faceDetected.length; i++ ) {
-      for ( let j = 0; j < resCandidates.length; j++ ) {
-        if ( faceDetected[i].faceId == resCandidates[j].faceId ){
-          let candidates = resCandidates[j].candidates;
-          faceDetected[i].candidates = candidates
-        }
-      }
-    }
-
-    //=============================================================== List faces in group 
-    const resList = await api.List 
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .url(`/${nameClass}/persons`)
-    .get()
-    .json()
-
-    if(!resList.length){
-      return console.log('No list response !') 
-    }
-
-    this.listFaces = resList
-
-    for ( let i = 0; i < faceDetected.length; i++ ) {
-      for ( let j = 0; j < resList.length; j++ ) {
-        if(faceDetected[i].candidates[0] !== undefined)
-        {
-          if ( faceDetected[i].candidates[0].personId == resList[j].personId ){
-            let name = resList[j].name;
-            faceDetected[i].name = name
-          }
-        }
-      }
-    }
-
-    console.log('====================================');
-    console.log('data name', faceDetected);
-    console.log('====================================');
-    
-    return this.faceDetected = faceDetected
-  }
-
-  //===============================================================PUT class
-  _putClass = async() => {
-
-    console.log('nameClass', nameClass);
-
-    await api.PutClass 
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .url(`/${nameClass}`)
-    .put({
-      "name": classObj.lecturer,
-      "userData": 'bytuluong',
-      "recognitionModel": "recognition_02"
-    })
-    .res(res => {
-      console.log('response:', res);
-    })
-
-  }
-
-  //===============================================================Turn on Training
-  _training = async() => {
-    const resTrain = await api.Training 
-    .url(`/${nameClass}/train`)
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .post()
-    .json()
-    console.log('train', resTrain);
-
-    const StatusTraining = await api.StatusTraining 
-    .url(`/${nameClass}/training`)
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .get()
-    .json()
-
-    console.log('train status', StatusTraining);
-    
-  }
- 
   //===============================================================Detect
   _detectFaces = async() => {
 
@@ -339,7 +165,129 @@ export default class DetectorScreen extends Component {
         alert('Lỗi kết nối internet');
     });
   }
+
+    //===============================================================Identify & List
+  _presence = async() => {
+    let ids = this.face_data.map( el => el.faceId )
+    const resCandidates = await api.Identify
+    .headers({
+      "Content-Type": "application/json",
+      "Ocp-Apim-Subscription-Key": api.keyApi
+    })
+    .post({
+        "largePersonGroupId": api.groupName,
+        "faceIds": ids,
+        "maxNumOfCandidatesReturned": 60,
+        "confidenceThreshold": 0.7
+    })
+    .json()
+
+    if(!resCandidates.length){
+      alert("Không tìm thấy khuôn mặt. Vui lòng thử lại");
+    }
+
+    console.log('resCandidates', resCandidates);
+    
+    let faceDetected = this.face_data    
+    
+    for ( let i = 0; i < faceDetected.length; i++ ) {
+      for ( let j = 0; j < resCandidates.length; j++ ) {
+        if ( faceDetected[i].faceId == resCandidates[j].faceId ){
+          faceDetected[i].candidates = resCandidates[j].candidates;
+        }
+      }
+    }
+
+    //=============================================================== List faces in group 
+    try {
+      const resList = await api.List 
+      .headers({
+        "Content-Type": "application/json",
+        "Ocp-Apim-Subscription-Key": api.keyApi
+      })
+      .get()
+      .json()
+
+      if(!resList.length){
+        console.log('No list response !') 
+        throw new Error
+      }
+      this.listFaces = resList
+
+    } catch (error) {
+      alert('Lỗi kết nối internet')
+      return console.log('Error - 132: ', error)
+    }
+
+    for ( let i = 0; i < faceDetected.length; i++ ) {
+      for ( let j = 0; j < resList.length; j++ ) {
+        if(faceDetected[i].candidates[0] !== undefined)
+        {
+          if ( faceDetected[i].candidates[0].personId == resList[j].personId ){
+            faceDetected[i].name = resList[j].name;
+          }
+        }
+      }
+    }
+
+    console.log('====================================');
+    console.log('data name', faceDetected);
+    console.log('====================================');
+    
+    return this.faceDetected = faceDetected
+  }
  
+  _renderNoPresence = () => {
+    if(!this.faceDetected){
+      return console.log('have not Face');
+    }
+    else{
+      console.log(`faces ${this.faceDetected}`);
+      console.log(`noOfStu ${classObj.students}`);
+
+      const exist = []
+      classObj.students.forEach(el1 => {
+        this.faceDetected.forEach(el2 => {
+          if(el1.userName == el2.name){
+            el1.candidates = el2.candidates
+            el1.exist = 1
+            exist.push(el1)
+          }
+        });
+      });
+
+      console.log('====================================');
+      console.log('exist', exist[0]);
+      console.log('====================================');
+      
+      if(exist.length == classObj.students.length){
+        return (
+          <Box center f={1}>
+            <Text>Đi học đầy đủ</Text>
+          </Box>
+        )
+      }
+      else{
+        return (
+          <FlatList
+            keyExtractor={(item, index) => index.toString()}
+            data={classObj.students}
+            renderItem={ ({item}) => 
+              <ListItem
+                title={`${item.holotvn} ${item.tenvn}`}
+                subtitle={item.userName}
+                leftAvatar={require('../../../../assets/images/icons/MaleStudent.png')}
+                containerStyle={{
+                  backgroundColor: (item.exist == 1) ? theme.color.success : theme.color.danger,
+                }} 
+              />
+            }
+          />
+        )
+      }
+    }
+  }
+
   _renderFaceBoxes = () => {
   
     if(this.faceDetected){
@@ -404,62 +352,54 @@ export default class DetectorScreen extends Component {
     }
  
   }
-   
-  onClose() {
-    console.log('Modal just closed');
+
+  _checkCameraAndPhotos = () => {
+    // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+    Permissions.checkMultiple(['camera', 'photo']).then(response => {
+      this.cameraPermission = response.camera
+      this.photoPermission = response.photo
+    })
   }
 
-  onOpen() {
-    console.log('Modal just opened');
+  _alertForPhotosPermission() {
+    Alert.alert(
+      'Cho phép truy cập thư viện ảnh',
+      '',
+      [
+        {
+          text: 'Từ chối',
+          onPress: () => console.log('Permission denied'),
+          style: 'cancel',
+        },
+        this.photoPermission == 'undetermined'
+          ? { text: 'Chấp nhận', onPress: this._checkCameraAndPhotos }
+          : { text: 'Cài đặt', onPress: Permissions.openSettings },
+      ],
+    )
   }
 
-  _renderNoPresence = () => {
-    if(!this.faceDetected){
-      return console.log('have not Face');
-    }
-    else{
-      let noPresence = []
-      let presence = []
+  _pickImage = () => {
+    this.face_data = null
+    ImagePicker.showImagePicker(imagePickerOptions, (response) => {
+      if(response.error){
+        this._alertForPhotosPermission()
+      }else{
+        let source = {uri: response.uri};
 
-      let faces = this.faceDetected
-      let list = this.listFaces
-      console.log(`faces ${faces}, list ${list}`);
-      
-
-      for ( let i = 0; i < faces.length; i++ ) {
-        for ( let j = 0; j < list.length; j++ ) {
-          if(faces[i].candidates[0] !== undefined)
-          {
-            if ( faces[i].candidates[0].personId == list[j].personId ){
-              presence.push(list[j])
-            }
-          }
+        this.photo_data = response.data,
+        this.faceDetected = null
+        this.photo_style = {
+          position: 'relative',
+          width : response.width,
+          height : response.height,
+          photo: source
         }
       }
-
-      // if(presence.length == list.length){
-      //   return (
-      //     <Box center f={1}>
-      //       <Text>Đi học đầy đủ</Text>
-      //     </Box>
-      //   )
-      // }
-      // else{
-        console.log('presence', presence);
-        return (
-          <FlatList
-            data={presence}
-            // extraData={this.state}
-            keyExtractor={(item) => item.name}
-            renderItem={ ({item}) => 
-              <Box mt='sm' center f={1} w={theme.width*0.9} h={40} bg={theme.color.greyLight}>
-                <Text> {(item.name)} </Text>
-              </Box>
-            }
-          />
-        )
-      // }
-    }
+    });
+  }
+  
+  componentDidMount() {
+    this._checkCameraAndPhotos()
   }
 }
  

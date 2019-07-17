@@ -5,15 +5,12 @@ import { Button, Avatar } from "react-native-elements";
 import { theme } from '../../../../constants/theme';
 import { NavigationService } from '../../../../constants/NavigationService';
 import { Header } from "../../../../commons";
-import { api } from "../../../../api/ApiConfig";
 
 export default class ClassScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {  };
         obj = this.props.navigation.getParam('obj')
-        // nameClass = obj.lectureCode + obj.codeCourse
-        // nameClass = nameClass.toLowerCase()
     }
 
     static navigationOptions = ({ navigation }) => ({
@@ -23,53 +20,6 @@ export default class ClassScreen extends Component {
           />
         )
     });
-
-
-  //===============================================================PUT class
-  // _putClass = async() => {
-  //   console.log('nameClass real', nameClass);
-
-  //   await api.PutClass 
-  //   .headers({
-  //     "Content-Type": "application/json",
-  //     "Ocp-Apim-Subscription-Key": api.keyApi
-  //   })
-  //   .url(`/${nameClass}`)
-  //   .put({
-  //     "name": obj.lecturer,
-  //     "userData": obj.lectureCode,
-  //     "recognitionModel": "recognition_02"
-  //   })
-  //   .res(res => {
-  //     console.log('response:', res);
-  //   })
-  //   console.log('nameClass real 2 ', nameClass);
-
-  // }
-
-  //===============================================================Turn on Training
-  // _training = async() => {
-  //   const resTrain = await api.Training 
-  //   .url(`/${nameClass}/train`)
-  //   .headers({
-  //     "Content-Type": "application/json",
-  //     "Ocp-Apim-Subscription-Key": api.keyApi
-  //   })
-  //   .post()
-  //   .json()
-  //   console.log('train', resTrain);
-
-  //   const StatusTraining = await api.StatusTraining 
-  //   .url(`/${nameClass}/training`)
-  //   .headers({
-  //     "Content-Type": "application/json",
-  //     "Ocp-Apim-Subscription-Key": api.keyApi
-  //   })
-  //   .get()
-  //   .json()
-
-  //   console.log('train status', StatusTraining);
-  // }
 
     render() {
         return (
@@ -111,8 +61,6 @@ export default class ClassScreen extends Component {
                                 title="Điểm danh"
                                 onPress={ () => {
                                     NavigationService.navigate('Detector', {obj})
-                                    // this._putClass()
-                                    // this._training()
                                 } }
                                 buttonStyle={{margin: 20, width: theme.width*0.7, backgroundColor: '#25c73a'}}
                             />

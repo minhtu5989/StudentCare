@@ -158,9 +158,6 @@ export default class DetectorScreen extends Component {
 
   //===============================================================Take Picture --> Create Class --> Turn On Training
   _pickImage = () => {
-    this._putClass()
-    this._training()
-
     this.setState({
         face_data: null,
     });
@@ -246,20 +243,26 @@ export default class DetectorScreen extends Component {
     }
 
     //=============================================================== List faces in group 
-    const resList = await api.List 
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .url(`/${nameClass}/persons`)
-    .get()
-    .json()
+    try {
+      const resList = await api.List 
+      .headers({
+        "Content-Type": "application/json",
+        "Ocp-Apim-Subscription-Key": api.keyApi
+      })
+      .get()
+      .json()
 
-    if(!resList.length){
-      return console.log('No list response !') 
+      if(!resList.length){
+        console.log('No list response !')
+        throw new Error 
+      }
+      this.setState({ listFaces: resList })
+
+    } catch (error) {
+      console.log(error);
+      alert('Lỗi kết nối internet');
     }
-
-    this.setState({ listFaces: resList })
+    
 
     for ( let i = 0; i < faceDetected.length; i++ ) {
       for ( let j = 0; j < resList.length; j++ ) {
@@ -280,57 +283,6 @@ export default class DetectorScreen extends Component {
     return this.setState({ faceDetected })
   }
 
-  //===============================================================PUT class
-  _putClass = async() => {
-
-    console.log('nameClass', nameClass);
-
-    api.PutClass 
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .url(`/${nameClass}`)
-    .put({
-      "name": classObj.lecturer,
-      "userData": 'bytuluong',
-      "recognitionModel": "recognition_02"
-    })
-    .res(res => {
-      console.log('response:', res);
-    })
-
-    console.log('resClass' );
-    
-  }
-
-  //===============================================================Turn on Training
-  _training = async() => {
-    const resTrain = await api.Training 
-    .url(`/${nameClass}/train`)
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .post()
-    .json()
-    console.log('train', resTrain);
-
-    this.setState({onTrain : 1})
-
-    const resStatusTrainning = await api.StatusTranning 
-    .url(`/${nameClass}/training`)
-    .headers({
-      "Content-Type": "application/json",
-      "Ocp-Apim-Subscription-Key": api.keyApi
-    })
-    .get()
-    .json()
-
-    console.log('train status', resStatusTrainning);
-    
-  }
- 
   //===============================================================Detect
   _detectFaces = async() => {
 

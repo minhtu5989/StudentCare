@@ -42,7 +42,7 @@ export const StuStore = types
         })
         .post({
             "name": self.student.userName,
-            "userData": 'bytuluong',
+            "userData": `${self.student.holotvn} ${self.student.tenvn}`,
             "recognitionModel": "recognition_02"
         })
         .json()
@@ -83,6 +83,8 @@ export const StuStore = types
     })
     .then((json) => {
         if(json.persistedFaceId){
+          //------------------------------turn on Training when add face successful
+          self.training()
           return true;
         }
         if(json.error.message === 'There is more than 1 face in the image.'){
@@ -98,6 +100,19 @@ export const StuStore = types
         console.log(error);
         return alert('Lỗi kết nối internet');
     });
+  }),
+
+  training: flow(function*(){
+    try {
+      const onTraining = yield api.Training 
+      .headers({
+        "Ocp-Apim-Subscription-Key": api.keyApi
+      })
+      .post()
+      .json()
+    } catch (error) {
+      throw new Error
+    }
   }),
 }))
 

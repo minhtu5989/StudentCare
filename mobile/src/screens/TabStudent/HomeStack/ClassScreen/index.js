@@ -57,37 +57,6 @@ export default class ClassScreen extends Component {
                             <Text weight='bold' mr='2xs'>Lớp:</Text>
                             <Text>{obj.class}</Text>
                         </Box>
-                        <Box mt='lg' center>
-                            {/* <Button
-                                title="Đặt ảnh gốc"
-                                onPress={ async() => {
-                                    NavigationService.navigate('AddFace', {obj})
-
-                                    nameClass = obj.lectureCode + obj.codeCourse
-                                    nameClass = nameClass.toLowerCase()
-                                    
-                                    console.log('nameClass', nameClass);
-                                
-                                    await api.PutClass 
-                                    .headers({
-                                        "Content-Type": "application/json",
-                                        "Ocp-Apim-Subscription-Key": api.keyApi
-                                    })
-                                    .url(`/${nameClass}`)
-                                    .put({
-                                        "name": obj.lecturer,
-                                        "userData": 'bytuluong',
-                                        "recognitionModel": "recognition_02"
-                                    })
-                                    .res(res => {
-                                        console.log('response:', res);
-                                    })
-                                
-                                    console.log('resClass' );
-                                }}
-                                buttonStyle={{margin: 20, width: theme.width*0.7, backgroundColor: '#25c73a'}}
-                            /> */}
-                        </Box>
                     </Box>
 
                 </Box>
