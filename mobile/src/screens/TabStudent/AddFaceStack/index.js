@@ -1,18 +1,18 @@
 import { createAppContainer, createStackNavigator } from 'react-navigation'
 
 import AddFaceScreen from "./AddFace";
-import SearchStuScreen from "./SearchStu";
+import StuInfoSrceen from "./StuInfo";
 
 const AddFaceStack = createStackNavigator(
     {
         AddFace: {
             screen : AddFaceScreen
         },
-        SearchStu: {
-            screen : SearchStuScreen
+        StuInfo: {
+            screen : StuInfoSrceen
         },
     },{
-        initialRouteName: 'SearchStu',
+        initialRouteName: 'StuInfo',
         headerMode: 'screen',
         mode: 'card',
     }

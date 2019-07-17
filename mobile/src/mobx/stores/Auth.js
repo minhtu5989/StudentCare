@@ -5,6 +5,7 @@ import { Alert } from 'react-native';
 import { NavigationService } from '../../constants/NavigationService'
 import { api } from '../../api/ApiConfig'
 import { CurrentUserModel } from '../models/CurrentUser';
+import { stores } from '../stores';
 
 export const AuthStore = types
 .model(`AuthStore`, {
@@ -70,6 +71,7 @@ export const AuthStore = types
   setupAuth: flow(function*(){
     const token = yield self.verifyToken()
     yield self.getUserInfo(token)
+    if(self.role == 'student') yield stores.stuStore.getStu()
     return token
   }),
 

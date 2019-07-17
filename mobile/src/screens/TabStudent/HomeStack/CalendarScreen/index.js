@@ -11,7 +11,6 @@ import { theme } from '../../../../constants/theme';
 import { NavigationService } from '../../../../constants/NavigationService';
 import { Header } from "../../../../commons";
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
 export default class CalendarScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     header: (

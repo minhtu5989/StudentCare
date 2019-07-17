@@ -7,7 +7,7 @@ import { stores } from '../stores';
 
 export const StuStore = types
 .model(`stuStore`,{
-  students: types.maybeNull(StudentModel),
+  student: types.maybeNull(StudentModel),
 })
 .actions(self => ({
   getStu: flow(function*(){
@@ -22,8 +22,12 @@ export const StuStore = types
         .json()
 
       if(!res) throw new Error
+
+      console.log('====================================');
+      console.log(res);
+      console.log('====================================');
       
-      return self.students = res.students
+      return self.student = res.students
 
     } catch (error) {
       console.log('................Error:   ', error)
