@@ -76,7 +76,7 @@ export default class ClassScreen extends Component {
                                     .url(`/${nameClass}`)
                                     .put({
                                         "name": obj.lecturer,
-                                        "userData": 'appbuildedbytuluong',
+                                        "userData": 'bytuluong',
                                         "recognitionModel": "recognition_02"
                                     })
                                     .res(res => {

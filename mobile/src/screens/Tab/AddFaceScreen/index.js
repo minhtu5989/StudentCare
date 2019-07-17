@@ -224,7 +224,7 @@ export default class AddFaceScreen extends Component {
     })
     .catch (function (error) {
         console.log(error);
-        return alert('Phát hiện lỗi không kết nối internet.');
+        return alert('Lỗi kết nối internet');
     });
   }
 
@@ -261,7 +261,7 @@ export default class AddFaceScreen extends Component {
 
     } catch (error) {
       console.log('error: ',error);
-      alert('Phát hiện lỗi không kết nối internet.')
+      alert('Lỗi kết nối internet')
     }
     
   }

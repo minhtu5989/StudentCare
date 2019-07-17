@@ -1,14 +1,14 @@
 import wretch from 'wretch';
 import { FACE_URL, BASE_URL } from "../constants/index";
-const keyApi = 'b23d0bcbba4f4e9ba7f7b114010e8eda'   //  04/07/2019
+const keyApi = 'f04250c29d264c7cba49441bddff62e5'   //  17/07/2019
 
 //===================== API server FACE_URL
 const Detect = `${FACE_URL}/detect?returnFaceId=true&returnFaceAttributes=age,gender&recognitionModel=recognition_02&returnRecognitionModel=true`;
 const Identify = wretch(`${FACE_URL}/identify`);
 const List = wretch(`${FACE_URL}/largepersongroups`);
 const PutClass = wretch(`${FACE_URL}/largepersongroups`);
-const CreatePersonId = wretch(`${FACE_URL}/largepersongroups`);
-const AddFace = `${FACE_URL}/largepersongroups`;
+const CreatePersonId = wretch(`${FACE_URL}/largepersongroups/bytuluong/persons`);
+const AddFace = `${FACE_URL}/largepersongroups/bytuluong/persons`;
 const StatusTraining = wretch(`${FACE_URL}/largepersongroups`);
 const Training = wretch(`${FACE_URL}/largepersongroups`);
 
@@ -16,8 +16,11 @@ const Training = wretch(`${FACE_URL}/largepersongroups`);
 const LogIn = wretch(`${BASE_URL}/api/tuluongV1/customers/LogIn`);
 const GetUserInfo = wretch(`${BASE_URL}/api/tuluongV1/customers/GetUserInfo`);
 const GetStuInfo = wretch(`${BASE_URL}/api/tuluongV1/students/GetStuInfo`);
+const SavePersonId = wretch(`${BASE_URL}/api/tuluongV1/students/SavePersonId`);
+
 
 export const api = {
+    SavePersonId,
     GetUserInfo,
     GetStuInfo,
     LogIn,
@@ -51,5 +54,5 @@ export const api = {
 //     })
 // } catch (error) {
 //     console.log('==============Error: ', error)
-//     return alert('Phát hiện lỗi không kết nối internet.')
+//     return alert('Lỗi kết nối internet')
 // }

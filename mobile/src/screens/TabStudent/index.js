@@ -26,14 +26,13 @@ const TabNavigator = createBottomTabNavigator(
                     <Entypo name='add-user' size={22} color={tintColor} />,
             }, 
         }
-        // Profile: ProfileScreen, 
     },
     {
         initialRouteName: 'Home',
         order: [ 'Home', 'AddFace' ],
         animationEnabled: true,
         swipeEnabled: false,
-        // lazy: true,
+        lazy: true,
         tabBarOptions: { 
             // pressColor: 'white',
             showIcon: true, 

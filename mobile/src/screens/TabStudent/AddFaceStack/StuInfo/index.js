@@ -71,7 +71,7 @@ export default class StuInfoScreen extends Component {
                                 <Button
                                     title="Đặt ảnh gốc"
                                     onPress={ () => {
-                                        NavigationService.navigate('Detector')
+                                        NavigationService.navigate('AddFace')
                                     } }
                                     buttonStyle={{margin: 20, width: theme.width*0.7, backgroundColor: '#25c73a'}}
                                 />

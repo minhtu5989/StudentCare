@@ -89,35 +89,41 @@ export default class Login extends Component {
   }
 
   _loginWithEmailPassword = async () => {
-    this.isLoading=true
-
-    let mess = await this.props.authStore.login(this.userName, this.password)
-    if(mess == 200){
-      if(this.props.authStore.role == 'student'){
-        console.log(`==================================== Credentials loaded -------- role: ${this.props.authStore.role}`);
+    try {
+      this.isLoading=true
+      let mess = await this.props.authStore.login(this.userName, this.password)
+      if(mess == 200){
+        if(this.props.authStore.role == 'student'){
+          console.log(`==================================== Credentials loaded -------- role: ${this.props.authStore.role}`);
+          setTimeout(() => {
+            NavigationService.navigate('TabStu')
+          }, 1000);
+          return this.isLoading = false
+        }
         setTimeout(() => {
-          NavigationService.navigate('TabStu')
+          console.log(`==================================== Credentials loaded -------- role: ${this.props.authStore.role}`);
+          NavigationService.navigate('TabTea')
         }, 1000);
         return this.isLoading = false
       }
-      setTimeout(() => {
-        console.log(`==================================== Credentials loaded -------- role: ${this.props.authStore.role}`);
-        NavigationService.navigate('TabTea')
-      }, 1000);
-      return this.isLoading = false
+      return Alert.alert(
+        'Thông báo',
+        mess,
+        [
+          {
+            text: 'Cancel',
+            onPress: () => this.isLoading = false,
+            style: 'cancel',
+          },
+        ],
+        {cancelable: false},
+      )
+    } catch (error) {
+      console.log('Error: ', error);
     }
-    return Alert.alert(
-      'Thông báo',
-      mess,
-      [
-        {
-          text: 'Cancel',
-          onPress: () => this.isLoading = false ,
-          style: 'cancel',
-        },
-      ],
-      {cancelable: false},
-    )
+    finally{
+      this.isLoading = false
+    }    
   }
   
   // This is Input field

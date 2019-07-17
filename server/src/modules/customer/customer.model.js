@@ -34,7 +34,6 @@ const CustomerSchema = new Schema(
         teachingDay: String,
         students: [
           {
-            _id: false,
             userName: String,
             holotvn: String,
             tenvn: String,

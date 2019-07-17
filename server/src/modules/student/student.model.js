@@ -13,6 +13,7 @@ const StudentSchema = new Schema(
     tenlop: String,
     tenns: String,
     ngaysinh: String,
+    personId: String,
     data: [
       {
         type: Schema.Types.ObjectId,

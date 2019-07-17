@@ -14,6 +14,7 @@ export const StudentModel = types
     tenlop: types.maybeNull(types.string),
     tenns: types.maybeNull(types.string),
     ngaysinh: types.maybeNull(types.string),
+    personId: types.maybeNull(types.string),
     data: types.optional(types.array(LearningDayModel), [] ),
   })
   .views(self => ({

@@ -149,7 +149,7 @@ export const AuthStore = types
     //     })
     //     .catch (function (error) {
     //         console.log(error);
-    //         alert('Phát hiện lỗi không kết nối internet.');
+    //         alert('Lỗi kết nối internet');
     //     });
     //   }),
   

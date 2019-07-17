@@ -107,7 +107,7 @@ export const AuthStore = types
         return 200
       }
     } catch (error) {
-      alert('Lỗi kết nối Internet')
+      alert('Lỗi kết nối internet')
       return console.log('==============Error: ', error.message)
     }
   }),

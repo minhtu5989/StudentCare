@@ -293,7 +293,7 @@ export default class DetectorScreen extends Component {
     .url(`/${nameClass}`)
     .put({
       "name": classObj.lecturer,
-      "userData": 'appbuildedbytuluong',
+      "userData": 'bytuluong',
       "recognitionModel": "recognition_02"
     })
     .res(res => {
@@ -354,7 +354,7 @@ export default class DetectorScreen extends Component {
     })
     .catch (function (error) {
         console.log(error);
-        alert('Phát hiện lỗi không kết nối internet.');
+        alert('Lỗi kết nối internet');
     });
   }
  

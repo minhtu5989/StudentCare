@@ -1,12 +1,14 @@
 import { Router } from 'express';
 
 import { 
-    getStuInfo
+    getStuInfo,
+    savePersonId
 } from './student.controller';
 import { customerAuth } from "../customer";
 
 const routes = Router();
 
-routes.get('/getStuInfo',customerAuth ,getStuInfo);
+routes.get('/GetStuInfo',customerAuth ,getStuInfo);
+routes.post('/SavePersonId',customerAuth ,savePersonId);
 
 export default routes;

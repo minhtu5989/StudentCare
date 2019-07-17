@@ -11,7 +11,8 @@ const AddFaceStack = createStackNavigator(
         StuInfo: {
             screen : StuInfoSrceen
         },
-    },{
+    },
+    {
         initialRouteName: 'StuInfo',
         headerMode: 'screen',
         mode: 'card',
