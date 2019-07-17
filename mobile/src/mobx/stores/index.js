@@ -1,12 +1,12 @@
 import { AuthStore } from './Auth';
-// import { FaceStore } from './Face';
+import { StuStore } from './Stu';
 
 const authStore = AuthStore.create();
-// const faceStore = FaceStore.create();
+const stuStore = StuStore.create();
 
 export const stores = {
   authStore,
-  // faceStore
+  stuStore
 };
 
 window.MobxStore = stores;

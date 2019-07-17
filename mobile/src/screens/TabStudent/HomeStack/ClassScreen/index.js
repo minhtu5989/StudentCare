@@ -58,7 +58,7 @@ export default class ClassScreen extends Component {
                             <Text>{obj.class}</Text>
                         </Box>
                         <Box mt='lg' center>
-                            <Button
+                            {/* <Button
                                 title="Đặt ảnh gốc"
                                 onPress={ async() => {
                                     NavigationService.navigate('AddFace', {obj})
@@ -76,7 +76,7 @@ export default class ClassScreen extends Component {
                                     .url(`/${nameClass}`)
                                     .put({
                                         "name": obj.lecturer,
-                                        "userData": obj.lectureCode,
+                                        "userData": 'appbuildedbytuluong',
                                         "recognitionModel": "recognition_02"
                                     })
                                     .res(res => {
@@ -86,7 +86,7 @@ export default class ClassScreen extends Component {
                                     console.log('resClass' );
                                 }}
                                 buttonStyle={{margin: 20, width: theme.width*0.7, backgroundColor: '#25c73a'}}
-                            />
+                            /> */}
                         </Box>
                     </Box>
 

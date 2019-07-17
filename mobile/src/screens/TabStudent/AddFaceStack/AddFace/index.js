@@ -24,12 +24,12 @@ import _ from 'lodash';
 import { observer, inject, } from 'mobx-react';
 import { observable } from 'mobx';
 
-import { NavigationService } from '../../../constants/NavigationService';
+import { NavigationService } from '../../../../constants/NavigationService';
 import Modal from 'react-native-modalbox';
-import {theme} from '../../../constants/theme'
+import {theme} from '../../../../constants/theme'
 import { Box } from 'react-native-design-utility'
 
-import { api } from "../../../api/ApiConfig";
+import { api } from "../../../../api/ApiConfig";
 
 @inject('authStore')
 @observer
@@ -59,8 +59,8 @@ export default class AddFaceScreen extends Component {
     };
 
     classObj = this.props.navigation.getParam('obj')
-    nameClass = classObj.lectureCode + classObj.codeCourse
-    nameClass = nameClass.toLowerCase()
+    // nameClass = classObj.lectureCode + classObj.codeCourse
+    // nameClass = nameClass.toLowerCase()
   }
 
   @observable name = null
@@ -253,7 +253,7 @@ export default class AddFaceScreen extends Component {
       .url(`/${nameClass}/persons`)
       .post({
           "name": this.props.authStore.info.name,
-          "userData": classObj.lectureCode,
+          "userData": 'appbuildedbytuluong',
           "recognitionModel": "recognition_02"
       })
       .json()
@@ -330,7 +330,7 @@ export default class AddFaceScreen extends Component {
                       :
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../assets/images/icons/XCircle.png')}
+                        source={require('../../../../assets/images/icons/XCircle.png')}
                       />
                     }
                   </Text>

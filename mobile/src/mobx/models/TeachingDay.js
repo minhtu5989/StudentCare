@@ -1,6 +1,5 @@
 import { types, flow, getParent, destroy } from 'mobx-state-tree';
 import { StudentModel } from "./Student";
-import { CountModel } from "./Count";
 import { api } from "../../api/ApiConfig";
 
 export const TeachingDayModel = types

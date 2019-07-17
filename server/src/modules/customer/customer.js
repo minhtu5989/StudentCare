@@ -52,7 +52,7 @@ export const iamTea = async userId => {
   try {
     let user = await Customer.findById(userId);
 
-    if (!user) return 401
+    if (!user) return 404
 
     // await user.save();
 
@@ -71,7 +71,7 @@ export const iamStu = async userId => {
   try {
     let user = await Student.findById(userId);
     
-    if (!user) return 401
+    if (!user) return 404
     
     let userInfo = user.toObject();
     delete userInfo.password;

@@ -3,10 +3,10 @@ import { createAppContainer, createBottomTabNavigator } from 'react-navigation'
 
 import HomeStack from "./HomeStack";
 // import ProfileScreen from "./Settings/ProfileScreen";
-import { Image } from 'react-native';
-import AddFaceScreen from "./AddFaceScreen";
+import AddFaceStack from "./AddFaceStack";
 import { theme } from "../../constants/theme";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const TabNavigator = createBottomTabNavigator(
     {
@@ -19,14 +19,11 @@ const TabNavigator = createBottomTabNavigator(
             }
         }, 
         AddFace: { 
-            screen: AddFaceScreen, 
+            screen: AddFaceStack, 
             navigationOptions :{
                 title: 'Add Face',
-                tabBarIcon: ({ tintColor }) => 
-                    <Image
-                        style={{height:25, resizeMode:'contain'}}
-                        source={require('../../assets/images/icons/face-recognize.png')}
-                    />
+                tabBarIcon: ({ tintColor }) =>
+                    <Entypo name='add-user' size={22} color={tintColor} />,
             }, 
         }
         // Profile: ProfileScreen, 
@@ -36,11 +33,11 @@ const TabNavigator = createBottomTabNavigator(
         order: [ 'Home', 'AddFace' ],
         animationEnabled: true,
         swipeEnabled: false,
-        lazy: true,
+        // lazy: true,
         tabBarOptions: { 
             // pressColor: 'white',
             showIcon: true, 
-            showLabel: true,
+            showLabel: false,
             labelStyle:{
                 fontSize: 10,
                 // fontFamily: 

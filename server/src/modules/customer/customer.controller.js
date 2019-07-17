@@ -31,12 +31,13 @@ export const logIn = async (req, res) => {
 export const getUserInfo = async (req, res) => {
   try {
 
-    if(!req.user) return res.json({ status: 401, message: 'No User' });
+    if(!req.user) return res.json({ status: 404, message: 'Unauthentication' });
+
     let userInfo = await CustomerServices.iamTea(req.user._id);
-    if(userInfo == 401){
+    if(userInfo == 404){
       userInfo = await CustomerServices.iamStu(req.user._id);
-      if(userInfo == 401){
-        return res.json({ status: 402, message: 'User not exist' }); 
+      if(userInfo == 404){
+        return res.json({ status: 404, message: 'Unauthentication' }); 
       }
       return res.json({ status: 200, userInfo });
     } 

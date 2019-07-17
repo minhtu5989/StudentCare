@@ -27,7 +27,6 @@ import { NavigationService } from '../../../constants/NavigationService';
 import Modal from 'react-native-modalbox';
 import {theme} from '../../../constants/theme'
 import { Box } from 'react-native-design-utility'
-
 import { api } from "../../../api/ApiConfig";
 
 @inject('authStore')
@@ -56,7 +55,7 @@ export default class AddFaceScreen extends Component {
       noData: false, 
       path: 'images'
     };
-    nameClass = this.props.navigation.getParam('nameClass')
+    // nameClass = this.props.navigation.getParam('nameClass')
   }
 
   render() {
@@ -201,7 +200,7 @@ export default class AddFaceScreen extends Component {
   //===============================================================Identify faces
   _addFace = async() => {
     
-    await RNFetchBlob.fetch('POST', `${api.AddFace}/${nameClass}/persons/${this.state.svID}/persistedFaces?detectionModel=detection_02`, {
+    await RNFetchBlob.fetch('POST', `${api.AddFace}/appbuildedbytuluong/persons/${this.state.svID}/persistedFaces?detectionModel=detection_02`, {
       "Content-Type": "application/octet-stream",
       "Ocp-Apim-Subscription-Key": api.keyApi
     }, this.state.photo_data)
@@ -242,7 +241,7 @@ export default class AddFaceScreen extends Component {
       .url(`/${nameClass}/persons`)
       .post({
           "name": this.state.tenSV,
-          "userData": classObj.lectureCode,
+          "userData": "App builed by Tu Luong",
           "recognitionModel": "recognition_02"
       })
       .json()
@@ -301,12 +300,12 @@ export default class AddFaceScreen extends Component {
                       ?
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../assets/images/icons/MaleStudent.png')}
+                        source={require('../../../../assets/images/icons/MaleStudent.png')}
                       />
                       :
                       <Image
                         style={{height:20, resizeMode:'contain'}}
-                        source={require('../../../assets/images/icons/FemaleStudent.png')}
+                        source={require('../../../../assets/images/icons/FemaleStudent.png')}
                       />
                     }
                   </Text> */}

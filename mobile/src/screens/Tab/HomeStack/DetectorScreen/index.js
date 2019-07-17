@@ -42,8 +42,8 @@ export default class DetectorScreen extends Component {
       path: 'images'
     };
     classObj = this.props.navigation.getParam('obj')
-    nameClass = classObj.lectureCode + classObj.codeCourse
-    nameClass = nameClass.toLowerCase()
+    // nameClass = classObj.lectureCode + classObj.codeCourse
+    // nameClass = nameClass.toLowerCase()
   }
 
   @observable photo_style = { 
@@ -281,7 +281,7 @@ export default class DetectorScreen extends Component {
     .url(`/${nameClass}`)
     .put({
       "name": classObj.lecturer,
-      "userData": classObj.lectureCode,
+      "userData": 'appbuildedbytuluong',
       "recognitionModel": "recognition_02"
     })
     .res(res => {
