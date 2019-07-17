@@ -34,28 +34,14 @@ const CustomerSchema = new Schema(
         teachingDay: String,
         students: [
           {
-            type: Schema.Types.ObjectId,
-            ref: 'Customer'
+            _id: false,
+            userName: String,
+            holotvn: String,
+            tenvn: String,
+            avatar: String,
+            tenlop: String,
           },
         ],
-        exist:  [
-          {
-            type: Schema.Types.ObjectId,
-            ref: 'Customer'
-          },
-        ],
-        noExist: [
-          {
-            type: Schema.Types.ObjectId,
-            ref: 'Customer'
-          },
-        ],
-        semiExist: [
-          {
-            type: Schema.Types.ObjectId,
-            ref: 'Customer'
-          },
-        ]
       }
     ],
   },

@@ -58,6 +58,9 @@ export const fetchData = async () => {
             const _customer = await Customer.findOne({ userName: el.email });
         // add data
             if(_customer){
+                let noOfClass = await Student.find({ tenlop: el.class });
+                el.students = noOfClass
+
                 const timeable = JSON.stringify(el.timeable)
                 let startDate = timeable.slice(1,9)
                 let yy = startDate.slice(6,8)
@@ -83,7 +86,7 @@ export const fetchData = async () => {
         
                     dataRange.push( moment(startDate).format('YYYY-MM-DD') )
                 }
-                startDate = moment(startDate).add(1, 'days');
+                    startDate = moment(startDate).add(1, 'days');
                 }
         
                 dataRange.forEach( el2 => {
@@ -93,7 +96,6 @@ export const fetchData = async () => {
 
                 await _customer.save();
             }  
-
         });
 
     } catch (error) {
