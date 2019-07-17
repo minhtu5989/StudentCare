@@ -40,6 +40,7 @@ const CustomerSchema = new Schema(
             tenvn: String,
             avatar: String,
             tenlop: String,
+            exist: String,
           },
         ],
       }

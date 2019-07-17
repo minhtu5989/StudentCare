@@ -29,7 +29,6 @@ export const TeachingDayModel = types
     shs: types.maybeNull(types.string),
     teachingDay: types.maybeNull(types.string),
     students: types.optional(types.array(StudentModel), [] ),
-    count: types.maybeNull(CountModel),
   })
   .views(self => ({
     
