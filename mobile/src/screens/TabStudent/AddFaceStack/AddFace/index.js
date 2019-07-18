@@ -164,11 +164,9 @@ export default class AddFaceScreen extends Component {
   }
 
   _addFace = async() => {
-    const result = await this.props.stuStore.addFace(this.state.photo_data)
-    if(result){
-      alert("Thêm thành công !")
-      this.setState({photo_data: null})
-    }
+    await this.props.stuStore.addFace(this.state.photo_data)
+    await this.props.stuStore.training()
+    this.setState({photo_data:null, photo: null})
   }
 }
  

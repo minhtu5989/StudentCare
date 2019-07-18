@@ -47,3 +47,23 @@ export const getUserInfo = async (req, res) => {
     res.json({ status: 400, message: 'Network request failed' });
   }
 };
+
+export const saveExist = async (req, res) => {
+  try {
+    const { students } = req.body
+    if(!req.user) return res.json({ status: 404, message: 'Unauthentication' });
+
+    let userInfo = await CustomerServices.saveEx(req.user._id, students);
+
+    if(userInfo == 403) return res.json({ status: 403, message: 'Account is not exist' });
+    if(userInfo == 402) return res.json({ status: 402, message: 'Get no list exist students' });
+
+    console.log('====================================');
+    console.log(userInfo.students);
+    console.log('====================================');
+    return res.json({ status: 200, userInfo });
+
+  } catch (error) {
+    res.json({ status: 400, message: 'Network request failed' });
+  }
+};

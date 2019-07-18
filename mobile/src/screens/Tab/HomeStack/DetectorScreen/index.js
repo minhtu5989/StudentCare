@@ -13,13 +13,12 @@ import {
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from 'react-native-fetch-blob';
 import Permissions from 'react-native-permissions'
-import { Button } from "react-native-elements";
+import { Button, ListItem, Avatar } from "react-native-elements";
 import _ from 'lodash';
 import Modal from 'react-native-modalbox';
 import { Header } from "../../../../commons";
 import { observer, inject, } from 'mobx-react';
 import { observable, toJS } from 'mobx';
-import { ListItem } from 'react-native-elements'
 
 import { NavigationService } from '../../../../constants/NavigationService';
 import {theme} from '../../../../constants/theme'
@@ -42,9 +41,8 @@ export default class DetectorScreen extends Component {
       noData: false, 
       path: 'images'
     };
-    classObj = this.props.navigation.getParam('obj')
   }
-
+  @observable classObj = this.props.navigation.getParam('obj')
   @observable photo_style = { 
     position: 'absolute',
     photo: null,
@@ -102,9 +100,19 @@ export default class DetectorScreen extends Component {
           animationDuration={500}
           swipeArea={100}
         > 
-            <Box f={1} style={{marginTop:10, width: `100%`}}  >
-                <Box align='center' h={30} bg={theme.color.blueLighter} >
-                  <Text style={{textDecorationLine:'underline'}}>Danh sách sinh viên đi học :</Text>
+            <Box f={1} style={{marginTop:10, width: `100%`}} >
+                <Box align='center' h={60} bg={theme.color.blueLighter} >
+                  <Text style={{textDecorationLine:'underline'}}>Danh sách điểm danh :</Text> 
+                  <Button
+                    title='Lưu'
+                    onPress={this._saveExist}
+                    buttonStyle={{
+                      margin: 3,
+                      padding: 3,
+                      width: 100,
+                      backgroundColor: theme.color.greenDarker
+                    }}
+                />
                 </Box>
                 <Box f={1} center bg={theme.color.white}>
                   {this._renderNoPresence()}
@@ -212,6 +220,7 @@ export default class DetectorScreen extends Component {
         console.log('No list response !') 
         throw new Error
       }
+
       this.listFaces = resList
 
     } catch (error) {
@@ -220,11 +229,12 @@ export default class DetectorScreen extends Component {
     }
 
     for ( let i = 0; i < faceDetected.length; i++ ) {
-      for ( let j = 0; j < resList.length; j++ ) {
+      for ( let j = 0; j < this.listFaces.length; j++ ) {
         if(faceDetected[i].candidates[0] !== undefined)
         {
-          if ( faceDetected[i].candidates[0].personId == resList[j].personId ){
-            faceDetected[i].name = resList[j].name;
+          if ( faceDetected[i].candidates[0].personId == this.listFaces[j].personId ){
+            faceDetected[i].name = this.listFaces[j].name;
+            faceDetected[i].userData = this.listFaces[j].userData;
           }
         }
       }
@@ -243,10 +253,10 @@ export default class DetectorScreen extends Component {
     }
     else{
       console.log(`faces ${this.faceDetected}`);
-      console.log(`noOfStu ${classObj.students}`);
+      console.log(`noOfStu ${this.classObj.students}`);
 
       const exist = []
-      classObj.students.forEach(el1 => {
+      this.classObj.students.forEach(el1 => {
         this.faceDetected.forEach(el2 => {
           if(el1.userName == el2.name){
             el1.candidates = el2.candidates
@@ -256,11 +266,9 @@ export default class DetectorScreen extends Component {
         });
       });
 
-      console.log('====================================');
-      console.log('exist', exist[0]);
-      console.log('====================================');
-      
-      if(exist.length == classObj.students.length){
+      this.classObj.student = exist
+
+      if(exist.length == this.classObj.students.length){
         return (
           <Box center f={1}>
             <Text>Đi học đầy đủ</Text>
@@ -268,23 +276,65 @@ export default class DetectorScreen extends Component {
         )
       }
       else{
+        // <ListItem
+        //           title={item.userData}
+        //           subtitle={item.tenvn}
+        //           leftAvatar = {{ source: { uri: require('../../../../assets/images/icons/MaleStudent.png') } }}
+        //           containerStyle={{
+        //             backgroundColor: (item.exist == 1) ? theme.color.greenLighter : theme.color.redLight,
+        //           }} 
+        //         />  
         return (
-          <FlatList
-            keyExtractor={(item, index) => index.toString()}
-            data={classObj.students}
-            renderItem={ ({item}) => 
-              <ListItem
-                title={`${item.holotvn} ${item.tenvn}`}
-                subtitle={item.userName}
-                leftAvatar={require('../../../../assets/images/icons/MaleStudent.png')}
-                containerStyle={{
-                  backgroundColor: (item.exist == 1) ? theme.color.success : theme.color.danger,
-                }} 
-              />
-            }
-          />
+          <Box f={1} w='100%' h='100%'>
+            <FlatList
+              keyExtractor={(item, index) => index.toString()}
+              data={this.classObj.students}
+              renderItem={ ({item}) => 
+                <Box>
+                  <Box f={1} 
+                    dir='row' 
+                    style={{alignItems:'center'}} 
+                    bg={(item.exist == 1) ? theme.color.greenLighter : theme.color.redLight}
+                    height={65}
+                  >
+                    <Avatar 
+                          source={require('../../../../assets/images/icons/MaleStudent.png')}
+                          showEditButton
+                          size='small'
+                          rounded
+                          activeOpacity={0.7}
+                          title="TL"
+                          onPress={() => console.log("Works!")}
+                    />
+                    <Box center f={1}>
+                      <Text>{item.holotvn} {item.tenvn}</Text>
+                    </Box>
+                  </Box>
+                  <Box h={1} f={1} bg={theme.color.grey}/>
+                </Box>
+              }
+            />
+          </Box>
         )
       }
+    }
+  }
+
+  _saveExist = async() => {
+    try {
+      const token = await this.props.authStore.verifyToken()
+      const res = await api.SaveExist 
+      .auth(`Bearer ${token}`)
+      .post({
+          "students": this.classObj.students
+      })
+      .json()
+
+      if(res) alert('Lưu thành công')
+
+    } catch (error) {
+        console.log('==============Error: ', error)
+        return alert('Lỗi kết nối internet')
     }
   }
 
@@ -333,9 +383,9 @@ export default class DetectorScreen extends Component {
                   </Text> */}
                   <Text style={attr}>
                     {
-                      (f.name)
+                      (f.userData)
                       ?
-                      `${f.name}`
+                      `${f.userData}`
                       :
                       <Image
                         style={{height:20, resizeMode:'contain'}}

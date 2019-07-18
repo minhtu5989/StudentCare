@@ -25,7 +25,9 @@ export const StuStore = types
 
       self.student = res.students
 
-      return self.createFaceId()
+      return  self.createFaceId()
+
+      
 
     } catch (error) {
       console.log('................Error:   ', error)
@@ -83,9 +85,7 @@ export const StuStore = types
     })
     .then((json) => {
         if(json.persistedFaceId){
-          //------------------------------turn on Training when add face successful
-          self.training()
-          return true;
+          return alert("Thêm thành công !")
         }
         if(json.error.message === 'There is more than 1 face in the image.'){
             return alert(`Có nhiều hơn 1 khuôm mặt trong khung ảnh !`)
@@ -104,16 +104,18 @@ export const StuStore = types
 
   training: flow(function*(){
     try {
-      const onTraining = yield api.Training 
-      .headers({
-        "Ocp-Apim-Subscription-Key": api.keyApi
-      })
-      .post()
-      .json()
+      yield api.Training 
+        .headers({
+      "Content-Type": "application/octet-stream",
+          "Ocp-Apim-Subscription-Key": api.keyApi
+        })
+        .post()
     } catch (error) {
-      throw new Error
+      console.log(error);
+      return alert('Lỗi kết nối internet');
     }
   }),
+
 }))
 
 

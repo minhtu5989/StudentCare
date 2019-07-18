@@ -3,7 +3,6 @@ import Student from '../student/student.model';
 import { AuthServices } from '../../services/Auth';
 import { hash, compare } from 'bcryptjs';
 import _ from 'lodash';
-import moment from "moment";
 
 export const customerAuth = async (req, res, next) => {
   const token = AuthServices.getTokenFromHeaders(req);
@@ -54,8 +53,6 @@ export const iamTea = async userId => {
 
     if (!user) return 404
 
-    // await user.save();
-
     let userInfo = user.toObject();
     delete userInfo.password;
     userInfo = { ...userInfo }
@@ -73,6 +70,27 @@ export const iamStu = async userId => {
     
     if (!user) return 404
     
+    let userInfo = user.toObject();
+    delete userInfo.password;
+    userInfo = { ...userInfo }
+
+    return userInfo;
+    
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const saveEx = async (userId, students) => {
+  try {
+    let user = await Customer.findById(userId);
+
+    if (!user) return 403
+
+    if(!students) return 402
+    user.students = students
+    user.save()
+
     let userInfo = user.toObject();
     delete userInfo.password;
     userInfo = { ...userInfo }
