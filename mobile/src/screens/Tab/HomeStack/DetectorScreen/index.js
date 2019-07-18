@@ -6,14 +6,17 @@ import {
   View,
   Image,
   ImageBackground,
+  TouchableOpacity,
   Alert,
   FlatList,
 } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
  
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from 'react-native-fetch-blob';
 import Permissions from 'react-native-permissions'
-import { Button, ListItem, Avatar } from "react-native-elements";
+import { Button, ListItem, Avatar, CheckBox } from "react-native-elements";
+
 import _ from 'lodash';
 import Modal from 'react-native-modalbox';
 import { Header } from "../../../../commons";
@@ -260,7 +263,7 @@ export default class DetectorScreen extends Component {
         this.faceDetected.forEach(el2 => {
           if(el1.userName == el2.name){
             el1.candidates = el2.candidates
-            el1.exist = 1
+            el1.exist = true
             exist.push(el1)
           }
         });
@@ -294,20 +297,41 @@ export default class DetectorScreen extends Component {
                   <Box f={1} 
                     dir='row' 
                     style={{alignItems:'center'}} 
-                    bg={(item.exist == 1) ? theme.color.greenLighter : theme.color.redLight}
+                    bg={(item.exist) ? theme.color.greenLighter : theme.color.redLight}
                     height={65}
                   >
-                    <Avatar 
-                          source={require('../../../../assets/images/icons/MaleStudent.png')}
-                          showEditButton
-                          size='small'
-                          rounded
-                          activeOpacity={0.7}
-                          title="TL"
-                          onPress={() => console.log("Works!")}
-                    />
-                    <Box center f={1}>
+                    <Box ml='sm'>
+                      <Avatar 
+                            source={require('../../../../assets/images/icons/MaleStudent.png')}
+                            showEditButton
+                            size='small'
+                            rounded
+                            activeOpacity={0.7}
+                            title="TL"
+                            onPress={() => console.log("Works!")}
+                      />
+                    </Box>
+                    <Box ml='md' f={1} dir='row' justify='between' >
                       <Text>{item.holotvn} {item.tenvn}</Text>
+                      {(item.exist) ?
+                        <TouchableOpacity
+                            style={{marginRight: 20}}
+                            onPress={() => {
+                            item.exist = !item.exist
+                          }}>
+                            <FontAwesome name='check-circle' size={35} color={theme.color.danger}/>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            style={{marginRight: 20}}
+                            onPress={() => {
+                            item.exist = !item.exist
+                          }}>
+                            <FontAwesome name='times-circle' size={35} color={theme.color.green}/>
+                        </TouchableOpacity>
+                      }
+                      
+
                     </Box>
                   </Box>
                   <Box h={1} f={1} bg={theme.color.grey}/>
@@ -323,14 +347,18 @@ export default class DetectorScreen extends Component {
   _saveExist = async() => {
     try {
       const token = await this.props.authStore.verifyToken()
-      const res = await api.SaveExist 
+      const resExist = await api.SaveExist 
       .auth(`Bearer ${token}`)
       .post({
-          "students": this.classObj.students
+          "obj": this.classObj,
       })
       .json()
 
-      if(res) alert('Lưu thành công')
+      console.log('====================================');
+      console.log(resExist);
+      console.log('====================================');
+
+      if(resExist) alert('Lưu thành công')
 
     } catch (error) {
         console.log('==============Error: ', error)

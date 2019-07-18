@@ -138,7 +138,7 @@ export class AgendaComponent extends Component {
   renderItem(item) {
     return (
       <Box shadows={2} style={styles.item} >
-        <TouchableOpacity onPress={ () => NavigationService.navigate('Class', {obj: item.obj}) } >
+        <TouchableOpacity onPress={ () => NavigationService.navigate('Class', {obj: {...item.obj} }) } >
             <Box dir='row'>
               <Text numberOfLines={1} style={{width: '100%'}}>
                 <Text weight='bold'>Môn học: </Text> 

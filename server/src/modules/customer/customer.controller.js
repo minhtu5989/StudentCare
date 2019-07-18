@@ -50,16 +50,16 @@ export const getUserInfo = async (req, res) => {
 
 export const saveExist = async (req, res) => {
   try {
-    const { students } = req.body
+    const { obj } = req.body
     if(!req.user) return res.json({ status: 404, message: 'Unauthentication' });
 
-    let userInfo = await CustomerServices.saveEx(req.user._id, students);
+    let userInfo = await CustomerServices.saveEx(req.user._id, obj);
 
     if(userInfo == 403) return res.json({ status: 403, message: 'Account is not exist' });
     if(userInfo == 402) return res.json({ status: 402, message: 'Get no list exist students' });
 
     console.log('====================================');
-    console.log(userInfo.students);
+    console.log(userInfo);
     console.log('====================================');
     return res.json({ status: 200, userInfo });
 

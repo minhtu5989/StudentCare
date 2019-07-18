@@ -205,14 +205,6 @@ export default class AddFaceScreen extends Component {
     }
  
   }
-   
-  onClose() {
-    console.log('Modal just closed');
-  }
-
-  onOpen() {
-    console.log('Modal just opened');
-  }
 
   _renderNoPresence = () => {
     if(!this.state.faceDetected){

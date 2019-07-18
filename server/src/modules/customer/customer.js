@@ -81,7 +81,7 @@ export const iamStu = async userId => {
   }
 };
 
-export const saveEx = async (userId, students) => {
+export const saveEx = async (userId, obj) => {
   try {
     let user = await Customer.findById(userId);
 
@@ -89,13 +89,26 @@ export const saveEx = async (userId, students) => {
 
     if(!students) return 402
 
-    user.students.forEach(el => {
+    console.log('====================================');
+    console.log(obj);
+    console.log('====================================');
+
+    // user.data.forEach(el1 => {
+    //   el.students.forEach(el2 => {
+    //     if(el2._id.toString() == obj._id.toString()){
+    //       el2.exist  = obj.exist
+    //     }
+    //   })
+    // });
+
+    user.data[index].students.forEach(el => {
       students.forEach(el2 => {
-        if(el._id.toString() !== el2._id.toString()){
+        if(el._id.toString() == el2._id.toString()){
           el.exist  = el2.exist
         }
       });
     });
+
     user.save()
 
     let userInfo = user.toObject();

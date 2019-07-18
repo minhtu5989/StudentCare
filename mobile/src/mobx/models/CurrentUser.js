@@ -24,6 +24,5 @@ export const CurrentUserModel = types
     },
   }))
   .actions(self => ({
-
 }))
   
