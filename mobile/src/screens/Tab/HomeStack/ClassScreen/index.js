@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Box, Text } from 'react-native-design-utility'
+import { Box, Text, FlatList } from 'react-native-design-utility'
 import { Button, Avatar } from "react-native-elements";
 
 import { theme } from '../../../../constants/theme';
@@ -66,9 +66,48 @@ export default class ClassScreen extends Component {
                             />
                         </Box>
                     </Box>
-
+                </Box>
+                <Box f={1} center bg={theme.color.white}>
+                    {this._renderNoPresence()}
                 </Box>
             </Box>
         );
     }
+
+    _renderNoPresence = () => {
+        if(obj.students[0].exist){
+          return  (
+            <Box f={1} w='100%' h='100%'>
+                <FlatList
+                keyExtractor={(item, index) => index.toString()}
+                data={classObj.students}
+                renderItem={ ({item}) => 
+                    <Box>
+                    <Box f={1} 
+                        dir='row' 
+                        style={{alignItems:'center'}} 
+                        bg={(item.exist == 1) ? theme.color.greenLighter : theme.color.redLight}
+                        height={65}
+                    >
+                        <Avatar 
+                            source={require('../../../../assets/images/icons/MaleStudent.png')}
+                            showEditButton
+                            size='small'
+                            rounded
+                            activeOpacity={0.7}
+                            title="TL"
+                            onPress={() => console.log("Works!")}
+                        />
+                        <Box center f={1}>
+                        <Text>{item.holotvn} {item.tenvn}</Text>
+                        </Box>
+                    </Box>
+                    <Box h={1} f={1} bg={theme.color.grey}/>
+                    </Box>
+                }
+                />
+            </Box>
+          );
+        }
+        }
 }

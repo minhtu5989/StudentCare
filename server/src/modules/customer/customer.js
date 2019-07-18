@@ -88,7 +88,14 @@ export const saveEx = async (userId, students) => {
     if (!user) return 403
 
     if(!students) return 402
-    user.students = students
+
+    user.students.forEach(el => {
+      students.forEach(el2 => {
+        if(el._id.toString() !== el2._id.toString()){
+          el.exist  = el2.exist
+        }
+      });
+    });
     user.save()
 
     let userInfo = user.toObject();
